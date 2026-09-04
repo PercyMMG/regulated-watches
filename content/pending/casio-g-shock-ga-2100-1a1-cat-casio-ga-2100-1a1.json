@@ -44,12 +44,6 @@
   "featured": false,
   "catalogue_confidence": "high",
   "catalogue_note": "Analogue-digital, carbon core guard, octagonal bezel. Thin for a G-Shock. Case width is quoted several ways; 45.4 mm includes the guards.",
-  "drafts": [
-    "tags",
-    "pros",
-    "cons",
-    "short_blurb",
-    "long_description"
-  ],
+  "drafts": [],
   "status": "pending"
 }

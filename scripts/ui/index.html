@@ -52,6 +52,13 @@
   .line{display:flex;gap:6px;margin-bottom:5px}
   .line input{flex:1}
   .line button{flex:none;background:none;border:1px solid var(--line);color:var(--mute);border-radius:3px;cursor:pointer;padding:0 9px;font:inherit}
+.review{border:1px solid #5a4a1c;border-radius:4px;background:#181510;padding:12px 14px;margin-bottom:14px}
+  .review-head{color:var(--warn);font-size:12px;font-weight:600;margin-bottom:9px}
+  .review-row{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:6px 0;border-top:1px solid #2a2418}
+  .review-row:first-of-type{border-top:0}
+  .review-row b{font-family:var(--mono);font-size:12px;color:var(--ink);display:block}
+  .review-row span{font-size:11px;color:var(--mute);display:block;margin-top:2px}
+  .review-row button{flex:none}
   .notice-cat{border-left:2px solid var(--accent);padding:9px 13px;margin-bottom:14px;background:#1a1710;font-size:12px;color:#d9c07a;line-height:1.5}
   .blocking{border-left:2px solid var(--bad);padding:8px 12px;margin-bottom:14px;background:#1a1413;font-size:12px}
   .blocking div{color:#e0a49e;margin-bottom:3px}
@@ -247,6 +254,41 @@ function editor(w){
   if(w.catalogue_note){
     box.appendChild($(`<div class="notice-cat">From the catalogue (unverified): ${esc(w.catalogue_note)} <b>Confidence: ${esc(w.catalogue_confidence||'low')}.</b> Check the specs against the real listing before approving.</div>`));
   }
+  // Everything the generator wrote arrives flagged. Nothing could clear those
+  // flags from here before, so watches simply could not be approved - this is
+  // the control that turns the gate into a workflow rather than a dead end.
+  if((w.drafts||[]).length){
+    const FIELD_HELP = {
+      tags: 'Suggested tags — keep the ones that fit.',
+      pros: 'Generated from the stored specs. Delete anything you cannot stand behind.',
+      cons: 'Generated caveats. The "not stated in the listing" ones are the honest ones.',
+      short_blurb: 'The one-line summary shown on cards and as the page lede.',
+      long_description: 'The page body.',
+      specs: 'Movement, case size and water resistance came from general knowledge, not a listing. Check them against the real product before publishing.',
+    };
+    const panel = $(`<div class="review"><div class="review-head">Needs your review — ${w.drafts.length} field${w.drafts.length===1?'':'s'}</div></div>`);
+    for(const f of w.drafts){
+      const row = $(`<div class="review-row">
+        <div><b>${esc(f)}</b><span>${esc(FIELD_HELP[f]||'')}</span></div>
+        <button class="act" type="button">Confirm</button></div>`);
+      row.querySelector('button').onclick = async () => {
+        try{ await api('POST',`/api/watch/${keyOf(w)}/confirm`,{field:f}); await load(); }
+        catch(e){ toast(e.message,'err'); }
+      };
+      panel.appendChild(row);
+    }
+    const all = $(`<button class="act go" type="button" style="margin-top:8px">Confirm all ${w.drafts.length} and unblock</button>`);
+    all.onclick = async () => {
+      all.disabled = true; all.textContent = 'Confirming…';
+      try{
+        for(const f of w.drafts) await api('POST',`/api/watch/${keyOf(w)}/confirm`,{field:f});
+        await load(); toast('Reviewed. You can approve it now.');
+      }catch(e){ toast(e.message,'err'); all.disabled=false; }
+    };
+    panel.appendChild(all);
+    box.appendChild(panel);
+  }
+
   if(w._blocking?.length){
     box.appendChild($(`<div class="blocking">${w._blocking.map(b=>`<div>${esc(b.detail)}</div>`).join('')}</div>`));
   }

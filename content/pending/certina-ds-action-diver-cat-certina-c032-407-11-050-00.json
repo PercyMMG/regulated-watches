@@ -43,13 +43,6 @@
   "featured": false,
   "catalogue_confidence": "low",
   "catalogue_note": "Powermatic 80 movement and a 300 m rating. Reference numbers in this family are long and easily mistyped; confirm carefully.",
-  "drafts": [
-    "tags",
-    "pros",
-    "cons",
-    "short_blurb",
-    "long_description",
-    "specs"
-  ],
+  "drafts": [],
   "status": "pending"
 }
