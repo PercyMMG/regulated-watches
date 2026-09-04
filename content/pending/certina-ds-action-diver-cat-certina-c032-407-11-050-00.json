@@ -1,0 +1,55 @@
+{
+  "id": "watch-cat-certina-c032-407-11-050-00",
+  "catalogue_key": "cat-certina-c032-407-11-050-00",
+  "asin": "",
+  "model_ref": "C032.407.11.050.00",
+  "title": "Certina DS Action Diver",
+  "full_title": "Certina DS Action Diver",
+  "brand": "Certina",
+  "style": "diver",
+  "movement": "automatic",
+  "tier": "top",
+  "case_mm": 43,
+  "water_resistance_m": 300,
+  "source_image_url": "",
+  "image": "",
+  "price_display": "",
+  "price_value": null,
+  "price_checked_at": null,
+  "rating": null,
+  "rating_count": null,
+  "scraped_url": "https://www.amazon.co.uk/s?k=Certina%20DS%20Action%20Diver",
+  "source_page": "catalogue",
+  "scraped_at": "2026-09-04T13:38:56.804Z",
+  "short_blurb": "Certina diver in a 43 mm case, automatic. Automatic movement, so there is no battery to replace.",
+  "long_description": "Powermatic 80 movement and a 300 m rating. Reference numbers in this family are long and easily mistyped; confirm carefully.\n\n**Where it sits.** Rotating bezel, real water resistance, legible at a glance. This one falls in our Over £500 band.\n\n**Stated specification.** movement: automatic, case: 43 mm, water resistance: 300 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.\n\n**What we have not done.** We have not handled this watch, and we have not tied it to one specific listing yet. Everything above comes from the model's published specification, and we say so rather than implying a review we did not carry out.",
+  "pros": [
+    "Automatic movement, so there is no battery to replace.",
+    "300 m water resistance — swimmable, and rated for more than most owners will ask of it.",
+    "Sapphire crystal, which resists scratches far better than mineral glass."
+  ],
+  "cons": [
+    "We have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying."
+  ],
+  "tags": [],
+  "suggested_tags": [
+    "diver",
+    "automatic",
+    "top",
+    "certina",
+    "sapphire",
+    "water-resistant"
+  ],
+  "featured": false,
+  "catalogue_confidence": "low",
+  "catalogue_note": "Powermatic 80 movement and a 300 m rating. Reference numbers in this family are long and easily mistyped; confirm carefully.",
+  "drafts": [
+    "tags",
+    "pros",
+    "cons",
+    "short_blurb",
+    "long_description",
+    "specs"
+  ],
+  "status": "pending"
+}

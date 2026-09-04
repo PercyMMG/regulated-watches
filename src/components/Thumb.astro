@@ -2,10 +2,24 @@
 import { imageFor, placeholderHue, watchKey } from '../lib/site';
 
 interface Props {
-  watch: { asin?: string; catalogue_key?: string; id?: string; brand: string; title: string; image?: string; style?: string; model_ref?: string };
+  watch: {
+    asin?: string;
+    catalogue_key?: string;
+    id?: string;
+    brand: string;
+    title: string;
+    image?: string;
+    style?: string;
+    model_ref?: string;
+    image_credit_author?: string;
+    image_credit_licence?: string;
+    image_credit_licence_url?: string;
+    image_credit_source?: string;
+  };
   eager?: boolean;
+  showCredit?: boolean;
 }
-const { watch, eager = false } = Astro.props;
+const { watch, eager = false, showCredit = false } = Astro.props;
 
 const src = imageFor(watch);
 const hue = placeholderHue(watchKey(watch));
@@ -17,6 +31,10 @@ const hue = placeholderHue(watchKey(watch));
  * terms, and a broken image is worse than an honest one.
  */
 const bg = `linear-gradient(150deg, hsl(${hue} 12% 15%), hsl(${(hue + 40) % 360} 14% 10%))`;
+
+// Commons images are free to use commercially, but only with attribution.
+// The credit is part of the licence, not a courtesy.
+const credit = src && watch.image_credit_author ? watch : null;
 ---
 
 {src ? (
@@ -30,4 +48,18 @@ const bg = `linear-gradient(150deg, hsl(${hue} 12% 15%), hsl(${(hue + 40) % 360}
       <div class="ph-sub">{watch.style || 'watch'}{watch.model_ref ? ` · ${watch.model_ref}` : ''}</div>
     </div>
   </div>
+)}
+
+{showCredit && credit && (
+  <p class="img-credit"><Fragment>Photo: </Fragment>{credit.image_credit_source ? (
+    <a href={credit.image_credit_source} rel="noopener nofollow" target="_blank">{credit.image_credit_author}</a>
+  ) : (
+    <Fragment>{credit.image_credit_author}</Fragment>
+  )}{credit.image_credit_licence && (
+    <Fragment>, {credit.image_credit_licence_url ? (
+      <a href={credit.image_credit_licence_url} rel="noopener nofollow license" target="_blank">{credit.image_credit_licence}</a>
+    ) : (
+      <Fragment>{credit.image_credit_licence}</Fragment>
+    )}</Fragment>
+  )}<Fragment>, via Wikimedia Commons. Not supplied by the manufacturer or the retailer.</Fragment></p>
 )}

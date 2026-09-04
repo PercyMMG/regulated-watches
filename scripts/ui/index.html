@@ -287,6 +287,55 @@ function editor(w){
     }
   }
 
+  // --- image picker (Wikimedia Commons) ---
+  const imgBox = $(`<div class="lines"><label>Photograph ${w.image?`— <span style="color:var(--ok)">${esc(w.image)}</span>`:'— none yet'}</label>
+    <div class="bar" style="border:0;padding:0;margin:0 0 8px">
+      <button class="act" type="button" data-imgsearch>Find image on Commons</button>
+      ${w.image?'<button class="act no" type="button" data-imgclear>Remove image</button>':''}
+    </div>
+    <div data-imgresults></div></div>`);
+
+  const results = imgBox.querySelector('[data-imgresults]');
+  if (w.image_credit_author) {
+    results.appendChild($(`<div class="note" style="margin:0">Credit: ${esc(w.image_credit_author)} — ${esc(w.image_credit_licence||'licence unknown')}</div>`));
+  }
+
+  imgBox.querySelector('[data-imgsearch]').onclick = async (e) => {
+    const btn = e.target; btn.disabled = true; btn.textContent = 'Searching Commons…';
+    results.innerHTML = '';
+    try {
+      const cands = await api('POST','/api/images/search',{ query: `${w.brand} ${w.model_ref||w.title}`, model_ref: w.model_ref||'' });
+      if(!cands.length){
+        results.appendChild($(`<div class="note" style="margin:0">Nothing usable on Commons for this model. Coverage of specific references is thin, and anything non-commercial or unattributable is rejected automatically.</div>`));
+      }
+      for (const c of cands) {
+        const warn = c.caution.length
+          ? `<div style="color:var(--warn);font-size:11px;margin-top:4px">! ${c.caution.map(esc).join('<br>! ')}</div>` : '';
+        const card = $(`<div style="display:flex;gap:10px;padding:8px;border:1px solid var(--line);border-radius:3px;margin-bottom:6px;align-items:flex-start">
+          <img src="${esc(c.thumb)}" alt="" style="width:88px;height:88px;object-fit:cover;border-radius:2px;flex:none;background:var(--bg)">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;margin-bottom:3px">${esc(c.title.replace('File:',''))}</div>
+            <div class="sub" style="font-size:11px">${esc(c.licence)} · ${c.width}×${c.height} · ${esc(c.author.slice(0,40))}</div>
+            ${warn}
+            <button class="act" type="button" style="margin-top:6px;padding:3px 10px;font-size:12px">Use this</button>
+          </div></div>`);
+        card.querySelector('button').onclick = async () => {
+          try { await api('POST',`/api/watch/${keyOf(w)}/image`,{ candidate: c }); await load(); toast('Image saved with its credit.'); }
+          catch(err){ toast(err.message,'err'); }
+        };
+        results.appendChild(card);
+      }
+    } catch(err){ toast(err.message,'err'); }
+    btn.disabled = false; btn.textContent = 'Find image on Commons';
+  };
+
+  const clearBtn = imgBox.querySelector('[data-imgclear]');
+  if (clearBtn) clearBtn.onclick = async () => {
+    try { await api('POST',`/api/watch/${keyOf(w)}/save`,{ image:'', image_credit_author:'', image_credit_licence:'', image_credit_licence_url:'', image_credit_source:'' }); await load(); toast('Image removed.'); }
+    catch(err){ toast(err.message,'err'); }
+  };
+  box.appendChild(imgBox);
+
   const actions = $('<div class="bar" style="border:0;padding:0;margin:0"></div>');
   actions.appendChild($(`<button class="act" data-a="save">Save</button>`));
   if(w.scraped_url) actions.appendChild($(`<a class="act" style="text-decoration:none" href="${esc(w.scraped_url)}" target="_blank" rel="noopener nofollow">${w.asin?'Open listing':'Search Amazon'} ↗</a>`));

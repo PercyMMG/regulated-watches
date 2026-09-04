@@ -31,6 +31,8 @@ const FIELDS_EDITABLE = new Set([
   'title', 'brand', 'style', 'movement', 'tier', 'case_mm', 'water_resistance_m',
   'short_blurb', 'long_description', 'pros', 'cons', 'tags', 'featured', 'image',
   'price_display', 'price_value', 'price_checked_at', 'rating', 'rating_count',
+  'image_credit_author', 'image_credit_licence', 'image_credit_licence_url',
+  'image_credit_source', 'image_bytes',
 ]);
 
 export function loadAll() {

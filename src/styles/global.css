@@ -145,6 +145,9 @@ h3 { font-size: 17px; }
 .price { font-family: var(--mono); font-size: 15px; color: var(--ink); }
 .price .stale { color: var(--mute); font-size: 12px; }
 .price-note { color: var(--mute); font-size: 12px; margin-top: 5px; }
+.img-credit { color: var(--mute); font-size: 11px; line-height: 1.5; margin: 8px 0 14px; }
+.img-credit a { color: var(--mute); text-decoration: underline; }
+.img-credit a:hover { color: var(--ink); }
 
 /* ---------- buy button ---------- */
 

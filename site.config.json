@@ -18,7 +18,7 @@
     "note": "Price shown was correct at the time of checking. Amazon prices change frequently; the live price on Amazon is authoritative."
   },
   "images": {
-    "mode": "placeholder",
+    "mode": "local",
     "note": "'placeholder' renders a typographic card and never hotlinks Amazon. Set to 'local' once you have dropped your own photos into public/images/watches/{asin}.jpg, or 'paapi' once you have Product Advertising API access."
   },
   "ingestion": {

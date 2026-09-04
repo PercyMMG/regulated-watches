@@ -45,6 +45,11 @@ catalogue_note: "The default cheap digital watch. Alarm, stopwatch, backlight, r
 drafts: []
 status: "approved"
 approved_at: "2026-09-04T10:26:16.681Z"
+image_credit_author: ""
+image_credit_licence: ""
+image_credit_licence_url: ""
+image_credit_source: ""
+image_bytes: 3169945
 ---
 The default cheap digital watch. Alarm, stopwatch, backlight, resin strap. 30 m means rain and handwashing, not swimming.
 

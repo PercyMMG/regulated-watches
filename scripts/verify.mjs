@@ -72,6 +72,15 @@ for (const w of approved) {
       err(where, `image "${w.image}" is not in public/images/watches/`);
     }
   }
+  // A CC image without a rendered credit breaches its licence. This is the
+  // gate that stops one shipping.
+  if (w.image && !w.image_credit_author) {
+    err(where, 'has an image but no image_credit_author. A CC-licensed image must be attributed, or removed.');
+  }
+  if (w.image && w.image_credit_licence && /-nc|-nd|non-?commercial/i.test(w.image_credit_licence)) {
+    err(where, `image licence "${w.image_credit_licence}" forbids commercial use. This site carries affiliate links; remove the image.`);
+  }
+
   if (w.source_image_url && w.image && w.image === w.source_image_url) {
     err(where, 'image points at the Amazon listing URL. Hotlinking listing images is not permitted outside PA-API.');
   }

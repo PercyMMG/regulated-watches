@@ -5,6 +5,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { config, paths, hasAssociateTag, TAG_PLACEHOLDER } from './lib/config.mjs';
 import * as curation from './lib/curation.mjs';
+import * as commons from './lib/commons.mjs';
 import { buildPack, packToMarkdown } from './lib/socialpack.mjs';
 import { writeJson, ensureDir } from './lib/store.mjs';
 import { writeFileSync } from 'node:fs';
@@ -76,6 +77,17 @@ const ROUTES = [
   ['DELETE', /^\/api\/watch\/([A-Za-z0-9_-]{3,90})$/, (m) => curation.destroy(m[1])],
 
   ['POST', /^\/api\/bulk$/, (m, body) => curation.bulk(body.action, body.asins, body.reason)],
+
+  // Wikimedia Commons image search. The only outbound network call this
+  // dashboard makes, and it goes to Commons, never to Amazon.
+  ['POST', /^\/api\/images\/search$/, (m, body) =>
+    commons.search(String(body.query || '').slice(0, 120), 8, String(body.model_ref || ''))],
+  ['POST', /^\/api\/watch\/([A-Za-z0-9_-]{3,90})\/image$/, async (m, body) => {
+    const found = curation.findWatch(m[1]);
+    if (!found) throw new Error(`No watch ${m[1]}`);
+    const fields = await commons.fetchImage(body.candidate, m[1]);
+    return curation.saveWatch(m[1], fields);
+  }],
 
   // Seed the pending queue from the bundled catalogue. Contacts nothing.
   ['GET', /^\/api\/catalogue$/, () => curation.catalogueRemaining()],

@@ -30,6 +30,13 @@ const watches = defineCollection({
     water_resistance_m: z.number().nullable().optional(),
 
     image: z.string().optional().default(''),
+    // Attribution for a Commons image. Required whenever `image` is set:
+    // an unattributed CC image is a licence breach, and verify.mjs enforces it.
+    image_credit_author: z.string().optional().default(''),
+    image_credit_licence: z.string().optional().default(''),
+    image_credit_licence_url: z.string().optional().default(''),
+    image_credit_source: z.string().optional().default(''),
+    image_bytes: z.number().optional(),
     source_image_url: z.string().optional().default(''),
 
     price_display: z.string().optional().default(''),
