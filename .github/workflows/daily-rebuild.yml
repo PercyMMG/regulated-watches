@@ -1,0 +1,33 @@
+# Optional. Rebuilds the site once a day so that prices captured yesterday are
+# regenerated rather than only being hidden client-side by price-guard.js.
+#
+# Setup: Cloudflare Pages -> your project -> Settings -> Builds & deployments
+# -> Deploy hooks -> create one, then add the URL as the repository secret
+# CF_DEPLOY_HOOK. Without the secret this workflow does nothing and costs
+# nothing. GitHub Actions minutes are free for public repositories.
+
+name: Daily rebuild
+
+on:
+  schedule:
+    - cron: '20 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages deploy
+        env:
+          HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "CF_DEPLOY_HOOK is not set. Nothing to do."
+            exit 0
+          fi
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$HOOK")
+          echo "Deploy hook returned $code"
+          [ "$code" -ge 200 ] && [ "$code" -lt 300 ]

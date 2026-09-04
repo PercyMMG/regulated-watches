@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Thumb from '../../components/Thumb.astro';
+import Price from '../../components/Price.astro';
+import BuyButton from '../../components/BuyButton.astro';
+import { fullName } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const cmps = await getCollection('comparisons');
+  const all = await getCollection('watches');
+  return cmps
+    .map((c) => {
+      const a = all.find((w) => w.data.id === c.data.watch_a);
+      const b = all.find((w) => w.data.id === c.data.watch_b);
+      // A comparison whose subject was unpublished has nothing to show.
+      if (!a || !b) return null;
+      return { params: { slug: c.data.slug }, props: { cmp: c.data, a, b } };
+    })
+    .filter((p): p is NonNullable<typeof p> => p !== null);
+}
+
+const { cmp, a, b } = Astro.props;
+const A = a.data;
+const B = b.data;
+---
+
+<Base title={cmp.title} description={cmp.summary_winner || `${A.brand} against ${B.brand}, on the stated specification.`}>
+  <div class="wrap" style="padding-top:44px">
+    <p class="eyebrow">Comparison</p>
+    <h1>{cmp.title}</h1>
+    {cmp.summary_winner && <p class="lede">{cmp.summary_winner}</p>}
+
+    <div class="grid-2" style="margin-top:28px">
+      {[a, b].map((entry) => (
+        <div class="card" style="padding:18px">
+          <Thumb watch={entry.data} eager={true} />
+          <div style="padding-top:14px">
+            <div class="card-title" style="margin-bottom:8px">
+              <a href={`/watches/${entry.id}`}>{fullName(entry.data)}</a>
+            </div>
+            <p class="card-blurb">{entry.data.short_blurb}</p>
+            <div style="margin:12px 0"><Price watch={entry.data} /></div>
+            <BuyButton asin={entry.data.asin} label="Check price" />
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {cmp.key_differences.length > 0 && (
+      <>
+        <h2>Where they differ</h2>
+        <div class="table-scroll">
+          <table class="vs">
+            <thead>
+              <tr><th></th><th>{A.brand}</th><th>{B.brand}</th></tr>
+            </thead>
+            <tbody>
+              {cmp.key_differences.map((d) => (
+                <tr><td>{d.field}</td><td>{d.a}</td><td>{d.b}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div class="notice">
+          <strong>What this table is.</strong> Only fields where the two listings actually stated different
+          values. Anything neither listing specified is left out rather than filled in with an assumption.
+        </div>
+      </>
+    )}
+  </div>
+</Base>

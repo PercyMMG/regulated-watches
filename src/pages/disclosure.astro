@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../lib/site';
+---
+
+<Base title="Disclosure" description="How this site earns, and what that does and does not change.">
+  <div class="wrap" style="padding-top:44px">
+    <h1>Disclosure</h1>
+    <div class="prose">
+      <h2 style="margin-top:28px">How this site earns</h2>
+      <p>{site.affiliate.disclosureLong}</p>
+      <p>
+        A commission is paid by Amazon out of its own margin. The price you pay is the same whether you
+        arrive through a link here or type the product name into Amazon yourself.
+      </p>
+
+      <h2>What the commission does not change</h2>
+      <p>
+        Nothing on this site is ordered by commission rate. Watches are ranked on stated specification,
+        price band, and how well the rating is evidenced — the same inputs for every entry, applied the
+        same way. Featuring a watch on the homepage costs nothing and earns nothing extra.
+      </p>
+
+      <h2>What we have and have not done</h2>
+      <p>
+        We read the Amazon listing and the manufacturer's stated specification. We have not handled most
+        of these watches, have not timed their movements, and have not tested their water resistance.
+        Every page says so. Where a listing does not state something, that absence is printed as a caveat
+        rather than filled in with a guess.
+      </p>
+
+      <h2>Prices</h2>
+      <p>
+        Prices are captured at a moment in time and stamped with that moment. Any price older than
+        {site.price.maxAgeHours} hours is removed from the page automatically and replaced with a prompt
+        to check the live listing, which is the only authoritative price.
+      </p>
+
+      <h2>Reviews and ratings</h2>
+      <p>
+        Where a rating appears it is the aggregate star rating Amazon displayed at the time of checking,
+        with the number of ratings behind it. We do not reproduce customer review text, and we do not
+        write reviews in a customer's voice.
+      </p>
+
+      <h2>Trademarks</h2>
+      <p>
+        Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates. {site.brand} is
+        an independent site and is not affiliated with, endorsed by, or sponsored by Amazon or by any watch
+        manufacturer named here.
+      </p>
+    </div>
+  </div>
+</Base>

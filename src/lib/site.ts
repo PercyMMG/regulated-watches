@@ -1,0 +1,79 @@
+import raw from '../../site.config.json';
+
+export const site = raw;
+
+export const TAG_PLACEHOLDER = 'REPLACE-ME-21';
+
+export const hasAssociateTag = () =>
+  Boolean(site.affiliate.associateTag) && site.affiliate.associateTag !== TAG_PLACEHOLDER;
+
+/**
+ * Affiliate URL, built at render time from the ASIN and the configured tag.
+ *
+ * Returns null when no tag is set. Every call site treats null as "render the
+ * button disabled", so a misconfigured deploy ships an obviously broken button
+ * rather than an untagged link that earns nothing and looks fine.
+ */
+export function affiliateLink(asin: string): string | null {
+  if (!hasAssociateTag()) return null;
+  return site.affiliate.linkTemplate
+    .replace('{marketplace}', site.affiliate.marketplace)
+    .replace('{asin}', asin)
+    .replace('{tag}', site.affiliate.associateTag);
+}
+
+export const tierById = (id: string) => site.taxonomy.tiers.find((t) => t.id === id) ?? null;
+export const styleById = (id: string) => site.taxonomy.styles.find((s) => s.id === id) ?? null;
+
+/**
+ * Is a stored price still inside the window the Associates terms allow?
+ *
+ * Evaluated at build time here, and again in the browser by price-guard.js.
+ * The build-time check alone is not enough: a page built on Monday would still
+ * be claiming Monday's price on Wednesday.
+ */
+export function priceIsFresh(checkedAt: string | null | undefined, now = Date.now()): boolean {
+  if (!checkedAt) return false;
+  const t = Date.parse(checkedAt);
+  if (!Number.isFinite(t)) return false;
+  return now - t < site.price.maxAgeHours * 3600 * 1000;
+}
+
+export function imageFor(watch: { image?: string; asin: string }): string | null {
+  if (site.images.mode === 'placeholder') return null;
+  if (!watch.image) return null;
+  const name = String(watch.image).replace(/^.*[\\/]/, '');
+  return `/images/watches/${name}`;
+}
+
+/** Deterministic hue per ASIN, so a watch's placeholder card is always the same. */
+export function placeholderHue(asin: string): number {
+  let h = 0;
+  for (let i = 0; i < asin.length; i++) h = (h * 31 + asin.charCodeAt(i)) % 360;
+  return h;
+}
+
+/**
+ * Brand + title, without saying the brand twice.
+ *
+ * Amazon titles almost always lead with the brand ("Seiko 5 Sports SRPD55K1"),
+ * so prefixing the stored brand unconditionally produces "Seiko Seiko 5 Sports".
+ */
+export function fullName(w: { brand?: string; title?: string }): string {
+  const brand = (w.brand ?? '').trim();
+  const title = (w.title ?? '').trim();
+  if (!brand) return title;
+  if (title.toLowerCase().startsWith(brand.toLowerCase())) return title;
+  return `${brand} ${title}`;
+}
+
+/** Style and movement, without repeating a word that is in both (digital). */
+export function specChips(w: { style?: string; movement?: string }): string[] {
+  const out: string[] = [];
+  if (w.style) out.push(w.style);
+  if (w.movement && w.movement !== w.style) out.push(w.movement);
+  return out;
+}
+
+export const formatDate = (iso?: string | null) =>
+  iso ? new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';

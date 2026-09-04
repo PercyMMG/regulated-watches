@@ -1,0 +1,22 @@
+---
+import { affiliateLink, site } from '../lib/site';
+
+interface Props {
+  asin: string;
+  label?: string;
+}
+const { asin, label = 'Check current price on Amazon' } = Astro.props;
+const href = affiliateLink(asin);
+---
+
+{href ? (
+  <a class="buy" href={href} rel="nofollow sponsored noopener" target="_blank">{label}</a>
+) : (
+  <span class="buy" aria-disabled="true" title="No Amazon Associates tag configured">Link not configured</span>
+)}
+
+<p class="buy-note">
+  {href
+    ? site.affiliate.disclosureShort
+    : 'Set affiliate.associateTag in site.config.json to enable this link.'}
+</p>

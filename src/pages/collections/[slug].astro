@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import WatchCard from '../../components/WatchCard.astro';
+
+export async function getStaticPaths() {
+  const cols = await getCollection('collections');
+  const all = await getCollection('watches');
+  return cols.map((c) => ({
+    params: { slug: c.data.slug },
+    props: {
+      col: c.data,
+      // Preserve the order the curator put them in, and silently drop any watch
+      // that has since been unpublished rather than rendering a dead card.
+      watches: c.data.watch_ids
+        .map((id) => all.find((w) => w.data.id === id))
+        .filter((w): w is NonNullable<typeof w> => Boolean(w)),
+    },
+  }));
+}
+
+const { col, watches } = Astro.props;
+---
+
+<Base title={col.title} description={col.intro_text}>
+  <div class="wrap" style="padding-top:44px">
+    <p class="eyebrow">Collection</p>
+    <h1>{col.title}</h1>
+    {col.intro_text && <p class="lede">{col.intro_text}</p>}
+
+    {watches.length === 0 ? (
+      <div class="empty"><p>No published watches in this collection yet.</p></div>
+    ) : (
+      <div class="grid" style="margin-top:28px">
+        {watches.map((w, i) => <WatchCard watch={w} eager={i < 3} rank={i + 1} />)}
+      </div>
+    )}
+  </div>
+</Base>

@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const cols = await getCollection('collections');
+---
+
+<Base title="Collections" description="Groupings that each answer one question.">
+  <div class="wrap" style="padding-top:44px">
+    <h1>Collections</h1>
+    <p class="lede">Each one answers a single question, in order, with the reasoning attached.</p>
+
+    {cols.length === 0 ? (
+      <div class="empty"><p>No collections yet. Create one in the curation dashboard.</p></div>
+    ) : (
+      <div class="grid-2" style="margin-top:28px">
+        {cols.map((c) => (
+          <a class="card" href={`/collections/${c.data.slug}`} style="padding:18px;text-decoration:none;color:inherit">
+            <div class="card-title" style="margin-bottom:6px">{c.data.title}</div>
+            <p class="card-blurb" style="margin:0 0 10px">{c.data.intro_text}</p>
+            <span class="tag">{c.data.watch_ids.length} watch{c.data.watch_ids.length === 1 ? '' : 'es'}</span>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Base>

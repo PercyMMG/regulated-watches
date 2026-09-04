@@ -1,0 +1,24 @@
+{
+  "name": "watch-shortlist",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Zero-cost, human-curated Amazon affiliate watch site. Astro static site + Decap CMS + local curation dashboard.",
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "node scripts/clean-content-cache.mjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "ingest": "node scripts/ingest.mjs",
+    "curate": "node scripts/curate.mjs",
+    "social": "node scripts/social.mjs",
+    "cms": "decap-server",
+    "verify": "node scripts/verify.mjs",
+    "demo": "node scripts/demo.mjs"
+  },
+  "devDependencies": {
+    "astro": "^5.14.1",
+    "decap-server": "^3.1.4"
+  }
+}

@@ -1,0 +1,35 @@
+---
+import Thumb from './Thumb.astro';
+import Price from './Price.astro';
+import { tierById, fullName, specChips } from '../lib/site';
+
+interface Props {
+  watch: any;
+  eager?: boolean;
+  rank?: number;
+}
+const { watch, eager = false, rank } = Astro.props;
+const d = watch.data ?? watch;
+const tier = tierById(d.tier);
+---
+
+<article class="card">
+  <a class="card-link" href={`/watches/${watch.id ?? d.id}`}>
+    <Thumb watch={d} eager={eager} />
+  </a>
+  <div class="card-body">
+    <a class="card-link" href={`/watches/${watch.id ?? d.id}`}>
+      <div class="card-title">{rank ? `${rank}. ` : ''}{fullName(d)}</div>
+    </a>
+    <div class="specline">
+      {specChips(d).map((c) => <span>{c}</span>)}
+      {d.case_mm && <span>{d.case_mm} mm</span>}
+      {d.water_resistance_m && <span>{d.water_resistance_m} m</span>}
+    </div>
+    <p class="card-blurb">{d.short_blurb}</p>
+    <div class="card-foot">
+      <Price watch={d} />
+      {tier && <span class="tag">{tier.title}</span>}
+    </div>
+  </div>
+</article>

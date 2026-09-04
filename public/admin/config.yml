@@ -1,0 +1,138 @@
+# Decap CMS — free, git-based, no database, no server.
+#
+# You chose local-only curation, so this is configured for the local backend:
+#   terminal 1:  npm run cms     (decap-server, the local git proxy)
+#   terminal 2:  npm run dev
+#   browser:     http://localhost:4321/admin/
+#
+# No login, no OAuth app, no third-party service. Edits are written straight
+# into ./content in your working tree, exactly like the curation dashboard.
+#
+# The deployed copy of /admin is blocked by public/_redirects, because a public
+# admin page that cannot authenticate is only a source of confusion. To turn on
+# browser-based editing later: create a GitHub OAuth app, deploy an OAuth proxy,
+# set `base_url` below, remove the /admin rule from public/_redirects.
+
+local_backend: true
+
+backend:
+  name: github
+  repo: OWNER/watch-shortlist # <- set this if you enable the hosted admin
+  branch: main
+  # base_url: https://your-oauth-proxy.example.com
+
+media_folder: public/images/watches
+public_folder: /images/watches
+
+publish_mode: simple
+site_url: https://watch-shortlist.pages.dev
+
+collections:
+  - name: watches
+    label: Approved watches
+    label_singular: watch
+    folder: content/watches
+    extension: md
+    format: yaml-frontmatter
+    create: false # new watches arrive through ingestion, not by hand
+    delete: false # unpublish through the curation dashboard so state stays consistent
+    slug: '{{fields.slug}}'
+    identifier_field: title
+    summary: '{{brand}} — {{title}} ({{tier}})'
+    sortable_fields: [title, brand, price_value, rating, approved_at]
+    view_filters:
+      - { label: Featured, field: featured, pattern: true }
+      - { label: No image, field: image, pattern: '^$' }
+    fields:
+      - { name: id, label: ID, widget: string, required: true }
+      - { name: asin, label: ASIN, widget: string, pattern: ['^[A-Z0-9]{10}$', 'Ten uppercase letters or digits'] }
+      - { name: title, label: Title, widget: string }
+      - { name: full_title, label: Full listing title, widget: string, required: false }
+      - { name: brand, label: Brand, widget: string }
+      - name: style
+        label: Style
+        widget: select
+        required: false
+        options: [diver, field, pilot, dress, chronograph, digital, gmt]
+      - name: movement
+        label: Movement
+        widget: select
+        required: false
+        options: [automatic, hand-wound, quartz, solar, kinetic, digital]
+      - name: tier
+        label: Price band
+        widget: select
+        required: false
+        options: [entry, core, upper, top]
+      - { name: case_mm, label: Case (mm), widget: number, required: false, value_type: float }
+      - { name: water_resistance_m, label: Water resistance (m), widget: number, required: false, value_type: int }
+      - { name: image, label: Photograph, widget: image, required: false, hint: 'Your own photograph only. Do not upload Amazon listing images.' }
+      - { name: source_image_url, label: Listing image URL (reference only, never rendered), widget: string, required: false }
+      - { name: price_display, label: Price as shown, widget: string, required: false }
+      - { name: price_value, label: Price value, widget: number, required: false, value_type: float }
+      - { name: price_checked_at, label: Price checked at, widget: datetime, required: false, hint: 'Prices older than 24h are hidden automatically.' }
+      - { name: rating, label: Amazon rating, widget: number, required: false, value_type: float, min: 0, max: 5 }
+      - { name: rating_count, label: Rating count, widget: number, required: false, value_type: int }
+      - { name: short_blurb, label: Short blurb, widget: text, hint: 'One or two sentences. No price — prices go stale.' }
+      - { name: pros, label: Pros, widget: list, field: { name: item, label: Point, widget: string }, required: false }
+      - { name: cons, label: Cons, widget: list, field: { name: item, label: Point, widget: string }, required: false }
+      - { name: tags, label: Tags, widget: list, required: false }
+      - { name: suggested_tags, label: Suggested tags (from ingestion), widget: list, required: false }
+      - { name: featured, label: Featured on the homepage, widget: boolean, default: false }
+      - { name: drafts, label: Unreviewed draft fields, widget: list, required: false }
+      - { name: status, label: Status, widget: hidden, default: approved }
+      - { name: scraped_url, label: Listing URL, widget: string, required: false }
+      - { name: source_page, label: Source page, widget: string, required: false }
+      - { name: scraped_at, label: Ingested at, widget: datetime, required: false }
+      - { name: approved_at, label: Approved at, widget: datetime, required: false }
+      - { name: body, label: Long description, widget: markdown, required: false }
+
+  - name: collections
+    label: Collections
+    label_singular: collection
+    folder: content/collections
+    extension: json
+    format: json
+    create: true
+    slug: '{{slug}}'
+    identifier_field: title
+    summary: '{{title}} ({{watch_ids.length}})'
+    fields:
+      - { name: id, label: ID, widget: string, required: false }
+      - { name: title, label: Title, widget: string }
+      - { name: slug, label: Slug, widget: string }
+      - { name: intro_text, label: Intro, widget: text, required: false }
+      - name: watch_ids
+        label: Watches
+        widget: list
+        required: false
+        field: { name: watch_id, label: Watch ID, widget: relation, collection: watches, search_fields: [title, brand, asin], value_field: id, display_fields: ['{{brand}} — {{title}}'] }
+      - { name: updated_at, label: Updated, widget: datetime, required: false }
+
+  - name: comparisons
+    label: Comparisons
+    label_singular: comparison
+    folder: content/comparisons
+    extension: json
+    format: json
+    create: true
+    slug: '{{slug}}'
+    identifier_field: title
+    fields:
+      - { name: id, label: ID, widget: string, required: false }
+      - { name: title, label: Title, widget: string }
+      - { name: slug, label: Slug, widget: string }
+      - { name: watch_a, label: Watch A, widget: relation, collection: watches, search_fields: [title, brand, asin], value_field: id, display_fields: ['{{brand}} — {{title}}'] }
+      - { name: watch_b, label: Watch B, widget: relation, collection: watches, search_fields: [title, brand, asin], value_field: id, display_fields: ['{{brand}} — {{title}}'] }
+      - { name: asin_a, label: ASIN A, widget: string, required: false }
+      - { name: asin_b, label: ASIN B, widget: string, required: false }
+      - { name: summary_winner, label: Which wins, and why, widget: text, required: false }
+      - name: key_differences
+        label: Key differences
+        widget: list
+        required: false
+        fields:
+          - { name: field, label: Field, widget: string }
+          - { name: a, label: A, widget: string }
+          - { name: b, label: B, widget: string }
+      - { name: updated_at, label: Updated, widget: datetime, required: false }

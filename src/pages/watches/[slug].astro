@@ -1,0 +1,118 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Thumb from '../../components/Thumb.astro';
+import Price from '../../components/Price.astro';
+import BuyButton from '../../components/BuyButton.astro';
+import WatchCard from '../../components/WatchCard.astro';
+import { site, tierById, styleById, formatDate, fullName } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const all = await getCollection('watches');
+  return all.map((entry) => ({ params: { slug: entry.id }, props: { entry, all } }));
+}
+
+const { entry, all } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+
+const tier = tierById(d.tier);
+const style = styleById(d.style);
+
+const related = all
+  .filter((w) => w.id !== entry.id && (w.data.style === d.style || w.data.tier === d.tier))
+  .slice(0, 3);
+
+const comparisons = (await getCollection('comparisons')).filter(
+  (c) => c.data.watch_a === d.id || c.data.watch_b === d.id
+);
+
+const specs = [
+  ['Brand', d.brand],
+  ['Style', style?.title ?? d.style],
+  ['Movement', d.movement],
+  ['Case', d.case_mm ? `${d.case_mm} mm` : ''],
+  ['Water resistance', d.water_resistance_m ? `${d.water_resistance_m} m` : ''],
+  ['Price band', tier?.title],
+  ['Amazon rating', d.rating ? `${d.rating}/5${d.rating_count ? ` (${d.rating_count.toLocaleString('en-GB')})` : ''}` : ''],
+  ['ASIN', d.asin],
+].filter(([, v]) => v);
+---
+
+<Base title={fullName(d)} description={d.short_blurb}>
+  <div class="wrap">
+    <div class="detail">
+      <div>
+        <p class="eyebrow">
+          {tier && <a href={`/tier/${d.tier}`}>{tier.title}</a>}
+          {tier && style && ' · '}
+          {style && <a href={`/style/${d.style}`}>{style.title}</a>}
+        </p>
+        <h1>{fullName(d)}</h1>
+        <p class="lede">{d.short_blurb}</p>
+
+        {(d.pros.length > 0 || d.cons.length > 0) && (
+          <div class="proscons">
+            {d.pros.length > 0 && (
+              <div>
+                <h3>What it has going for it</h3>
+                <ul class="pros">{d.pros.map((p) => <li>{p}</li>)}</ul>
+              </div>
+            )}
+            {d.cons.length > 0 && (
+              <div>
+                <h3>What to check first</h3>
+                <ul class="cons">{d.cons.map((c) => <li>{c}</li>)}</ul>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div class="prose"><Content /></div>
+
+        {d.tags.length > 0 && (
+          <div class="tags" style="margin-top:24px">
+            {d.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        )}
+
+        <div class="notice">
+          <strong>How this page was made.</strong> The specification above is what the Amazon listing stated
+          when we read it{d.scraped_at ? ` on ${formatDate(d.scraped_at)}` : ''}. We have not measured this
+          watch ourselves. Where the listing did not state something, we say so instead of guessing.
+        </div>
+
+        {comparisons.length > 0 && (
+          <>
+            <h2>Compared with</h2>
+            <ul>
+              {comparisons.map((c) => <li><a href={`/compare/${c.data.slug}`}>{c.data.title}</a></li>)}
+            </ul>
+          </>
+        )}
+
+        {related.length > 0 && (
+          <>
+            <h2>Close to this one</h2>
+            <div class="grid">{related.map((w) => <WatchCard watch={w} />)}</div>
+          </>
+        )}
+      </div>
+
+      <aside class="aside">
+        <Thumb watch={d} eager={true} />
+        <div style="margin-bottom:14px">
+          <Price watch={d} showNote={true} />
+        </div>
+        <BuyButton asin={d.asin} />
+        <table class="speclist">
+          <tbody>
+            {specs.map(([k, v]) => (
+              <tr><th>{k}</th><td>{v}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </aside>
+    </div>
+  </div>
+</Base>

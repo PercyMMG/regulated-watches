@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import WatchCard from '../../components/WatchCard.astro';
+
+const all = (await getCollection('watches')).sort((a, b) =>
+  (a.data.price_value ?? Infinity) - (b.data.price_value ?? Infinity)
+);
+---
+
+<Base title="All watches" description="Every watch currently on the list, cheapest first.">
+  <div class="wrap" style="padding-top:44px">
+    <h1>All watches</h1>
+    <p class="lede">Everything currently on the list, cheapest first. {all.length} in total.</p>
+
+    {all.length === 0 ? (
+      <div class="empty">
+        <h2>Nothing published yet</h2>
+        <p>Run <code>npm run ingest</code>, then <code>npm run curate</code>.</p>
+      </div>
+    ) : (
+      <div class="grid" style="margin-top:28px">
+        {all.map((w, i) => <WatchCard watch={w} eager={i < 3} />)}
+      </div>
+    )}
+  </div>
+</Base>

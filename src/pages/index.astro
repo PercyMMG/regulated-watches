@@ -1,0 +1,122 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import WatchCard from '../components/WatchCard.astro';
+import { site } from '../lib/site';
+
+const all = await getCollection('watches');
+const cols = await getCollection('collections');
+
+const featured = all.filter((w) => w.data.featured);
+const recent = [...all].sort((a, b) =>
+  String(b.data.approved_at ?? b.data.scraped_at ?? '').localeCompare(String(a.data.approved_at ?? a.data.scraped_at ?? ''))
+);
+const lead = featured.length ? featured : recent;
+
+const byTier = Object.fromEntries(site.taxonomy.tiers.map((t) => [t.id, all.filter((w) => w.data.tier === t.id)]));
+const byStyle = Object.fromEntries(site.taxonomy.styles.map((s) => [s.id, all.filter((w) => w.data.style === s.id)]));
+const stylesInUse = site.taxonomy.styles.filter((s) => byStyle[s.id].length > 0);
+---
+
+<Base>
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">{site.affiliate.marketplace} · hand-curated</p>
+      <h1>{site.tagline}</h1>
+      <p class="lede">
+        Every watch here was read off its listing, checked against its own spec sheet, and written up by a
+        person before it appeared. Nothing is auto-published, nothing is ranked by commission, and the
+        caveats are printed next to the reasons to buy.
+      </p>
+      <div class="hero-stats">
+        <span><b>{all.length}</b> watches</span>
+        <span><b>{site.taxonomy.tiers.length}</b> price bands</span>
+        <span><b>{stylesInUse.length}</b> styles</span>
+        <span><b>{cols.length}</b> collections</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    {all.length === 0 ? (
+      <div class="empty">
+        <h2>Nothing published yet</h2>
+        <p>The pipeline is live but no watch has been approved.</p>
+        <p>
+          Save an Amazon category page into <code>inbox/</code>, then run
+          <code>npm run ingest</code> and <code>npm run curate</code>.
+        </p>
+      </div>
+    ) : (
+      <>
+        <div class="sec-head">
+          <div>
+            <h2>{featured.length ? 'Featured' : 'Most recent'}</h2>
+            <p>
+              {featured.length
+                ? 'Picked by hand, not by margin. Featuring one costs nothing and earns nothing extra.'
+                : 'The latest additions to the list.'}
+            </p>
+          </div>
+          <a href="/watches">All {all.length} →</a>
+        </div>
+        <div class="grid">
+          {lead.slice(0, 6).map((w, i) => <WatchCard watch={w} eager={i < 3} />)}
+        </div>
+
+        <div class="sec-head">
+          <div>
+            <h2>By price</h2>
+            <p>Four bands. The interesting one is nearly always the second.</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          {site.taxonomy.tiers.map((t) => (
+            <a class="card" href={`/tier/${t.id}`} style="padding:18px;text-decoration:none;color:inherit">
+              <div class="card-title" style="margin-bottom:6px">{t.title}</div>
+              <p class="card-blurb" style="margin:0 0 10px">{t.blurb}</p>
+              <span class="tag">{byTier[t.id].length} watch{byTier[t.id].length === 1 ? '' : 'es'}</span>
+            </a>
+          ))}
+        </div>
+
+        {stylesInUse.length > 0 && (
+          <>
+            <div class="sec-head">
+              <div>
+                <h2>By style</h2>
+                <p>Only styles with something published in them are shown.</p>
+              </div>
+            </div>
+            <div class="tags">
+              {stylesInUse.map((s) => (
+                <a class="tag" href={`/style/${s.id}`}>{s.title} · {byStyle[s.id].length}</a>
+              ))}
+            </div>
+          </>
+        )}
+
+        {cols.length > 0 && (
+          <>
+            <div class="sec-head">
+              <div>
+                <h2>Collections</h2>
+                <p>Groupings that answer one question each.</p>
+              </div>
+              <a href="/collections">All →</a>
+            </div>
+            <div class="grid-2">
+              {cols.slice(0, 4).map((c) => (
+                <a class="card" href={`/collections/${c.data.slug}`} style="padding:18px;text-decoration:none;color:inherit">
+                  <div class="card-title" style="margin-bottom:6px">{c.data.title}</div>
+                  <p class="card-blurb" style="margin:0 0 10px">{c.data.intro_text}</p>
+                  <span class="tag">{c.data.watch_ids.length} watch{c.data.watch_ids.length === 1 ? '' : 'es'}</span>
+                </a>
+              ))}
+            </div>
+          </>
+        )}
+      </>
+    )}
+  </div>
+</Base>

@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import WatchCard from '../../components/WatchCard.astro';
+import { site } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const all = await getCollection('watches');
+  return site.taxonomy.styles.map((style) => ({
+    params: { style: style.id },
+    props: { style, watches: all.filter((w) => w.data.style === style.id) },
+  }));
+}
+
+const { style, watches } = Astro.props;
+---
+
+<Base title={style.title} description={style.blurb}>
+  <div class="wrap" style="padding-top:44px">
+    <p class="eyebrow">Style</p>
+    <h1>{style.title}</h1>
+    <p class="lede">{style.blurb}</p>
+
+    {watches.length === 0 ? (
+      <div class="empty"><p>Nothing in this style yet.</p></div>
+    ) : (
+      <div class="grid" style="margin-top:28px">
+        {watches.map((w, i) => <WatchCard watch={w} eager={i < 3} />)}
+      </div>
+    )}
+  </div>
+</Base>

@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Curation dashboard</title>
+<style>
+  :root{
+    --bg:#0e0f11; --panel:#16181c; --panel2:#1c1f24; --line:#2a2e35;
+    --ink:#e8e6e3; --mute:#8b8d92; --accent:#c9a227; --ok:#5fa563; --bad:#c4574f; --warn:#c99a27;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);padding:14px 20px;display:flex;gap:18px;align-items:baseline;flex-wrap:wrap}
+  h1{font-size:15px;margin:0;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+  nav{display:flex;gap:2px;flex-wrap:wrap}
+  nav button{background:none;border:1px solid transparent;color:var(--mute);padding:5px 11px;border-radius:3px;cursor:pointer;font:inherit;font-size:13px}
+  nav button:hover{color:var(--ink)}
+  nav button[aria-current="true"]{color:var(--ink);border-color:var(--line);background:var(--panel)}
+  nav .count{color:var(--mute);font-family:var(--mono);font-size:11px;margin-left:5px}
+  main{padding:20px;max-width:1180px}
+  .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  button.act{background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:6px 12px;border-radius:3px;cursor:pointer;font:inherit;font-size:13px}
+  button.act:hover:not(:disabled){border-color:var(--mute)}
+  button.act:disabled{opacity:.35;cursor:not-allowed}
+  button.act.go{border-color:#38562f;background:#1a2418;color:#a9d39a}
+  button.act.no{border-color:#4a2b28;background:#231716;color:#e0a49e}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:4px;margin-bottom:10px;overflow:hidden}
+  .row{display:flex;gap:12px;padding:12px 14px;align-items:flex-start;cursor:pointer}
+  .row:hover{background:var(--panel2)}
+  .row input[type=checkbox]{margin-top:3px;accent-color:var(--accent);width:15px;height:15px;flex:none}
+  .meta{flex:1;min-width:0}
+  .t{font-weight:500;margin-bottom:3px}
+  .sub{color:var(--mute);font-size:12px;font-family:var(--mono);display:flex;gap:10px;flex-wrap:wrap}
+  .pill{border:1px solid var(--line);border-radius:99px;padding:1px 8px;font-size:11px;color:var(--mute);font-family:var(--mono)}
+  .pill.draft{border-color:#5a4a1c;color:var(--warn)}
+  .pill.block{border-color:#4a2b28;color:#e0a49e}
+  .pill.ok{border-color:#38562f;color:#a9d39a}
+  .edit{border-top:1px solid var(--line);padding:16px;background:var(--panel2);display:none}
+  .card.open .edit{display:block}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:14px}
+  label{display:block;font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);padding:7px 9px;border-radius:3px;font:inherit;font-size:13px}
+  textarea{min-height:70px;resize:vertical;line-height:1.55}
+  .lines{margin-bottom:14px}
+  .line{display:flex;gap:6px;margin-bottom:5px}
+  .line input{flex:1}
+  .line button{flex:none;background:none;border:1px solid var(--line);color:var(--mute);border-radius:3px;cursor:pointer;padding:0 9px;font:inherit}
+  .blocking{border-left:2px solid var(--bad);padding:8px 12px;margin-bottom:14px;background:#1a1413;font-size:12px}
+  .blocking div{color:#e0a49e;margin-bottom:3px}
+  .note{color:var(--mute);font-size:12px;margin:10px 0}
+  .empty{color:var(--mute);padding:40px 0;text-align:center}
+  .toast{position:fixed;right:18px;bottom:18px;background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--accent);padding:11px 15px;border-radius:3px;max-width:400px;font-size:13px;box-shadow:0 6px 24px #0008}
+  .toast.err{border-left-color:var(--bad)}
+  .toast.ok{border-left-color:var(--ok)}
+  a{color:var(--accent)}
+  .warnbar{background:#231d10;border:1px solid #5a4a1c;color:#d9c07a;padding:9px 13px;border-radius:3px;margin-bottom:16px;font-size:13px}
+  fieldset{border:1px solid var(--line);border-radius:4px;padding:14px;margin-bottom:16px}
+  legend{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;padding:0 6px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)}
+  th{color:var(--mute);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+  code{font-family:var(--mono);font-size:12px;color:var(--mute)}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="brand">Curation</h1>
+  <nav id="nav"></nav>
+</header>
+<main id="main"><div class="empty">Loading…</div></main>
+<script>
+const S = { data:null, view:'pending', open:new Set(), sel:new Set(), packSel:[] };
+const $ = (h) => { const d=document.createElement('div'); d.innerHTML=h.trim(); return d.firstElementChild; };
+const esc = (s) => String(s??'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Amazon titles lead with the brand, so prefixing it again gives "Seiko Seiko 5".
+const fullName = (w) => {
+  const b=(w.brand||'').trim(), t=(w.title||'Untitled').trim();
+  if(!b) return t;
+  return t.toLowerCase().startsWith(b.toLowerCase()) ? t : b+' '+t;
+};
+
+function toast(msg, kind='ok'){
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
+  const t = $(`<div class="toast ${kind}">${esc(msg)}</div>`);
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), kind==='err'?7000:3000);
+}
+
+async function api(method, path, body){
+  const r = await fetch(path, { method, headers:{'content-type':'application/json'}, body: body?JSON.stringify(body):undefined });
+  const j = await r.json();
+  if(!j.ok) throw new Error(j.error||'Request failed');
+  return j.data;
+}
+
+async function load(){
+  S.data = await api('GET','/api/state');
+  document.getElementById('brand').textContent = S.data.config.brand + ' — curation';
+  render();
+}
+
+const VIEWS = [['pending','Pending'],['approved','Approved'],['rejected','Rejected'],['collections','Collections'],['comparisons','Comparisons'],['social','Social packs']];
+
+function render(){
+  const d = S.data;
+  document.getElementById('nav').innerHTML = VIEWS.map(([k,label])=>{
+    const n = (d[k]||[]).length;
+    return `<button data-view="${k}" aria-current="${S.view===k}">${label}<span class="count">${n}</span></button>`;
+  }).join('');
+  document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{ S.view=b.dataset.view; S.sel.clear(); render(); });
+
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+  if(!d.config.hasAssociateTag){
+    main.appendChild($(`<div class="warnbar">No Associates tag set. <code>affiliate.associateTag</code> in <code>site.config.json</code> is still <code>${esc(d.config.associateTagPlaceholder)}</code>, so the site will render buy buttons as disabled. Set it before you publish.</div>`));
+  }
+  ({ pending:viewWatches, approved:viewWatches, rejected:viewWatches, collections:viewCollections, comparisons:viewComparisons, social:viewSocial })[S.view](main);
+}
+
+/* ---------------- watch lists ---------------- */
+
+function viewWatches(main){
+  const list = S.data[S.view];
+  const bar = $('<div class="bar"></div>');
+  bar.appendChild($(`<button class="act" id="selall">Select all</button>`));
+  bar.appendChild($(`<span class="note" id="selcount" style="margin:0"></span>`));
+
+  if(S.view==='pending'){
+    if(S.data.config.curation.allowBulkApprove) bar.appendChild($(`<button class="act go" data-bulk="approve">Approve selected</button>`));
+    if(S.data.config.curation.allowBulkReject) bar.appendChild($(`<button class="act no" data-bulk="reject">Reject selected</button>`));
+  }
+  if(S.view==='approved') bar.appendChild($(`<button class="act no" data-bulk="reject">Unpublish selected</button>`));
+  if(S.view==='rejected'){
+    bar.appendChild($(`<button class="act" data-bulk="restore">Restore selected</button>`));
+    bar.appendChild($(`<button class="act no" data-bulk="delete">Delete permanently</button>`));
+  }
+  main.appendChild(bar);
+
+  bar.querySelector('#selall').onclick = ()=>{
+    if(S.sel.size===list.length) S.sel.clear(); else list.forEach(w=>S.sel.add(w.asin));
+    render();
+  };
+  bar.querySelectorAll('[data-bulk]').forEach(b=>b.onclick=async()=>{
+    const action=b.dataset.bulk;
+    if(!S.sel.size) return toast('Nothing selected.','err');
+    if(action==='delete' && !confirm(`Permanently delete ${S.sel.size} rejected watch(es)? This cannot be undone.`)) return;
+    let reason='';
+    if(action==='reject'){ reason = prompt('Reason (optional, stored on the record):')||''; }
+    try{
+      const r = await api('POST','/api/bulk',{action,asins:[...S.sel],reason});
+      S.sel.clear();
+      await load();
+      toast(`${r.ok.length} done${r.failed.length?`, ${r.failed.length} blocked: ${r.failed[0].reason}`:''}`, r.failed.length?'err':'ok');
+    }catch(e){ toast(e.message,'err'); }
+  });
+  bar.querySelector('#selcount').textContent = S.sel.size ? `${S.sel.size} selected` : '';
+
+  if(!list.length){
+    main.appendChild($(`<div class="empty">Nothing ${S.view}.${S.view==='pending'?' Run <code>npm run ingest</code>.':''}</div>`));
+    return;
+  }
+  list.forEach(w=>main.appendChild(watchCard(w)));
+}
+
+function watchCard(w){
+  const open = S.open.has(w.asin);
+  const drafts = (w.drafts||[]).map(d=>`<span class="pill draft">draft: ${esc(d)}</span>`).join('');
+  const status = S.view==='pending'
+    ? (w._canApprove ? '<span class="pill ok">ready</span>' : `<span class="pill block">${w._blocking.length} blocking</span>`)
+    : '';
+  const price = w.price_display ? `${esc(w.price_display)}${w._priceFresh?'':' (stale)'}` : 'no price';
+
+  const card = $(`<div class="card${open?' open':''}">
+    <div class="row">
+      <input type="checkbox" ${S.sel.has(w.asin)?'checked':''}>
+      <div class="meta">
+        <div class="t">${esc(fullName(w))}</div>
+        <div class="sub">
+          <span>${esc(w.asin)}</span><span>${esc(w.style||'no style')}</span><span>${esc(w.movement||'no movement')}</span>
+          <span>${esc(w.tier||'no tier')}</span><span>${price}</span>
+          <span>${w.rating??'—'}/5${w.rating_count?` (${w.rating_count})`:''}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:340px">${status}${drafts}</div>
+    </div>
+    <div class="edit"></div>
+  </div>`);
+
+  card.querySelector('input[type=checkbox]').onclick = (e)=>{
+    e.stopPropagation();
+    e.target.checked ? S.sel.add(w.asin) : S.sel.delete(w.asin);
+    document.getElementById('selcount').textContent = S.sel.size?`${S.sel.size} selected`:'';
+  };
+  card.querySelector('.row').onclick = ()=>{
+    S.open.has(w.asin) ? S.open.delete(w.asin) : S.open.add(w.asin);
+    render();
+  };
+  if(open) card.querySelector('.edit').appendChild(editor(w));
+  return card;
+}
+
+function editor(w){
+  const box = $('<div></div>');
+  const cfg = S.data.config;
+
+  if(w._blocking?.length){
+    box.appendChild($(`<div class="blocking">${w._blocking.map(b=>`<div>${esc(b.detail)}</div>`).join('')}</div>`));
+  }
+
+  const sel = (name,val,opts) => `<select data-f="${name}"><option value="">—</option>${opts.map(o=>`<option value="${esc(o.id)}" ${val===o.id?'selected':''}>${esc(o.title||o.id)}</option>`).join('')}</select>`;
+
+  box.appendChild($(`<div class="grid">
+    <div><label>Title</label><input data-f="title" value="${esc(w.title)}"></div>
+    <div><label>Brand</label><input data-f="brand" value="${esc(w.brand)}"></div>
+    <div><label>Style</label>${sel('style',w.style,cfg.taxonomy.styles)}</div>
+    <div><label>Movement</label>${sel('movement',w.movement,cfg.taxonomy.movements.map(m=>({id:m,title:m})))}</div>
+    <div><label>Tier</label>${sel('tier',w.tier,cfg.taxonomy.tiers)}</div>
+    <div><label>Case mm</label><input data-f="case_mm" type="number" step="0.5" value="${w.case_mm??''}"></div>
+    <div><label>Water resist. m</label><input data-f="water_resistance_m" type="number" value="${w.water_resistance_m??''}"></div>
+    <div><label>Price shown</label><input data-f="price_display" value="${esc(w.price_display)}"></div>
+    <div><label>Image file in public/images/watches/</label><input data-f="image" value="${esc(w.image)}" placeholder="${esc(w.asin.toLowerCase())}.jpg"></div>
+  </div>`));
+
+  box.appendChild($(`<div style="margin-bottom:14px"><label>Short blurb ${draftBadge(w,'short_blurb')}</label><textarea data-f="short_blurb" style="min-height:56px">${esc(w.short_blurb)}</textarea></div>`));
+  box.appendChild($(`<div style="margin-bottom:14px"><label>Long description (markdown)</label><textarea data-f="long_description" style="min-height:130px">${esc(w.long_description)}</textarea></div>`));
+
+  box.appendChild(listEditor('pros','Pros '+draftBadgeText(w,'pros'), w.pros||[]));
+  box.appendChild(listEditor('cons','Cons '+draftBadgeText(w,'cons'), w.cons||[]));
+  box.appendChild(listEditor('tags','Tags '+draftBadgeText(w,'tags'), w.tags||[]));
+
+  if((w.suggested_tags||[]).length){
+    const sug = $(`<div class="note">Suggested tags: ${w.suggested_tags.map(t=>`<button class="act" data-tag="${esc(t)}" style="padding:2px 8px;font-size:12px;margin:2px">+ ${esc(t)}</button>`).join('')}</div>`);
+    sug.querySelectorAll('[data-tag]').forEach(b=>b.onclick=()=>{
+      const wrap = box.querySelector('[data-list="tags"]');
+      wrap.appendChild(lineInput('tags', b.dataset.tag));
+    });
+    box.appendChild(sug);
+  }
+
+  if(S.view==='approved'){
+    box.appendChild($(`<div style="margin-bottom:14px"><label><input type="checkbox" data-f="featured" style="width:auto;margin-right:7px" ${w.featured?'checked':''}>Featured on the homepage</label></div>`));
+    const cols = S.data.collections;
+    if(cols.length){
+      box.appendChild($(`<div style="margin-bottom:14px"><label>Collections</label>${cols.map(c=>`<label style="text-transform:none;letter-spacing:0;color:var(--ink);font-size:13px;margin-bottom:3px"><input type="checkbox" data-col="${esc(c.slug)}" style="width:auto;margin-right:7px" ${(c.watch_ids||[]).includes(w.id)?'checked':''}>${esc(c.title)}</label>`).join('')}</div>`));
+    }
+  }
+
+  const actions = $('<div class="bar" style="border:0;padding:0;margin:0"></div>');
+  actions.appendChild($(`<button class="act" data-a="save">Save</button>`));
+  if(w.source_image_url) actions.appendChild($(`<a class="act" style="text-decoration:none" href="${esc(w.scraped_url)}" target="_blank" rel="noopener nofollow">Open listing</a>`));
+  for(const f of ['short_blurb','pros','cons','long_description']){
+    actions.appendChild($(`<button class="act" data-regen="${f}">Regenerate ${f.replace('_',' ')}</button>`));
+  }
+  if(S.view==='pending'){
+    actions.appendChild($(`<button class="act go" data-a="approve" ${w._canApprove?'':'disabled'}>Approve</button>`));
+    actions.appendChild($(`<button class="act no" data-a="reject">Reject</button>`));
+  }
+  if(S.view==='approved') actions.appendChild($(`<button class="act no" data-a="reject">Unpublish</button>`));
+  if(S.view==='rejected'){
+    actions.appendChild($(`<button class="act" data-a="restore">Restore</button>`));
+    actions.appendChild($(`<button class="act no" data-a="destroy">Delete permanently</button>`));
+  }
+  box.appendChild(actions);
+
+  const collect = () => {
+    const patch = {};
+    box.querySelectorAll('[data-f]').forEach(el=>{
+      const k = el.dataset.f;
+      if(el.type==='checkbox') patch[k]=el.checked;
+      else if(el.type==='number') patch[k]= el.value===''?null:Number(el.value);
+      else patch[k]=el.value;
+    });
+    for(const k of ['pros','cons','tags']){
+      patch[k] = [...box.querySelectorAll(`[data-list="${k}"] input`)].map(i=>i.value.trim()).filter(Boolean);
+    }
+    return patch;
+  };
+
+  const saveCollections = async () => {
+    for(const cb of box.querySelectorAll('[data-col]')){
+      const col = S.data.collections.find(c=>c.slug===cb.dataset.col);
+      const has = (col.watch_ids||[]).includes(w.id);
+      if(cb.checked===has) continue;
+      const ids = cb.checked ? [...(col.watch_ids||[]), w.id] : (col.watch_ids||[]).filter(i=>i!==w.id);
+      await api('POST','/api/collection',{...col, watch_ids:ids});
+    }
+  };
+
+  actions.querySelectorAll('[data-regen]').forEach(b=>b.onclick=async()=>{
+    try{ await api('POST',`/api/watch/${w.asin}/regenerate`,{field:b.dataset.regen}); await load(); toast('Regenerated. Review it, then Save.'); }
+    catch(e){ toast(e.message,'err'); }
+  });
+
+  actions.querySelectorAll('[data-a]').forEach(b=>b.onclick=async()=>{
+    try{
+      const a = b.dataset.a;
+      if(a==='destroy' && !confirm(`Permanently delete ${w.asin}?`)) return;
+      await api('POST',`/api/watch/${w.asin}/save`, collect());
+      await saveCollections();
+      if(a==='approve') await api('POST',`/api/watch/${w.asin}/approve`);
+      if(a==='reject') await api('POST',`/api/watch/${w.asin}/reject`,{reason:prompt('Reason (optional):')||''});
+      if(a==='restore') await api('POST',`/api/watch/${w.asin}/restore`);
+      if(a==='destroy') await api('DELETE',`/api/watch/${w.asin}`);
+      if(a!=='save') S.open.delete(w.asin);
+      await load();
+      toast(a==='save'?'Saved.':`${a} done.`);
+    }catch(e){ toast(e.message,'err'); }
+  });
+
+  return box;
+}
+
+const draftBadgeText = (w,f) => (w.drafts||[]).includes(f) ? '— unreviewed draft' : '';
+const draftBadge = (w,f) => draftBadgeText(w,f) ? `<span style="color:var(--warn)">${draftBadgeText(w,f)}</span>` : '';
+
+function lineInput(name, value){
+  const el = $(`<div class="line"><input value="${esc(value)}"><button type="button">×</button></div>`);
+  el.querySelector('button').onclick = ()=>el.remove();
+  return el;
+}
+
+function listEditor(name, label, values){
+  const box = $(`<div class="lines"><label>${label}</label><div data-list="${name}"></div><button class="act" type="button" style="padding:3px 10px;font-size:12px">+ add</button></div>`);
+  const wrap = box.querySelector(`[data-list="${name}"]`);
+  values.forEach(v=>wrap.appendChild(lineInput(name,v)));
+  box.querySelector('button.act').onclick = ()=>wrap.appendChild(lineInput(name,''));
+  return box;
+}
+
+/* ---------------- collections ---------------- */
+
+function viewCollections(main){
+  const form = $(`<fieldset><legend>New collection</legend>
+    <div class="grid">
+      <div><label>Title</label><input id="ct"></div>
+      <div><label>Slug (optional)</label><input id="cs"></div>
+    </div>
+    <div style="margin-bottom:12px"><label>Intro text</label><textarea id="ci"></textarea></div>
+    <button class="act go" id="cadd">Create</button></fieldset>`);
+  form.querySelector('#cadd').onclick = async()=>{
+    const title = form.querySelector('#ct').value.trim();
+    if(!title) return toast('Give it a title.','err');
+    try{ await api('POST','/api/collection',{title,slug:form.querySelector('#cs').value.trim(),intro_text:form.querySelector('#ci').value}); await load(); toast('Created.'); }
+    catch(e){ toast(e.message,'err'); }
+  };
+  main.appendChild(form);
+
+  if(!S.data.collections.length){ main.appendChild($(`<div class="empty">No collections yet.</div>`)); return; }
+  for(const c of S.data.collections){
+    const members = (c.watch_ids||[]).length;
+    const card = $(`<div class="card"><div class="row"><div class="meta">
+      <div class="t">${esc(c.title)}</div>
+      <div class="sub"><span>/collections/${esc(c.slug)}</span><span>${members} watch${members===1?'':'es'}</span></div>
+    </div><button class="act no" style="flex:none">Delete</button></div></div>`);
+    card.querySelector('button').onclick = async()=>{
+      if(!confirm(`Delete collection "${c.title}"? The watches themselves are untouched.`)) return;
+      try{ await api('DELETE',`/api/collection/${c.slug}`); await load(); toast('Deleted.'); }catch(e){ toast(e.message,'err'); }
+    };
+    main.appendChild(card);
+  }
+  main.appendChild($(`<div class="note">Assign watches to a collection from the Approved tab, inside each watch.</div>`));
+}
+
+/* ---------------- comparisons ---------------- */
+
+function viewComparisons(main){
+  const ap = S.data.approved;
+  const opts = ap.map(w=>`<option value="${esc(w.asin)}">${esc(fullName(w))}</option>`).join('');
+  const form = $(`<fieldset><legend>New comparison</legend>
+    <div class="grid">
+      <div><label>Watch A</label><select id="wa"><option value="">—</option>${opts}</select></div>
+      <div><label>Watch B</label><select id="wb"><option value="">—</option>${opts}</select></div>
+    </div>
+    <div style="margin-bottom:12px"><label>Which one wins, and why</label><textarea id="sw"></textarea></div>
+    <button class="act go" id="cmpadd" ${ap.length<2?'disabled':''}>Create</button>
+    ${ap.length<2?'<span class="note">Approve at least two watches first.</span>':''}
+    </fieldset>`);
+  form.querySelector('#cmpadd').onclick = async()=>{
+    const a=form.querySelector('#wa').value, b=form.querySelector('#wb').value;
+    if(!a||!b||a===b) return toast('Pick two different approved watches.','err');
+    try{ await api('POST','/api/comparison',{watch_a:a,watch_b:b,summary_winner:form.querySelector('#sw').value}); await load(); toast('Created. Key differences were filled from the stored specs.'); }
+    catch(e){ toast(e.message,'err'); }
+  };
+  main.appendChild(form);
+
+  if(!S.data.comparisons.length){ main.appendChild($(`<div class="empty">No comparisons yet.</div>`)); return; }
+  for(const c of S.data.comparisons){
+    const card = $(`<div class="card"><div class="row"><div class="meta">
+      <div class="t">${esc(c.title)}</div>
+      <div class="sub"><span>/compare/${esc(c.slug)}</span><span>${(c.key_differences||[]).length} differences</span></div>
+    </div><button class="act no" style="flex:none">Delete</button></div></div>`);
+    card.querySelector('button').onclick = async()=>{
+      if(!confirm(`Delete comparison "${c.title}"?`)) return;
+      try{ await api('DELETE',`/api/comparison/${c.slug}`); await load(); toast('Deleted.'); }catch(e){ toast(e.message,'err'); }
+    };
+    main.appendChild(card);
+  }
+}
+
+/* ---------------- social packs ---------------- */
+
+function viewSocial(main){
+  const size = S.data.config.social.packSize;
+  const ap = S.data.approved;
+
+  const box = $(`<fieldset><legend>New pack — pick exactly ${size}, in rank order</legend>
+    <div class="note">Rank ${size} is announced first in the roundup and rank 1 last. Click to add, click again to remove.</div>
+    <div id="picker"></div>
+    <div class="grid" style="margin-top:14px">
+      <div><label>Pack title</label><input id="pt" placeholder="Top ${size} divers under £300"></div>
+      <div><label>Start date</label><input id="pd" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+    </div>
+    <button class="act go" id="pgen">Generate pack</button>
+    <span class="note" id="pcount"></span>
+  </fieldset>`);
+
+  const picker = box.querySelector('#picker');
+  const paint = () => {
+    picker.innerHTML = ap.length ? '' : '<div class="note">No approved watches yet.</div>';
+    ap.forEach(w=>{
+      const i = S.packSel.indexOf(w.asin);
+      const b = $(`<button class="act" style="margin:3px;${i>=0?'border-color:var(--accent);color:var(--accent)':''}">${i>=0?`${i+1}. `:''}${esc(fullName(w).slice(0,48))}</button>`);
+      b.onclick = ()=>{
+        const at = S.packSel.indexOf(w.asin);
+        if(at>=0) S.packSel.splice(at,1);
+        else if(S.packSel.length<size) S.packSel.push(w.asin);
+        else return toast(`A pack is exactly ${size}. Remove one first.`,'err');
+        paint();
+      };
+      picker.appendChild(b);
+    });
+    box.querySelector('#pcount').textContent = `${S.packSel.length}/${size} selected`;
+    box.querySelector('#pgen').disabled = S.packSel.length!==size;
+  };
+  paint();
+
+  box.querySelector('#pgen').onclick = async()=>{
+    try{
+      const r = await api('POST','/api/social/pack',{asins:S.packSel,title:box.querySelector('#pt').value.trim(),startDate:box.querySelector('#pd').value});
+      S.packSel=[]; await load();
+      toast(r.clean?`Pack written to ${r.files[1]}`:`Pack written with ${r.issues.length} compliance issue(s) — open the .md and fix them.`, r.clean?'ok':'err');
+    }catch(e){ toast(e.message,'err'); }
+  };
+  main.appendChild(box);
+
+  if(!S.data.social.length){ main.appendChild($(`<div class="empty">No packs yet.</div>`)); return; }
+  for(const p of S.data.social){
+    main.appendChild($(`<div class="card"><div class="row"><div class="meta">
+      <div class="t">${esc(p.title)} ${p.compliance?.clean?'<span class="pill ok">clean</span>':'<span class="pill block">issues</span>'}</div>
+      <div class="sub"><span>${esc(p.id)}</span><span>${(p.video_scripts||[]).length} scripts</span><span>${(p.posting_schedule||[]).length} slots</span><span>content/social/${esc(p.id)}.md</span></div>
+    </div></div></div>`));
+  }
+}
+
+load().catch(e=>{ document.getElementById('main').innerHTML = `<div class="empty">Could not load: ${esc(e.message)}</div>`; });
+</script>
+</body>
+</html>

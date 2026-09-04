@@ -1,0 +1,70 @@
+---
+import '../styles/global.css';
+import { site } from '../lib/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+const pageTitle = title ? `${title} — ${site.brand}` : `${site.brand} — ${site.tagline}`;
+const desc = description ?? site.tagline;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const nav = [
+  { href: '/watches', label: 'All watches' },
+  ...site.taxonomy.tiers.map((t) => ({ href: `/tier/${t.id}`, label: t.title })),
+  { href: '/collections', label: 'Collections' },
+];
+---
+
+<html lang={site.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={desc} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={new URL(Astro.url.pathname, site.url).href} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23c9a227' stroke-width='2'/%3E%3Cpath d='M16 8v8l5 3' fill='none' stroke='%23c9a227' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <script src="/price-guard.js" defer></script>
+  </head>
+  <body>
+    <header class="site-head">
+      <div class="wrap">
+        <a class="brand" href="/">{site.brand}</a>
+        <nav class="site-nav">
+          {nav.map((n) => (
+            <a href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-foot">
+      <div class="wrap">
+        <p><strong>{site.affiliate.disclosureLong}</strong></p>
+        <p>
+          Prices and ratings are read from Amazon listings at the time stated on each page and are not
+          refreshed continuously. Any price older than {site.price.maxAgeHours} hours is hidden and the
+          live listing becomes the only authority. We have not handled every watch listed here, and we say
+          so on each page rather than implying a review we did not carry out.
+        </p>
+        <p>
+          Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates.
+          {site.brand} is not affiliated with, endorsed by, or sponsored by Amazon.
+        </p>
+        <p><a href="/disclosure">Full affiliate and editorial disclosure</a></p>
+      </div>
+    </footer>
+  </body>
+</html>

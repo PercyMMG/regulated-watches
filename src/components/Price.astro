@@ -1,0 +1,46 @@
+---
+import { site, priceIsFresh, formatDate } from '../lib/site';
+
+interface Props {
+  watch: { asin: string; price_display?: string; price_checked_at?: string | null };
+  showNote?: boolean;
+}
+const { watch, showNote = false } = Astro.props;
+
+const fresh = priceIsFresh(watch.price_checked_at);
+const has = Boolean(watch.price_display);
+
+/**
+ * Two gates, on purpose.
+ *
+ * Build time decides whether to emit the price at all. The browser then
+ * re-checks against the real clock, because a page built on Monday would
+ * otherwise still be asserting Monday's price on Wednesday. price-guard.js
+ * reads data-checked-at and swaps in the fallback once the window passes.
+ *
+ * The price and its note are linked by an explicit id rather than by being
+ * siblings in the DOM. Adjacency broke as soon as a caller wrapped the
+ * component, and a note left behind still claims a price was "correct at the
+ * time of checking" when no price is on the page any more.
+ */
+const noteId = `price-${watch.asin}`;
+---
+
+{has && fresh ? (
+  <span
+    class="price"
+    data-price={noteId}
+    data-checked-at={watch.price_checked_at}
+    data-stale-label={site.price.staleLabel}
+  >
+    <span data-price-value>{watch.price_display}</span>
+  </span>
+) : (
+  <span class="price"><span class="stale">{site.price.staleLabel}</span></span>
+)}
+
+{showNote && has && fresh && (
+  <div class="price-note" data-price-note={noteId}>
+    Checked {formatDate(watch.price_checked_at)}. {site.price.note}
+  </div>
+)}

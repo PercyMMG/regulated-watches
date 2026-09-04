@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+# Saved Amazon pages are inputs, never committed.
+inbox/
+scripts/.cache/
+logs/
+.DS_Store
+Thumbs.db

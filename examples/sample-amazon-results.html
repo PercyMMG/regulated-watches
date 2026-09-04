@@ -1,0 +1,78 @@
+<!doctype html>
+<!--
+  FIXTURE - NOT A REAL AMAZON PAGE.
+
+  Hand-written to mimic the shape of Amazon's search-result markup so the
+  html-file adapter can be tested without touching Amazon. Every ASIN here
+  starts with "B0SAMPLE" and is deliberately invalid, so nothing in this
+  file can ever become a live affiliate link by accident.
+
+  To ingest real listings, save a real Amazon results page into ./inbox/.
+-->
+<html lang="en">
+<head><meta charset="utf-8"><title>Fixture: watch results</title></head>
+<body>
+<div class="s-main-slot s-result-list">
+
+  <div data-asin="B0SAMPLE01" data-component-type="s-search-result">
+    <div class="s-line-clamp-1"><span>Seiko</span></div>
+    <a class="a-link-normal"><img class="s-image" src="https://m.media-amazon.com/images/I/sample01.jpg" alt="Seiko 5 Sports Automatic"></a>
+    <h2 class="a-size-mini"><a class="a-link-normal"><span>Seiko 5 Sports SRPD55K1 Automatic Watch, Stainless Steel, Black Dial, 40mm, 100m Water Resistant, Day Date, Mens</span></a></h2>
+    <div><span class="a-icon-alt">4.6 out of 5 stars</span></div>
+    <div><a><span class="a-size-base s-underline-text">3,412</span></a></div>
+    <div class="a-row"><span class="a-price"><span class="a-offscreen">&pound;229.00</span></span></div>
+  </div>
+
+  <div data-asin="B0SAMPLE02" data-component-type="s-search-result">
+    <div class="s-line-clamp-1"><span>Casio</span></div>
+    <a class="a-link-normal"><img class="s-image" src="https://m.media-amazon.com/images/I/sample02.jpg" alt="Casio G-Shock"></a>
+    <h2 class="a-size-mini"><a class="a-link-normal"><span>Casio G-Shock GA-2100-1A1ER Digital Analogue Watch, Resin Case, 200m Water Resistant, World Time, Mens</span></a></h2>
+    <div><span class="a-icon-alt">4.7 out of 5 stars</span></div>
+    <div><a><span class="a-size-base s-underline-text">12,908</span></a></div>
+    <div class="a-row"><span class="a-price"><span class="a-offscreen">&pound;89.90</span></span></div>
+  </div>
+
+  <div data-asin="B0SAMPLE03" data-component-type="s-search-result">
+    <div class="s-line-clamp-1"><span>Orient</span></div>
+    <a class="a-link-normal"><img class="s-image" src="https://m.media-amazon.com/images/I/sample03.jpg" alt="Orient Bambino"></a>
+    <h2 class="a-size-mini"><a class="a-link-normal"><span>Orient Bambino Version 4 Dress Watch, Automatic, 40.5mm, Domed Crystal, Leather Strap, 30m, Mens</span></a></h2>
+    <div><span class="a-icon-alt">4.5 out of 5 stars</span></div>
+    <div><a><span class="a-size-base s-underline-text">1,884</span></a></div>
+    <div class="a-row"><span class="a-price"><span class="a-offscreen">&pound;148.50</span></span></div>
+  </div>
+
+  <div data-asin="B0SAMPLE04" data-component-type="s-search-result">
+    <div class="s-line-clamp-1"><span>Citizen</span></div>
+    <a class="a-link-normal"><img class="s-image" src="https://m.media-amazon.com/images/I/sample04.jpg" alt="Citizen Promaster Diver"></a>
+    <h2 class="a-size-mini"><a class="a-link-normal"><span>Citizen Promaster Eco-Drive Diver BN0150-28E, 44mm, 200m Water Resistant, Sapphire Crystal, Luminous, Mens</span></a></h2>
+    <div><span class="a-icon-alt">4.8 out of 5 stars</span></div>
+    <div><a><span class="a-size-base s-underline-text">947</span></a></div>
+    <div class="a-row"><span class="a-price"><span class="a-offscreen">&pound;319.00</span></span></div>
+  </div>
+
+  <div data-asin="B0SAMPLE05" data-component-type="s-search-result">
+    <div class="s-line-clamp-1"><span>Timex</span></div>
+    <a class="a-link-normal"><img class="s-image" src="https://m.media-amazon.com/images/I/sample05.jpg" alt="Timex Expedition"></a>
+    <h2 class="a-size-mini"><a class="a-link-normal"><span>Timex Expedition Scout Field Watch, 40mm, Quartz, Nylon Strap, 50m Water Resistant, Indiglo, Mens</span></a></h2>
+    <div><span class="a-icon-alt">4.4 out of 5 stars</span></div>
+    <div><a><span class="a-size-base s-underline-text">28</span></a></div>
+    <div class="a-row"><span class="a-price"><span class="a-offscreen">&pound;54.99</span></span></div>
+  </div>
+
+  <div data-asin="B0SAMPLE06" data-component-type="s-search-result">
+    <div class="s-line-clamp-1"><span>Hamilton</span></div>
+    <a class="a-link-normal"><img class="s-image" src="https://m.media-amazon.com/images/I/sample06.jpg" alt="Hamilton Khaki Pilot"></a>
+    <h2 class="a-size-mini"><a class="a-link-normal"><span>Hamilton Khaki Aviation Pilot Chronograph H76522131, 44mm, Automatic, Sapphire Crystal, 100m, Mens</span></a></h2>
+    <div><span class="a-icon-alt">4.7 out of 5 stars</span></div>
+    <div><a><span class="a-size-base s-underline-text">312</span></a></div>
+    <div class="a-row"><span class="a-price"><span class="a-offscreen">&pound;1,145.00</span></span></div>
+  </div>
+
+  <div data-asin="B0SAMPLE01" data-component-type="s-search-result">
+    <h2><a><span>Seiko 5 Sports SRPD55K1 duplicate row to prove ASIN de-duplication works</span></a></h2>
+    <div class="a-row"><span class="a-price"><span class="a-offscreen">&pound;229.00</span></span></div>
+  </div>
+
+</div>
+</body>
+</html>

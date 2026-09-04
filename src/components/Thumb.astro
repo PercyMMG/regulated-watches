@@ -1,0 +1,33 @@
+---
+import { imageFor, placeholderHue, site } from '../lib/site';
+
+interface Props {
+  watch: { asin: string; brand: string; title: string; image?: string; style?: string };
+  eager?: boolean;
+}
+const { watch, eager = false } = Astro.props;
+
+const src = imageFor(watch);
+const hue = placeholderHue(watch.asin);
+
+/**
+ * When there is no local photograph we render a typographic card rather than
+ * hotlinking Amazon's listing image. Redistributing Amazon product imagery
+ * outside the Product Advertising API is not permitted under the Associates
+ * terms, and a broken image is worse than an honest one.
+ */
+const bg = `linear-gradient(150deg, hsl(${hue} 12% 15%), hsl(${(hue + 40) % 360} 14% 10%))`;
+---
+
+{src ? (
+  <div class="thumb">
+    <img src={src} alt={`${watch.brand} ${watch.title}`} loading={eager ? 'eager' : 'lazy'} decoding="async" width="600" height="450" />
+  </div>
+) : (
+  <div class="thumb" style={`background:${bg}`} role="img" aria-label={`${watch.brand} — no photograph yet`}>
+    <div>
+      <div class="ph-brand">{watch.brand}</div>
+      <div class="ph-sub">{watch.style || 'watch'} · {watch.asin}</div>
+    </div>
+  </div>
+)}

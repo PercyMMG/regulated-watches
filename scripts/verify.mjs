@@ -1,0 +1,140 @@
+#!/usr/bin/env node
+import { existsSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+import { config, paths, hasAssociateTag, TAG_PLACEHOLDER } from './lib/config.mjs';
+import { listJson, listMarkdown } from './lib/store.mjs';
+import { readyToApprove, lintCopy, priceIsFresh } from './lib/compliance.mjs';
+
+/**
+ * Pre-flight check. Run before every deploy.
+ *
+ * These are the failures that are expensive on a live affiliate site:
+ * an untagged link earns nothing, a stale price breaches the Associates
+ * terms, a half-curated record makes the site look automated.
+ */
+
+const errors = [];
+const warns = [];
+const err = (where, msg) => errors.push(`${where}: ${msg}`);
+const warn = (where, msg) => warns.push(`${where}: ${msg}`);
+
+/* ---- configuration ---- */
+
+if (!hasAssociateTag()) {
+  warn('config', `affiliate.associateTag is still "${TAG_PLACEHOLDER}". Every buy button will render disabled.`);
+}
+if (!/^https:\/\//.test(config.url)) err('config', 'site.url must be an https URL; it is used for canonical tags.');
+if (config.price.maxAgeHours > 24) {
+  err('config', `price.maxAgeHours is ${config.price.maxAgeHours}. The Associates terms require 24 or less.`);
+}
+
+/* ---- watches ---- */
+
+const approved = listMarkdown(paths.watches);
+const pending = listJson(paths.pending);
+const rejected = listJson(paths.rejected);
+
+const seen = new Map();
+for (const [state, list] of [['approved', approved], ['pending', pending], ['rejected', rejected]]) {
+  for (const w of list) {
+    if (w._error) err(w._file, w._error);
+    if (!w.asin) { err(w._file, 'no ASIN'); continue; }
+    if (seen.has(w.asin)) err(w.asin, `appears twice: ${seen.get(w.asin)} and ${state}`);
+    else seen.set(w.asin, state);
+  }
+}
+
+let stalePrices = 0;
+let missingImages = 0;
+
+for (const w of approved) {
+  const where = w._file;
+  for (const issue of readyToApprove(w)) err(where, issue.detail);
+
+  if (w.status !== 'approved') err(where, `status is "${w.status}", expected "approved"`);
+
+  for (const issue of lintCopy(w.short_blurb, { context: 'short_blurb' })) {
+    (issue.level === 'error' ? err : warn)(where, `short_blurb — ${issue.detail}`);
+  }
+  if (!w.pros?.length && !w.cons?.length) warn(where, 'no pros or cons; the page will read thin.');
+
+  if (w.price_display && !priceIsFresh(w.price_checked_at)) stalePrices++;
+  if (w.price_display && !w.price_checked_at) err(where, 'has a price with no price_checked_at timestamp.');
+
+  if (config.images.mode !== 'placeholder') {
+    if (!w.image) missingImages++;
+    else if (!existsSync(join(paths.publicImages, String(w.image).replace(/^.*[\\/]/, '')))) {
+      err(where, `image "${w.image}" is not in public/images/watches/`);
+    }
+  }
+  if (w.source_image_url && w.image && w.image === w.source_image_url) {
+    err(where, 'image points at the Amazon listing URL. Hotlinking listing images is not permitted outside PA-API.');
+  }
+}
+
+if (stalePrices) {
+  warn('prices', `${stalePrices} approved watch(es) have a price older than ${config.price.maxAgeHours}h. They will render as "${config.price.staleLabel}". Re-ingest to refresh.`);
+}
+if (missingImages) warn('images', `${missingImages} approved watch(es) have no local image while images.mode is "${config.images.mode}".`);
+
+/* ---- collections and comparisons ---- */
+
+const ids = new Set(approved.map((w) => w.id));
+for (const c of listJson(paths.collections)) {
+  if (c._error) { err(c._file, c._error); continue; }
+  if (!c.slug) err(c._file, 'no slug');
+  const dead = (c.watch_ids || []).filter((id) => !ids.has(id));
+  if (dead.length) warn(c._file, `${dead.length} watch id(s) no longer approved; they are skipped at build: ${dead.join(', ')}`);
+  if ((c.watch_ids || []).length === 0) warn(c._file, 'empty collection; the page will render with no cards.');
+}
+for (const c of listJson(paths.comparisons)) {
+  if (c._error) { err(c._file, c._error); continue; }
+  for (const side of ['watch_a', 'watch_b']) {
+    if (!ids.has(c[side])) warn(c._file, `${side} (${c[side]}) is not approved; this comparison page will not be built.`);
+  }
+}
+
+/* ---- social packs ---- */
+
+for (const p of listJson(paths.social)) {
+  if (p._error) { err(p._file, p._error); continue; }
+  if (p.compliance && !p.compliance.clean) {
+    warn(p._file, `${p.compliance.issues.length} unresolved compliance issue(s) in this pack.`);
+  }
+  const missing = (p.selected_watch_ids || []).filter((id) => !ids.has(id));
+  if (missing.length) warn(p._file, `references ${missing.length} watch(es) that are no longer approved.`);
+}
+
+/* ---- required site furniture ---- */
+
+for (const f of ['public/price-guard.js', 'public/_headers', 'public/robots.txt', 'src/pages/disclosure.astro']) {
+  if (!existsSync(join(paths.root, f))) err('site', `${f} is missing.`);
+}
+if (existsSync(paths.inbox) && readdirSync(paths.inbox).length) {
+  warn('inbox', 'Saved Amazon pages are still in inbox/. They are gitignored, but delete them when done.');
+}
+
+/* ---- report ---- */
+
+console.log('');
+console.log(`  Verify — ${config.brand}`);
+console.log(`  ${'-'.repeat(52)}`);
+console.log(`  approved ${approved.length}   pending ${pending.length}   rejected ${rejected.length}`);
+console.log('');
+
+if (warns.length) {
+  console.log(`  ${warns.length} warning(s)`);
+  for (const w of warns) console.log(`    - ${w}`);
+  console.log('');
+}
+if (errors.length) {
+  console.log(`  ${errors.length} error(s)`);
+  for (const e of errors) console.log(`    ! ${e}`);
+  console.log('');
+  console.log('  Not safe to deploy. Fix the errors above.');
+  console.log('');
+  process.exit(1);
+}
+
+console.log(`  No errors.${warns.length ? ' Warnings above are advisory.' : ''}`);
+console.log('');
