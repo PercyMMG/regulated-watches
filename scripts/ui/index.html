@@ -185,16 +185,36 @@ function viewWatches(main){
     const action=b.dataset.bulk;
     if(!S.sel.size) return toast('Nothing selected.','err');
     if(action==='delete' && !confirm(`Permanently delete ${S.sel.size} rejected watch(es)? This cannot be undone.`)) return;
+
+    // Approving something still under review always fails. Split the selection
+    // first so we only send what can succeed, and name what cannot.
+    let targets=[...S.sel], blocked=[];
+    if(action==='approve'){
+      const byKey = Object.fromEntries(list.map(w=>[keyOf(w),w]));
+      blocked = targets.filter(k=>byKey[k] && !byKey[k]._canApprove).map(k=>byKey[k]);
+      targets = targets.filter(k=>!byKey[k] || byKey[k]._canApprove);
+      if(!targets.length){
+        const names = blocked.slice(0,3).map(w=>fullName(w)).join(', ');
+        toast(`Nothing approved. ${blocked.length} still need review — ${names}${blocked.length>3?` and ${blocked.length-3} more`:''}. Open each one and press "Confirm all".`,'err');
+        return;
+      }
+    }
+
     let reason='';
     if(action==='reject'){ reason = prompt('Reason (optional, stored on the record):')||''; }
     try{
-      const r = await api('POST','/api/bulk',{action,asins:[...S.sel],reason});
+      const r = await api('POST','/api/bulk',{action,asins:targets,reason});
       S.sel.clear();
       await load();
-      toast(`${r.ok.length} done${r.failed.length?`, ${r.failed.length} blocked: ${r.failed[0].reason}`:''}`, r.failed.length?'err':'ok');
+      const skipped = blocked.length ? ` ${blocked.length} skipped — still need review.` : '';
+      const failed = r.failed.length ? ` ${r.failed.length} failed: ${r.failed[0].reason}` : '';
+      toast(`${r.ok.length} ${action}d.${skipped}${failed}`, (blocked.length||r.failed.length)?'err':'ok');
     }catch(e){ toast(e.message,'err'); }
   });
-  bar.querySelector('#selcount').textContent = S.sel.size ? `${S.sel.size} selected` : '';
+  const ready = list.filter(w=>S.sel.has(keyOf(w)) && w._canApprove).length;
+  bar.querySelector('#selcount').textContent = S.sel.size
+    ? (S.view==='pending' ? `${S.sel.size} selected · ${ready} ready` : `${S.sel.size} selected`)
+    : '';
 
   if(!list.length){
     main.appendChild($(`<div class="empty">Nothing ${S.view}.${S.view==='pending'?' Run <code>npm run ingest</code>.':''}</div>`));
@@ -439,7 +459,15 @@ function editor(w){
       if(a==='destroy' && !confirm(`Permanently delete ${fullName(w)}?`)) return;
       await api('POST',`/api/watch/${keyOf(w)}/save`, collect());
       await saveCollections();
-      if(a==='approve') await api('POST',`/api/watch/${keyOf(w)}/approve`);
+      if(a==='approve'){
+        if(!w._canApprove){
+          S.open.add(keyOf(w));
+          await load();
+          toast(`${fullName(w)} still needs review — the panel at the top of this card lists what.`,'err');
+          return;
+        }
+        await api('POST',`/api/watch/${keyOf(w)}/approve`);
+      }
       if(a==='reject') await api('POST',`/api/watch/${keyOf(w)}/reject`,{reason:prompt('Reason (optional):')||''});
       if(a==='restore') await api('POST',`/api/watch/${keyOf(w)}/restore`);
       if(a==='destroy') await api('DELETE',`/api/watch/${keyOf(w)}`);

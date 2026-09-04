@@ -151,8 +151,17 @@ export function approve(asin) {
 
   const blocking = readyToApprove(found.watch);
   if (blocking.length) {
-    const err = new Error(`Cannot approve ${asin}: ${blocking.map((b) => b.detail).join(' ')}`);
+    // Named, and with the next action stated. "cat-vostok-420059" tells the
+    // curator nothing about which watch this is or what to do next.
+    const name = fullName(found.watch) || asin;
+    const drafts = (found.watch.drafts || []).length;
+    const err = new Error(
+      drafts
+        ? `${name} still has ${drafts} field${drafts === 1 ? '' : 's'} to review. Open it and press "Confirm all ${drafts} and unblock".`
+        : `${name} cannot be approved yet: ${blocking.map((b) => b.detail).join(' ')}`
+    );
     err.blocking = blocking;
+    err.watch = name;
     throw err;
   }
 
