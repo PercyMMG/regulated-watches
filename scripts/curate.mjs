@@ -12,10 +12,18 @@ import { writeFileSync } from 'node:fs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.CURATE_PORT || 4331);
+// The Astro dev server, which proxies /curate through to this process.
+const DEV_PORT = Number(process.env.ASTRO_PORT || 4321);
 
 /* The dashboard writes to your working tree. It binds to loopback only and
  * is never deployed: there is no auth because there is no network surface. */
 const HOST = '127.0.0.1';
+
+/** ::1, 127.0.0.0/8, and the IPv4-mapped forms Node reports. */
+function isLoopback(addr) {
+  const a = String(addr).replace(/^::ffff:/, '').trim();
+  return a === '::1' || a === 'localhost' || /^127\./.test(a);
+}
 
 const json = (res, code, body) => {
   const payload = JSON.stringify(body);
@@ -136,9 +144,26 @@ const server = createServer(async (req, res) => {
     });
   }
 
+  // Forwarded client, second: this process is reachable through the Astro dev
+  // server's /curate proxy. That proxy connects from 127.0.0.1 whoever the real
+  // caller was, so the socket address proves nothing. Vite is configured to
+  // forward the original address, and anything not loopback is refused - which
+  // is what stops `astro dev --host` putting a writable admin on the LAN.
+  const forwarded = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  if (forwarded && !isLoopback(forwarded)) {
+    return json(res, 403, {
+      error: `Refused: this dashboard is local-only and the request came from ${forwarded}. Do not run the dev server with --host while curating.`,
+    });
+  }
+
   // Origin, second: blocks ordinary cross-origin calls from a page you visited.
+  //
+  // The Astro dev server proxies /curate through to here and forwards the
+  // browser's original Origin, so its port is allowed too. Both are loopback
+  // and both are named explicitly rather than allowing any localhost port.
   const origin = req.headers.origin;
-  if (origin && !origin.startsWith(`http://${HOST}:${PORT}`) && !origin.startsWith(`http://localhost:${PORT}`)) {
+  const allowedOrigins = [PORT, DEV_PORT].flatMap((p) => [`http://127.0.0.1:${p}`, `http://localhost:${p}`]);
+  if (origin && !allowedOrigins.some((o) => origin === o)) {
     return json(res, 403, { error: 'Cross-origin requests are not accepted.' });
   }
 

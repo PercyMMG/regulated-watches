@@ -57,6 +57,15 @@ img { max-width: 100%; height: auto; display: block; }
 .site-nav { display: flex; gap: 20px; flex-wrap: wrap; margin-left: auto; }
 .site-nav a { color: var(--mute); font-size: 14px; }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--ink); text-decoration: none; }
+.site-nav a.nav-admin {
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  border-radius: 3px;
+  padding: 3px 9px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.site-nav a.nav-admin:hover { background: rgba(201, 162, 39, 0.1); color: var(--accent); }
 
 .site-foot {
   border-top: 1px solid var(--line);

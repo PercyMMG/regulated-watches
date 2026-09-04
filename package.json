@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Zero-cost, human-curated Amazon affiliate watch site. Astro static site + Decap CMS + local curation dashboard.",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "node scripts/dev.mjs",
+    "dev:site": "astro dev",
     "prebuild": "node scripts/clean-content-cache.mjs",
     "build": "astro build",
     "preview": "astro preview",

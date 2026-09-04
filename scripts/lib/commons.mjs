@@ -156,8 +156,36 @@ const EXT = { 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp' }
  * fields to store. Images are self-hosted rather than hotlinked: Commons asks
  * that you do not hotlink, and a local copy cannot break later.
  */
+/**
+ * Only Wikimedia's own hosts serve the files we offer.
+ *
+ * The candidate object arrives in a request body, so its `url` is attacker-
+ * controllable even though the UI only ever sends one we returned. Fetching it
+ * unchecked would let a crafted request make this process request any address
+ * it can reach - internal services, cloud metadata endpoints, the local
+ * network. Pinning the host closes that.
+ */
+const IMAGE_HOSTS = new Set(['upload.wikimedia.org', 'commons.wikimedia.org']);
+
+function assertFetchable(rawUrl) {
+  let u;
+  try {
+    u = new URL(String(rawUrl));
+  } catch {
+    throw new Error('Image URL is not a valid URL.');
+  }
+  if (u.protocol !== 'https:') throw new Error('Image URL must be https.');
+  if (!IMAGE_HOSTS.has(u.hostname)) {
+    throw new Error(`Refusing to fetch from "${u.hostname}". Only ${[...IMAGE_HOSTS].join(' and ')} are allowed.`);
+  }
+  return u;
+}
+
 export async function fetchImage(candidate, key) {
-  const res = await fetch(candidate.url, { headers: { 'user-agent': UA } });
+  const url = assertFetchable(candidate?.url);
+
+  // redirect: 'error' so a permitted host cannot bounce us somewhere else.
+  const res = await fetch(url, { headers: { 'user-agent': UA }, redirect: 'error' });
   if (!res.ok) throw new Error(`Could not download image: HTTP ${res.status}`);
 
   const original = Buffer.from(await res.arrayBuffer());
@@ -185,12 +213,24 @@ export async function fetchImage(candidate, key) {
 
   writeFileSync(join(paths.publicImages, name), out);
 
+  // These arrive in the request body and are written straight into content,
+  // so strip anything markup-shaped rather than trusting the caller.
+  const clean = (v, max = 200) => stripHtml(v).slice(0, max);
+  const cleanUrl = (v) => {
+    try {
+      const u = new URL(String(v));
+      return u.protocol === 'https:' ? u.href : '';
+    } catch {
+      return '';
+    }
+  };
+
   return {
     image: name,
-    image_credit_author: candidate.author,
-    image_credit_licence: candidate.licence,
-    image_credit_licence_url: candidate.licence_url,
-    image_credit_source: candidate.source_url,
+    image_credit_author: clean(candidate.author, 120),
+    image_credit_licence: clean(candidate.licence, 60),
+    image_credit_licence_url: cleanUrl(candidate.licence_url),
+    image_credit_source: cleanUrl(candidate.source_url),
     image_bytes: out.length,
   };
 }

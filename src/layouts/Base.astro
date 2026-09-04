@@ -42,6 +42,9 @@ const nav = [
           {nav.map((n) => (
             <a href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a>
           ))}
+          {/* Dev only. The dashboard is proxied onto this origin by the dev
+              server, so it is one click away and never exists in production. */}
+          {import.meta.env.DEV && <a class="nav-admin" href="/curate">Curate →</a>}
         </nav>
       </div>
     </header>

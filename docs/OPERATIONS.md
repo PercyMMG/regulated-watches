@@ -127,8 +127,30 @@ Delete the saved pages afterwards. They are gitignored, but they are large.
 ### Monday — curate (40 min)
 
 ```bash
-npm run curate
+npm run dev
 ```
+
+Starts the site and the dashboard together on one port:
+
+| | |
+|---|---|
+| `http://localhost:4321` | the site |
+| `http://localhost:4321/curate` | the dashboard |
+
+There is a **Curate →** link in the site header and Preview / Live site
+links in the dashboard header, so you can move between them without
+switching tabs. Ctrl+C stops both.
+
+`npm run curate` still runs the dashboard on its own at :4331 if you want it
+without the site.
+
+**The dashboard is local-only, and must stay that way.** It writes directly
+into your working tree and has no login, because it has no network surface:
+it binds to loopback, pins the Host header, checks Origin, and refuses any
+request whose forwarded client address is not loopback. That last check is
+what stops `astro dev --host` — which you might reach for to preview on a
+phone — from putting a filesystem-writing admin on your network. It is never
+built into `dist/`, so it cannot reach production at all.
 
 Ten watches is a good week. Per watch, roughly two minutes:
 
