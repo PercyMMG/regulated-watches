@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { config, paths, hasAssociateTag, TAG_PLACEHOLDER } from './lib/config.mjs';
 import * as curation from './lib/curation.mjs';
 import * as commons from './lib/commons.mjs';
+import * as editorial from './lib/editorial.mjs';
 import { buildPack, packToMarkdown } from './lib/socialpack.mjs';
 import { writeJson, ensureDir } from './lib/store.mjs';
 import { writeFileSync } from 'node:fs';
@@ -103,6 +104,9 @@ const ROUTES = [
 
   ['POST', /^\/api\/collection$/, (m, body) => curation.saveCollection(body)],
   ['DELETE', /^\/api\/collection\/([a-z0-9-]+)$/, (m) => curation.deleteCollection(m[1])],
+
+  ['GET', /^\/api\/suggest\/comparisons$/, () => editorial.suggestComparisons(12)],
+  ['GET', /^\/api\/suggest\/collections$/, () => editorial.suggestCollections(3)],
 
   ['POST', /^\/api\/comparison$/, (m, body) => curation.saveComparison(body)],
   ['DELETE', /^\/api\/comparison\/([a-z0-9-]+)$/, (m) => curation.deleteComparison(m[1])],

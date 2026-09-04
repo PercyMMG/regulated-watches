@@ -500,6 +500,26 @@ function listEditor(name, label, values){
 /* ---------------- collections ---------------- */
 
 function viewCollections(main){
+  const sug = $(`<fieldset><legend>Suggested collections</legend>
+    <div class="note" style="margin:0 0 10px">Built from what you have approved, titled as someone would search for it. Members and a draft intro are filled in; rewrite the intro in your own words before it goes live.</div>
+    <div id="colsug"></div></fieldset>`);
+  main.appendChild(sug);
+  loadSuggestions('collections', sug.querySelector('#colsug'), (c) => {
+    const row = $(`<div class="review-row" style="align-items:flex-start">
+      <div><b>${esc(c.title)}</b>
+        <span>${c.count} watches — ${c.members.slice(0,3).map(esc).join(', ')}${c.count>3?` and ${c.count-3} more`:''}</span>
+      </div>
+      <button class="act go" type="button">Create</button></div>`);
+    row.querySelector('button').onclick = async (e) => {
+      e.target.disabled = true; e.target.textContent = 'Creating…';
+      try{
+        await api('POST','/api/collection',{ title:c.title, slug:c.slug, intro_text:c.intro_text, watch_ids:c.watch_ids });
+        await load(); toast('Created with a draft intro. Rewrite it in your own words.');
+      }catch(err){ toast(err.message,'err'); e.target.disabled=false; e.target.textContent='Create'; }
+    };
+    return row;
+  });
+
   const form = $(`<fieldset><legend>New collection</legend>
     <div class="grid">
       <div><label>Title</label><input id="ct"></div>
@@ -533,8 +553,40 @@ function viewCollections(main){
 
 /* ---------------- comparisons ---------------- */
 
+async function loadSuggestions(kind, host, render){
+  host.innerHTML = '<div class="note" style="margin:0">Looking for candidates…</div>';
+  try{
+    const list = await api('GET', `/api/suggest/${kind}`);
+    host.innerHTML = '';
+    if(!list.length){ host.appendChild($(`<div class="note" style="margin:0">Nothing new to suggest. Approve more watches, or you have already built them all.</div>`)); return; }
+    list.forEach(item => host.appendChild(render(item)));
+  }catch(e){ host.innerHTML=''; host.appendChild($(`<div class="note" style="margin:0">${esc(e.message)}</div>`)); }
+}
+
 function viewComparisons(main){
   const ap = S.data.approved;
+
+  // Suggested pairs. The pages that can actually rank; the site has none.
+  const sug = $(`<fieldset><legend>Suggested comparisons</legend>
+    <div class="note" style="margin:0 0 10px">Pairs a buyer would genuinely choose between: same style, same or adjacent price band, and something real to say about the difference. The table fills itself — you write the verdict.</div>
+    <div id="cmpsug"></div></fieldset>`);
+  main.appendChild(sug);
+  loadSuggestions('comparisons', sug.querySelector('#cmpsug'), (c) => {
+    const row = $(`<div class="review-row" style="align-items:flex-start">
+      <div><b>${esc(c.title)}</b>
+        <span>${c.working.map(w=>esc(w.term)+' +'+w.value).join(' · ')}</span>
+        <span>differs on: ${c.key_differences.map(d=>esc(d.field)).join(', ')}</span>
+      </div>
+      <button class="act go" type="button">Create</button></div>`);
+    row.querySelector('button').onclick = async (e) => {
+      e.target.disabled = true; e.target.textContent = 'Creating…';
+      try{
+        await api('POST','/api/comparison',{ watch_a:c.a.id, watch_b:c.b.id, summary_winner:'' });
+        await load(); toast('Created. Open it and write the verdict — an empty one publishes a bare table.');
+      }catch(err){ toast(err.message,'err'); e.target.disabled=false; e.target.textContent='Create'; }
+    };
+    return row;
+  });
   const opts = ap.map(w=>`<option value="${esc(keyOf(w))}">${esc(fullName(w))}</option>`).join('');
   const form = $(`<fieldset><legend>New comparison</legend>
     <div class="grid">

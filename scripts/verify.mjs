@@ -125,11 +125,27 @@ for (const c of listJson(paths.collections)) {
   const dead = (c.watch_ids || []).filter((id) => !ids.has(id));
   if (dead.length) warn(c._file, `${dead.length} watch id(s) no longer approved; they are skipped at build: ${dead.join(', ')}`);
   if ((c.watch_ids || []).length === 0) warn(c._file, 'empty collection; the page will render with no cards.');
+  // The generated intro is a scaffold. Shipping it verbatim across several
+  // collections produces near-identical pages, which is what thin-content
+  // penalties are for.
+  if (/Specifications are as stated by the manufacturer/.test(c.intro_text || '')) {
+    err(c._file, 'still carries the generated intro. Rewrite it in your own words before publishing.');
+  }
+  if (!String(c.intro_text || '').trim()) warn(c._file, 'no intro text; the page will read as a bare grid.');
 }
 for (const c of listJson(paths.comparisons)) {
   if (c._error) { err(c._file, c._error); continue; }
   for (const side of ['watch_a', 'watch_b']) {
     if (!ids.has(c[side])) warn(c._file, `${side} (${c[side]}) is not approved; this comparison page will not be built.`);
+  }
+  // The spec table fills itself; the verdict is the only part with editorial
+  // value. Without it the page is a bare table - thin content, which drags on
+  // the whole site rather than only on itself.
+  if (!String(c.summary_winner || '').trim()) {
+    err(c._file, 'no verdict. A comparison without one publishes a bare spec table. Write which one wins and why.');
+  }
+  for (const issue of lintCopy(c.summary_winner, { context: 'summary_winner' })) {
+    (issue.level === 'error' ? err : warn)(c._file, `verdict — ${issue.detail}`);
   }
 }
 

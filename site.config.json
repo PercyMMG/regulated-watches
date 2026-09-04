@@ -73,28 +73,32 @@
         "title": "Under £100",
         "min": 0,
         "max": 100,
-        "blurb": "Mostly quartz and digital. Accurate, tough enough to wear every day, and cheap enough that you would not mourn one. Cases are resin or basic steel and the glass is usually mineral, so expect scratches. A mechanical movement at this money is the exception."
+        "blurb": "Mostly quartz and digital. Accurate, tough enough to wear every day, and cheap enough that you would not mourn one. Cases are resin or basic steel and the glass is usually mineral, so expect scratches. A mechanical movement at this money is the exception.",
+        "phrase": "under £100"
       },
       {
         "id": "core",
         "title": "£100–£250",
         "min": 100,
         "max": 250,
-        "blurb": "Where the money goes furthest. Automatics become normal, water resistance is usually a real rating rather than a marketing number, and the finishing stops feeling cheap. If you are buying one watch, look here first."
+        "blurb": "Where the money goes furthest. Automatics become normal, water resistance is usually a real rating rather than a marketing number, and the finishing stops feeling cheap. If you are buying one watch, look here first.",
+        "phrase": "from £100 to £250"
       },
       {
         "id": "upper",
         "title": "£250–£500",
         "min": 250,
         "max": 500,
-        "blurb": "You start paying for the things you notice years in: sapphire rather than mineral glass, bracelets and clasps that hold up, movements that hack and hand-wind. This is where a watch stops being disposable."
+        "blurb": "You start paying for the things you notice years in: sapphire rather than mineral glass, bracelets and clasps that hold up, movements that hack and hand-wind. This is where a watch stops being disposable.",
+        "phrase": "from £250 to £500"
       },
       {
         "id": "top",
         "title": "Over £500",
         "min": 500,
         "max": null,
-        "blurb": "Higher-grade Swiss and Japanese movements, longer power reserves, and case finishing that survives a close look. Past this point you are buying refinement and the name on the dial, not extra function."
+        "blurb": "Higher-grade Swiss and Japanese movements, longer power reserves, and case finishing that survives a close look. Past this point you are buying refinement and the name on the dial, not extra function.",
+        "phrase": "over £500"
       }
     ],
     "styles": [
