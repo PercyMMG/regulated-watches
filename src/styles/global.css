@@ -6,6 +6,7 @@
   --ink: #e8e6e3;
   --ink-dim: #b6b4b0;
   --mute: #8b8d92;
+  --foot-legal: #7c7e84;
   --accent: #c9a227;
   --accent-dim: #8d7220;
   --ok: #7fb069;
@@ -70,11 +71,30 @@ img { max-width: 100%; height: auto; display: block; }
 .site-foot {
   border-top: 1px solid var(--line);
   margin-top: 72px;
-  padding: 34px 0 56px;
+  padding: 26px 0 40px;
   color: var(--mute);
   font-size: 13px;
 }
-.site-foot p { margin: 0 0 10px; max-width: 62ch; }
+
+/*
+ * The legal strip. Deliberately quiet - small, light weight, wide measure so it
+ * reads as a footnote rather than a warning.
+ *
+ * --foot-legal is the palest it goes. It still clears WCAG AA (4.5:1) against
+ * the page background, because a disclosure nobody can read is not a
+ * disclosure, and "clear and conspicuous" is a legal test rather than an
+ * aesthetic preference.
+ */
+.foot-legal {
+  color: var(--foot-legal);
+  font-size: 11px;
+  line-height: 1.7;
+  font-weight: 400;
+  margin: 0 0 14px;
+  max-width: none;      /* full width, not a column */
+  text-wrap: pretty;
+}
+.foot-links { margin: 0; font-size: 12px; }
 
 /* ---------- headings ---------- */
 

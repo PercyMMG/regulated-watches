@@ -65,18 +65,20 @@ const nav = [
 
     <footer class="site-foot">
       <div class="wrap">
-        <p><strong>{site.affiliate.disclosureLong}</strong></p>
-        <p>
-          Prices and ratings are read from Amazon listings at the time stated on each page and are not
-          refreshed continuously. Any price older than {site.price.maxAgeHours} hours is hidden and the
-          live listing becomes the only authority. We have not handled every watch listed here, and we say
-          so on each page rather than implying a review we did not carry out.
+        {/* The disclosure has to stay clear and conspicuous - that is an FTC and
+            Associates requirement, not a style choice - but it does not need to
+            shout. Quiet, full width, and still legible against the background. */}
+        <p class="foot-legal">
+          {site.affiliate.disclosureLong}
+          {' '}Prices and ratings are read from Amazon listings at the time stated on each page and are
+          not refreshed continuously; any price older than {site.price.maxAgeHours} hours is hidden and
+          the live listing becomes the only authority. We have not handled every watch listed here and
+          say so on each page. Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its
+          affiliates. {site.brand} is not affiliated with, endorsed by, or sponsored by Amazon.
         </p>
-        <p>
-          Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates.
-          {site.brand} is not affiliated with, endorsed by, or sponsored by Amazon.
+        <p class="foot-links">
+          <a href={link('/disclosure')}>Full affiliate and editorial disclosure</a>
         </p>
-        <p><a href={link('/disclosure')}>Full affiliate and editorial disclosure</a></p>
       </div>
     </footer>
   </body>
