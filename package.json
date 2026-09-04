@@ -9,6 +9,7 @@
     "dev:site": "astro dev",
     "prebuild": "node scripts/clean-content-cache.mjs",
     "build": "astro build",
+    "postbuild": "node scripts/postbuild.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "ingest": "node scripts/ingest.mjs",
@@ -17,7 +18,8 @@
     "cms": "decap-server",
     "verify": "node scripts/verify.mjs",
     "demo": "node scripts/demo.mjs",
-    "test:oauth": "node scripts/test-oauth.mjs"
+    "test:oauth": "node scripts/test-oauth.mjs",
+    "audit": "node scripts/audit.mjs"
   },
   "devDependencies": {
     "astro": "^5.14.1",

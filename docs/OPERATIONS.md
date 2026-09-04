@@ -2,105 +2,67 @@
 
 ## First deploy
 
-You need a GitHub repository and a Cloudflare account. Both free.
+Hosting is GitHub Pages. No account beyond the GitHub one you already have,
+no card, no dashboard to configure.
 
-**1. Push the repository**
+**One-time setup**
+
+Repository → **Settings** → **Pages** → **Source** → **GitHub Actions**.
+
+That is the whole thing. `.github/workflows/deploy.yml` builds and publishes on
+every push to `main`, running the OAuth tests, `npm run verify` and
+`npm run audit` first so a compliance failure cannot reach the public site.
+
+The site is at:
+
+    https://percymmg.github.io/regulated-watches
+
+**Before the first real deploy**
+
+Set `affiliate.associateTag` in `site.config.json`. Until then every Amazon
+link is an ordinary untagged link: publishable, but earning nothing.
+
+**What GitHub Pages cannot do**
+
+- **Custom HTTP headers.** `public/_headers` is inert here. `Base.astro`
+  carries a `<meta>` CSP as partial cover, but `frame-ancestors` cannot be
+  expressed in meta, so there is no clickjacking protection until the site
+  moves to a host with real headers.
+- **Serverless functions.** No hosted CMS login — see below.
+
+Both come back unchanged on Cloudflare Pages or Netlify if you ever want them.
+
+## Hosted admin — not available, and do not set it up
+
+**Do not create a GitHub OAuth app for this site.**
+
+An earlier version of this document told you to register the callback URL
+`https://regulated.pages.dev/api/callback`. That domain is not ours and never
+was — it belongs to someone else. Registering it would have sent your GitHub
+authorisation codes to a stranger. If you already created that OAuth app,
+delete it: github.com → Settings → Developer settings → OAuth Apps.
+
+Browser-based editing needs the OAuth proxy in `functions/api/`, and GitHub
+Pages runs no server code, so it cannot work here at all.
+
+**Curate locally instead:**
 
 ```bash
-gh repo create regulated-watches --private --source=. --push
+npm run dev
 ```
 
-**2. Connect Cloudflare Pages**
-
-Cloudflare dashboard → Workers & Pages → Create → Pages → Connect to Git →
-pick the repo, then:
-
-| Setting | Value |
+| | |
 |---|---|
-| Framework preset | Astro |
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Node version | `22` (env var `NODE_VERSION=22`) |
+| `http://localhost:4321` | the site |
+| `http://localhost:4321/curate` | the dashboard — approve, reject, images, social packs |
 
-**3. Set your Associates tag before the first real deploy**
+That dashboard is more capable than the hosted CMS would have been: Decap
+cannot model the pending queue, the review gate or the Top-5 packs.
 
-`site.config.json` → `affiliate.associateTag`. Then update `site.url` to the
-domain Pages gives you, so canonical tags and the sitemap point at the right
-place.
-
-**4. Optional: daily rebuild**
-
-Pages → Settings → Builds & deployments → Deploy hooks → create one. Add the
-URL as the GitHub secret `CF_DEPLOY_HOOK`. The workflow in
-`.github/workflows/daily-rebuild.yml` picks it up. Without the secret it exits
-cleanly and costs nothing.
-
----
-
-## Hosted admin (Decap at /admin)
-
-Editing approved watches, collections and comparisons from any browser,
-including a phone. The pending queue, approve/reject and the Top-5 social packs
-stay in `npm run curate` — Decap cannot model that workflow.
-
-Auth runs through our own OAuth proxy (`functions/api/`) as Cloudflare Pages
-Functions. No third-party service, nothing to pay for.
-
-**1. Create a GitHub OAuth app**
-
-github.com → Settings → Developer settings → OAuth Apps → New OAuth App
-
-| Field | Value |
-|---|---|
-| Application name | Regulated CMS |
-| Homepage URL | `https://regulated.pages.dev` |
-| Authorization callback URL | `https://regulated.pages.dev/api/callback` |
-
-The callback URL must match exactly, including the scheme and no trailing slash.
-
-**2. Put the credentials in Cloudflare, not in git**
-
-Copy the Client ID, then **Generate a new client secret** and copy that too. The
-secret is shown once.
-
-Cloudflare Pages → your project → Settings → Environment variables →
-**Production**, add both:
-
-| Name | Value |
-|---|---|
-| `GITHUB_CLIENT_ID` | the Client ID |
-| `GITHUB_CLIENT_SECRET` | the secret (mark it **Encrypted**) |
-
-Never commit either. `.env` is gitignored, and the functions read them from the
-environment only.
-
-**3. Redeploy**
-
-Environment variables only take effect on a new build: Deployments → Retry
-deployment, or push any commit.
-
-**4. Sign in**
-
-`https://regulated.pages.dev/admin/` → Login with GitHub.
-
-### Who can edit
-
-Anyone who can sign in with a GitHub account that has **write access to the
-repository**. Everyone else can complete the login and then do nothing, because
-GitHub rejects their commits. To give someone access, add them as a repository
-collaborator; to remove it, remove the collaborator.
-
-### The token
-
-Decap holds a GitHub token in your browser. It is requested with the
-`public_repo` scope, not `repo`, so if it ever leaks it cannot touch your
-private repositories. **If you make this repository private, that scope has to
-become `repo`** (`functions/api/auth.js`), and the token becomes considerably
-more sensitive — worth reconsidering the hosted admin at that point.
-
-Sign out from the CMS when you are done on a shared machine.
-
----
+If you later move to a host that runs functions (Cloudflare Pages, Netlify),
+`functions/api/` is written and tested — 17 tests in `npm run test:oauth`. At
+that point, and only then, create the OAuth app with a callback on **the domain
+you actually control**.
 
 ## The weekly loop
 

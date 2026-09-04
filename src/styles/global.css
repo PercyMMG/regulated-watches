@@ -186,6 +186,7 @@ h3 { font-size: 17px; }
 .img-credit { color: var(--mute); font-size: 11px; line-height: 1.5; margin: 8px 0 14px; }
 .img-credit a { color: var(--mute); text-decoration: underline; }
 .img-credit a:hover { color: var(--ink); }
+.img-credit-compact { font-size: 10px; margin: 6px 15px 0; font-family: var(--mono); }
 
 /* ---------- buy button ---------- */
 

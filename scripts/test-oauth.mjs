@@ -18,7 +18,9 @@ const load = (f) => import(pathToFileURL(join(HERE, '..', 'functions', 'api', f)
 const auth = await load('auth.js');
 const cb = await load('callback.js');
 
-const ORIGIN = 'https://regulated.pages.dev';
+// A fixture origin only. Deliberately example.com so no real domain is
+// implied as the deployment target.
+const ORIGIN = 'https://example.com';
 let failures = 0;
 const ok = (name, cond) => {
   if (!cond) failures++;

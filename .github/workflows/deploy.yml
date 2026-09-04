@@ -34,6 +34,9 @@ jobs:
       - run: npm run test:oauth
       - run: npm run verify
       - run: npm run build
+      # Checks the built output: dead links, missing disclosures, untagged or
+      # mislabelled Amazon links, prices with no timestamp, images with no credit.
+      - run: npm run audit
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

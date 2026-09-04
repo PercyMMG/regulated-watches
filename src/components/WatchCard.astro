@@ -12,7 +12,9 @@ interface Props {
 const { watch, eager = false, rank } = Astro.props;
 const d = watch.data ?? watch;
 const tier = tierById(d.tier);
-const href = `/watches/${watch.id ?? d.id}`;
+// Must go through link(): a bare path resolves to the root of github.io,
+// which is how every card on the site came to be unclickable.
+const href = link(`/watches/${watch.id ?? d.id}`);
 
 /**
  * Card format follows the MuseMargin independent-watchmakers layout: image on
@@ -26,7 +28,7 @@ const href = `/watches/${watch.id ?? d.id}`;
 
 <article class="card watch-card">
   <a class="card-image" href={href} aria-label={fullName(d)}>
-    <Thumb watch={d} eager={eager} />
+    <Thumb watch={d} eager={eager} showCredit={true} compactCredit={true} />
     {d.brand && <span class="brand-tag">{d.brand}</span>}
     {rank && <span class="rank-tag">{rank}</span>}
     {d.featured && <span class="pick-tag">★ Pick</span>}

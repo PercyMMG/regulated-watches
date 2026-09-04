@@ -18,8 +18,10 @@ interface Props {
   };
   eager?: boolean;
   showCredit?: boolean;
+  /** Card variant: one short line rather than a sentence. */
+  compactCredit?: boolean;
 }
-const { watch, eager = false, showCredit = false } = Astro.props;
+const { watch, eager = false, showCredit = false, compactCredit = false } = Astro.props;
 
 const src = imageFor(watch);
 const hue = placeholderHue(watchKey(watch));
@@ -50,7 +52,11 @@ const credit = src && watch.image_credit_author ? watch : null;
   </div>
 )}
 
-{showCredit && credit && (
+{showCredit && credit && compactCredit && (
+  <p class="img-credit img-credit-compact">Photo: {credit.image_credit_author}, {credit.image_credit_licence}</p>
+)}
+
+{showCredit && credit && !compactCredit && (
   <p class="img-credit"><Fragment>Photo: </Fragment>{credit.image_credit_source ? (
     <a href={credit.image_credit_source} rel="noopener nofollow" target="_blank">{credit.image_credit_author}</a>
   ) : (
