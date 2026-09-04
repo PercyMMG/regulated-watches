@@ -48,7 +48,7 @@ approved_at: "2026-09-04T10:26:16.675Z"
 ---
 Steel bracelet version of the classic Casio digital. Same electronics as the F-91W in a metal case.
 
-**Where it sits.** Function over romance. Usually the most watch per pound on the page. This one falls in our Under £100 band.
+**Where it sits.** Function over romance. Usually the most watch per pound on the page. It sits in the Under £100 band.
 
 **Stated specification.** movement: digital, case: 36.8 mm, water resistance: 30 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.
 

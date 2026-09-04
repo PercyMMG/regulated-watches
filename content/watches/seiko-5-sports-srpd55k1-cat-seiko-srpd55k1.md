@@ -49,7 +49,7 @@ approved_at: "2026-09-04T10:26:16.704Z"
 ---
 SKX-shaped case with a 4R36 movement, which hand-winds and hacks. 100 m, not the 200 m of the SKX it resembles - worth being clear about.
 
-**Where it sits.** Rotating bezel, real water resistance, legible at a glance. This one falls in our £100–£250 band.
+**Where it sits.** Rotating bezel, real water resistance, legible at a glance. It sits in the £100–£250 band.
 
 **Stated specification.** movement: automatic, case: 40.5 mm, water resistance: 100 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.
 

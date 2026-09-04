@@ -52,7 +52,7 @@ approved_at: "2026-09-04T10:26:16.685Z"
 ---
 Long-standing budget diver recommendation. Genuine 200 m rating and a rotating bezel at a price that usually buys neither.
 
-**Where it sits.** Rotating bezel, real water resistance, legible at a glance. This one falls in our Under £100 band.
+**Where it sits.** Rotating bezel, real water resistance, legible at a glance. It sits in the Under £100 band.
 
 **Stated specification.** movement: quartz, case: 44 mm, water resistance: 200 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.
 

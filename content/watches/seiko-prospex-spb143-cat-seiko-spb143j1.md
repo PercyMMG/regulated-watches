@@ -56,7 +56,7 @@ approved_at: "2026-09-04T13:39:55.069Z"
 ---
 6R35 movement, roughly 70 hours of reserve, sapphire crystal. Modern reinterpretation of the 1965 diver, and notably thick.
 
-**Where it sits.** Rotating bezel, real water resistance, legible at a glance. This one falls in our Over £500 band.
+**Where it sits.** Rotating bezel, real water resistance, legible at a glance. It sits in the Over £500 band.
 
 **Stated specification.** movement: automatic, case: 40.5 mm, water resistance: 200 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.
 

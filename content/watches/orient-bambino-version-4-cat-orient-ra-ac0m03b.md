@@ -49,7 +49,7 @@ approved_at: "2026-09-04T10:26:16.692Z"
 ---
 Domed crystal, applied indices, thin bezel. Bambino references change often between versions and dial colours; confirm the exact one.
 
-**Where it sits.** Thin case, restrained dial, fits under a cuff. This one falls in our £100–£250 band.
+**Where it sits.** Thin case, restrained dial, fits under a cuff. It sits in the £100–£250 band.
 
 **Stated specification.** movement: automatic, case: 40.5 mm, water resistance: 30 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.
 

@@ -50,7 +50,7 @@ approved_at: "2026-09-04T10:26:16.701Z"
 ---
 7S26 movement: no hand-winding and no hacking seconds. The standard first mechanical watch, and small by modern standards at 37 mm.
 
-**Where it sits.** Plain dial, high contrast, built to be read in bad light. This one falls in our Under £100 band.
+**Where it sits.** Plain dial, high contrast, built to be read in bad light. It sits in the Under £100 band.
 
 **Stated specification.** movement: automatic, case: 37 mm, water resistance: 30 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.
 

@@ -190,7 +190,7 @@ export function draftLongDescription(w) {
   // as the lede directly above the body, and repeating it verbatim two
   // paragraphs apart is the tell of a generated page.
 
-  if (style) paras.push(`**Where it sits.** ${style.blurb}${tier ? ` This one falls in our ${tier.title} band.` : ''}`);
+  if (style) paras.push(`**Where it sits.** ${style.blurb}${tier ? ` It sits in the ${tier.title} band.` : ''}`);
 
   const specs = [];
   if (w.movement) specs.push(`movement: ${w.movement}`);

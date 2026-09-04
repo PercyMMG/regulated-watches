@@ -47,7 +47,7 @@ approved_at: "2026-09-04T10:26:16.688Z"
 ---
 Larger digital with a 100 m rating and a 10-year battery. Confirm the case measurement, which is quoted inconsistently.
 
-**Where it sits.** Function over romance. Usually the most watch per pound on the page. This one falls in our Under £100 band.
+**Where it sits.** Function over romance. Usually the most watch per pound on the page. It sits in the Under £100 band.
 
 **Stated specification.** movement: digital, case: 43 mm, water resistance: 100 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.
 

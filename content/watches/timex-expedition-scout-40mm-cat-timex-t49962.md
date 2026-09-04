@@ -50,7 +50,7 @@ approved_at: "2026-09-04T10:26:16.708Z"
 ---
 Plain high-contrast field dial with Indiglo. Several strap and dial variants share the Scout name.
 
-**Where it sits.** Plain dial, high contrast, built to be read in bad light. This one falls in our Under £100 band.
+**Where it sits.** Plain dial, high contrast, built to be read in bad light. It sits in the Under £100 band.
 
 **Stated specification.** movement: quartz, case: 40 mm, water resistance: 50 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.
 

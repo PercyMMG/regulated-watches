@@ -51,7 +51,7 @@ approved_at: "2026-09-04T10:26:16.696Z"
 ---
 Sapphire crystal and 200 m at a price where mineral glass is the norm. F6922 movement hacks and hand-winds.
 
-**Where it sits.** Rotating bezel, real water resistance, legible at a glance. This one falls in our £100–£250 band.
+**Where it sits.** Rotating bezel, real water resistance, legible at a glance. It sits in the £100–£250 band.
 
 **Stated specification.** movement: automatic, case: 41.8 mm, water resistance: 200 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.
 
