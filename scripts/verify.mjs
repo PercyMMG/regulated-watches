@@ -51,6 +51,7 @@ for (const [state, list] of [['approved', approved], ['pending', pending], ['rej
 
 let stalePrices = 0;
 let missingImages = 0;
+let noAsin = 0;
 
 for (const w of approved) {
   const where = w._file;
@@ -62,6 +63,8 @@ for (const w of approved) {
     (issue.level === 'error' ? err : warn)(where, `short_blurb — ${issue.detail}`);
   }
   if (!w.pros?.length && !w.cons?.length) warn(where, 'no pros or cons; the page will read thin.');
+
+  if (!w.asin) noAsin++;
 
   if (w.price_display && !priceIsFresh(w.price_checked_at)) stalePrices++;
   if (w.price_display && !w.price_checked_at) err(where, 'has a price with no price_checked_at timestamp.');
@@ -104,6 +107,12 @@ for (const w of approved) {
 
 if (stalePrices) {
   warn('prices', `${stalePrices} approved watch(es) have a price older than ${config.price.maxAgeHours}h. They will render as "${config.price.staleLabel}". Re-ingest to refresh.`);
+}
+if (noAsin) {
+  warn(
+    'links',
+    `${noAsin} approved watch(es) have no ASIN, so they link to an Amazon search. Tagged search links do track and pay, but they convert far worse than a link to the exact product. Paste the ASIN in as you find each listing.`
+  );
 }
 if (missingImages) warn('images', `${missingImages} approved watch(es) have no local image while images.mode is "${config.images.mode}".`);
 

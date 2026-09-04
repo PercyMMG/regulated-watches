@@ -27,8 +27,16 @@ const affiliate = watch.asin ? affiliateLink(watch.asin) : null;
 const plainProduct = watch.asin ? `https://www.${site.affiliate.marketplace}/dp/${watch.asin}` : null;
 
 const href = affiliate ?? plainProduct ?? searchUrl(watch);
-const isAffiliate = Boolean(affiliate);
 const isSearch = !watch.asin;
+
+/**
+ * Whether this link earns is decided by the tag, not by the destination.
+ * searchUrl() carries the tag too once one is configured, so a search link is
+ * every bit as much a paid link as a product link and has to be disclosed as
+ * one. Deriving this from `affiliate` alone got that wrong for the watches
+ * that have no ASIN yet.
+ */
+const isAffiliate = hasAssociateTag();
 
 const text = label ?? (isSearch ? 'Find on Amazon' : 'Check price on Amazon');
 
@@ -43,12 +51,16 @@ const rel = isAffiliate ? 'nofollow sponsored noopener' : 'nofollow noopener';
   /* Disclosure has to sit with the link, not only in the footer. Short on a
      card, but present on every one that earns. */
   <span class="buy-micro">
-    {isAffiliate ? 'Affiliate link' : isSearch ? 'Search, not a specific listing' : 'Ordinary link — earns nothing'}
+    {isAffiliate
+      ? isSearch ? 'Affiliate link · search' : 'Affiliate link'
+      : isSearch ? 'Search, not a specific listing' : 'Ordinary link — earns nothing'}
   </span>
 ) : (
   <p class="buy-note">
     {isAffiliate
-      ? site.affiliate.disclosureShort
+      ? isSearch
+        ? `${site.affiliate.disclosureShort} This one goes to an Amazon search rather than a single listing, so check the model reference matches before buying.`
+        : site.affiliate.disclosureShort
       : isSearch
         ? 'Search link, not a specific listing. Check the model reference matches before buying.'
         : 'Ordinary link — we earn nothing from it.'}

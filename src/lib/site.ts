@@ -35,7 +35,13 @@ export const watchKey = (w: { asin?: string; catalogue_key?: string; id?: string
  */
 export function searchUrl(w: { brand?: string; title?: string; model_ref?: string }): string {
   const q = encodeURIComponent([w.brand, w.model_ref || w.title].filter(Boolean).join(' ').trim());
-  return `https://www.${site.affiliate.marketplace}/s?k=${q}`;
+  const base = `https://www.${site.affiliate.marketplace}/s?k=${q}`;
+
+  // The tag is what earns, not the destination. An untagged search link sends
+  // a reader to Amazon and attributes nothing, which is the worst of both:
+  // you lose the visitor and get paid for it. Tagged search links do track,
+  // they simply convert far worse than a link to a specific product.
+  return hasAssociateTag() ? `${base}&tag=${encodeURIComponent(site.affiliate.associateTag)}` : base;
 }
 
 export const tierById = (id: string) => site.taxonomy.tiers.find((t) => t.id === id) ?? null;
