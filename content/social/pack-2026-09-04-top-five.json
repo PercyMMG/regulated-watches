@@ -1,0 +1,1261 @@
+{
+  "id": "pack-2026-09-04-top-five",
+  "title": "Top 5: 2026-09-04",
+  "created_at": "2026-09-04T19:45:27.257Z",
+  "tone": "dry-expert",
+  "selected_watch_ids": [
+    "watch-cat-seiko-spb143j1",
+    "watch-cat-orient-ra-ac0m03b",
+    "watch-cat-citizen-bm8180-03e",
+    "watch-cat-certina-c032-407-11-050-00",
+    "watch-cat-casio-w-800h"
+  ],
+  "selected_asins": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "label": "Seiko Prospex SPB143"
+    },
+    {
+      "rank": 2,
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "label": "Orient Bambino Version 4"
+    },
+    {
+      "rank": 3,
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "label": "Citizen Eco-Drive BM8180"
+    },
+    {
+      "rank": 4,
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "label": "Certina DS Action Diver"
+    },
+    {
+      "rank": 5,
+      "watch_id": "watch-cat-casio-w-800h",
+      "asin": "",
+      "label": "Casio W-800H-1A"
+    }
+  ],
+  "video_scripts": [
+    {
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "platform": "tiktok",
+      "platform_name": "TikTok",
+      "target_seconds": 30,
+      "aspect": "9:16",
+      "direction": "Cut hard on every beat. Text on screen for each spec. No music bed louder than voice.",
+      "hook": {
+        "at": "0s",
+        "line": "Everyone asks what to buy in divers. Here is the boring, correct answer.",
+        "onScreen": "Everyone asks what to buy in"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Automatic movement, so there is no battery to replace.",
+          "onScreen": "Automatic movement"
+        },
+        {
+          "at": "8s",
+          "line": "200 m water resistance — swimmable, and rated for more than most owners will ask of it.",
+          "onScreen": "200 m water resistance"
+        },
+        {
+          "at": "13s",
+          "line": "Sapphire crystal, which resists scratches far better than mineral glass.",
+          "onScreen": "Sapphire crystal"
+        },
+        {
+          "at": "18s",
+          "line": "The catch: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "25s",
+        "line": "Specs, caveats and the link are in the bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 71,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 0
+    },
+    {
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "platform": "reels",
+      "platform_name": "Instagram Reels",
+      "target_seconds": 30,
+      "aspect": "9:16",
+      "direction": "First frame must carry the hook as on-screen text; most viewers watch muted.",
+      "hook": {
+        "at": "0s",
+        "line": "Three things to check on a diver before you spend anything.",
+        "onScreen": "Three things to check on a"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Automatic movement, so there is no battery to replace.",
+          "onScreen": "Automatic movement"
+        },
+        {
+          "at": "8s",
+          "line": "200 m water resistance — swimmable, and rated for more than most owners will ask of it.",
+          "onScreen": "200 m water resistance"
+        },
+        {
+          "at": "13s",
+          "line": "Sapphire crystal, which resists scratches far better than mineral glass.",
+          "onScreen": "Sapphire crystal"
+        },
+        {
+          "at": "18s",
+          "line": "The catch: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "25s",
+        "line": "Specs, caveats and the link are in the bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 69,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 0
+    },
+    {
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "platform": "shorts",
+      "platform_name": "YouTube Shorts",
+      "target_seconds": 45,
+      "aspect": "9:16",
+      "direction": "Slightly longer runway. Say the brand and model out loud in the first 3 seconds for search.",
+      "hook": {
+        "at": "0s",
+        "line": "Everyone asks what to buy in divers. Here is the boring, correct answer.",
+        "onScreen": "Everyone asks what to buy in"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Automatic movement, so there is no battery to replace.",
+          "onScreen": "Automatic movement"
+        },
+        {
+          "at": "12s",
+          "line": "200 m water resistance — swimmable, and rated for more than most owners will ask of it.",
+          "onScreen": "200 m water resistance"
+        },
+        {
+          "at": "21s",
+          "line": "Sapphire crystal, which resists scratches far better than mineral glass.",
+          "onScreen": "Sapphire crystal"
+        },
+        {
+          "at": "30s",
+          "line": "The catch: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "40s",
+        "line": "The whole shortlist, with the caveats, is linked in bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 71,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 0
+    },
+    {
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "platform": "tiktok",
+      "platform_name": "TikTok",
+      "target_seconds": 30,
+      "aspect": "9:16",
+      "direction": "Cut hard on every beat. Text on screen for each spec. No music bed louder than voice.",
+      "hook": {
+        "at": "0s",
+        "line": "Everyone asks what to buy in dress watches. Here is the boring, correct answer.",
+        "onScreen": "Everyone asks what to buy in"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Automatic movement, so there is no battery to replace.",
+          "onScreen": "Automatic movement"
+        },
+        {
+          "at": "14s",
+          "line": "The catch: only 30 m water resistance — treat it as rain and handwashing, not swimming.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "25s",
+        "line": "Specs, caveats and the link are in the bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 39,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 1
+    },
+    {
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "platform": "reels",
+      "platform_name": "Instagram Reels",
+      "target_seconds": 30,
+      "aspect": "9:16",
+      "direction": "First frame must carry the hook as on-screen text; most viewers watch muted.",
+      "hook": {
+        "at": "0s",
+        "line": "Three things to check on a dress watch before you spend anything.",
+        "onScreen": "Three things to check on a"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Automatic movement, so there is no battery to replace.",
+          "onScreen": "Automatic movement"
+        },
+        {
+          "at": "14s",
+          "line": "The catch: only 30 m water resistance — treat it as rain and handwashing, not swimming.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "25s",
+        "line": "Specs, caveats and the link are in the bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 37,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 1
+    },
+    {
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "platform": "shorts",
+      "platform_name": "YouTube Shorts",
+      "target_seconds": 45,
+      "aspect": "9:16",
+      "direction": "Slightly longer runway. Say the brand and model out loud in the first 3 seconds for search.",
+      "hook": {
+        "at": "0s",
+        "line": "Everyone asks what to buy in dress watches. Here is the boring, correct answer.",
+        "onScreen": "Everyone asks what to buy in"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Automatic movement, so there is no battery to replace.",
+          "onScreen": "Automatic movement"
+        },
+        {
+          "at": "21s",
+          "line": "The catch: only 30 m water resistance — treat it as rain and handwashing, not swimming.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "40s",
+        "line": "The whole shortlist, with the caveats, is linked in bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 39,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 1
+    },
+    {
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "platform": "tiktok",
+      "platform_name": "TikTok",
+      "target_seconds": 30,
+      "aspect": "9:16",
+      "direction": "Cut hard on every beat. Text on screen for each spec. No music bed louder than voice.",
+      "hook": {
+        "at": "0s",
+        "line": "Everyone asks what to buy in field watches. Here is the boring, correct answer.",
+        "onScreen": "Everyone asks what to buy in"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Solar charged, so there is no battery service interval.",
+          "onScreen": "Solar charged"
+        },
+        {
+          "at": "8s",
+          "line": "100 m water resistance — fine for swimming and showering.",
+          "onScreen": "100 m water resistance"
+        },
+        {
+          "at": "13s",
+          "line": "37 mm case, which suits a smaller wrist without looking undersized.",
+          "onScreen": "37 mm case"
+        },
+        {
+          "at": "18s",
+          "line": "The catch: crystal material is not confirmed in the listing — assume mineral glass unless stated.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "25s",
+        "line": "Specs, caveats and the link are in the bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 60,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 2
+    },
+    {
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "platform": "reels",
+      "platform_name": "Instagram Reels",
+      "target_seconds": 30,
+      "aspect": "9:16",
+      "direction": "First frame must carry the hook as on-screen text; most viewers watch muted.",
+      "hook": {
+        "at": "0s",
+        "line": "Three things to check on a field watch before you spend anything.",
+        "onScreen": "Three things to check on a"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Solar charged, so there is no battery service interval.",
+          "onScreen": "Solar charged"
+        },
+        {
+          "at": "8s",
+          "line": "100 m water resistance — fine for swimming and showering.",
+          "onScreen": "100 m water resistance"
+        },
+        {
+          "at": "13s",
+          "line": "37 mm case, which suits a smaller wrist without looking undersized.",
+          "onScreen": "37 mm case"
+        },
+        {
+          "at": "18s",
+          "line": "The catch: crystal material is not confirmed in the listing — assume mineral glass unless stated.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "25s",
+        "line": "Specs, caveats and the link are in the bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 58,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 2
+    },
+    {
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "platform": "shorts",
+      "platform_name": "YouTube Shorts",
+      "target_seconds": 45,
+      "aspect": "9:16",
+      "direction": "Slightly longer runway. Say the brand and model out loud in the first 3 seconds for search.",
+      "hook": {
+        "at": "0s",
+        "line": "Everyone asks what to buy in field watches. Here is the boring, correct answer.",
+        "onScreen": "Everyone asks what to buy in"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Solar charged, so there is no battery service interval.",
+          "onScreen": "Solar charged"
+        },
+        {
+          "at": "12s",
+          "line": "100 m water resistance — fine for swimming and showering.",
+          "onScreen": "100 m water resistance"
+        },
+        {
+          "at": "21s",
+          "line": "37 mm case, which suits a smaller wrist without looking undersized.",
+          "onScreen": "37 mm case"
+        },
+        {
+          "at": "30s",
+          "line": "The catch: crystal material is not confirmed in the listing — assume mineral glass unless stated.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "40s",
+        "line": "The whole shortlist, with the caveats, is linked in bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 60,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 2
+    },
+    {
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "platform": "tiktok",
+      "platform_name": "TikTok",
+      "target_seconds": 30,
+      "aspect": "9:16",
+      "direction": "Cut hard on every beat. Text on screen for each spec. No music bed louder than voice.",
+      "hook": {
+        "at": "0s",
+        "line": "Everyone asks what to buy in divers. Here is the boring, correct answer.",
+        "onScreen": "Everyone asks what to buy in"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Automatic movement, so there is no battery to replace.",
+          "onScreen": "Automatic movement"
+        },
+        {
+          "at": "8s",
+          "line": "300 m water resistance — swimmable, and rated for more than most owners will ask of it.",
+          "onScreen": "300 m water resistance"
+        },
+        {
+          "at": "13s",
+          "line": "Sapphire crystal, which resists scratches far better than mineral glass.",
+          "onScreen": "Sapphire crystal"
+        },
+        {
+          "at": "18s",
+          "line": "The catch: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "25s",
+        "line": "Specs, caveats and the link are in the bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 71,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 3
+    },
+    {
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "platform": "reels",
+      "platform_name": "Instagram Reels",
+      "target_seconds": 30,
+      "aspect": "9:16",
+      "direction": "First frame must carry the hook as on-screen text; most viewers watch muted.",
+      "hook": {
+        "at": "0s",
+        "line": "Three things to check on a diver before you spend anything.",
+        "onScreen": "Three things to check on a"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Automatic movement, so there is no battery to replace.",
+          "onScreen": "Automatic movement"
+        },
+        {
+          "at": "8s",
+          "line": "300 m water resistance — swimmable, and rated for more than most owners will ask of it.",
+          "onScreen": "300 m water resistance"
+        },
+        {
+          "at": "13s",
+          "line": "Sapphire crystal, which resists scratches far better than mineral glass.",
+          "onScreen": "Sapphire crystal"
+        },
+        {
+          "at": "18s",
+          "line": "The catch: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "25s",
+        "line": "Specs, caveats and the link are in the bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 69,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 3
+    },
+    {
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "platform": "shorts",
+      "platform_name": "YouTube Shorts",
+      "target_seconds": 45,
+      "aspect": "9:16",
+      "direction": "Slightly longer runway. Say the brand and model out loud in the first 3 seconds for search.",
+      "hook": {
+        "at": "0s",
+        "line": "Everyone asks what to buy in divers. Here is the boring, correct answer.",
+        "onScreen": "Everyone asks what to buy in"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Automatic movement, so there is no battery to replace.",
+          "onScreen": "Automatic movement"
+        },
+        {
+          "at": "12s",
+          "line": "300 m water resistance — swimmable, and rated for more than most owners will ask of it.",
+          "onScreen": "300 m water resistance"
+        },
+        {
+          "at": "21s",
+          "line": "Sapphire crystal, which resists scratches far better than mineral glass.",
+          "onScreen": "Sapphire crystal"
+        },
+        {
+          "at": "30s",
+          "line": "The catch: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "40s",
+        "line": "The whole shortlist, with the caveats, is linked in bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 71,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 3
+    },
+    {
+      "watch_id": "watch-cat-casio-w-800h",
+      "asin": "",
+      "platform": "tiktok",
+      "platform_name": "TikTok",
+      "target_seconds": 30,
+      "aspect": "9:16",
+      "direction": "Cut hard on every beat. Text on screen for each spec. No music bed louder than voice.",
+      "hook": {
+        "at": "0s",
+        "line": "Everyone asks what to buy in digital watches. Here is the boring, correct answer.",
+        "onScreen": "Everyone asks what to buy in"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Digital display, so the functions are readable without interpretation.",
+          "onScreen": "Digital display"
+        },
+        {
+          "at": "10s",
+          "line": "100 m water resistance — fine for swimming and showering.",
+          "onScreen": "100 m water resistance"
+        },
+        {
+          "at": "17s",
+          "line": "The catch: crystal material is not confirmed in the listing — assume mineral glass unless stated.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "25s",
+        "line": "Specs, caveats and the link are in the bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 49,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 4
+    },
+    {
+      "watch_id": "watch-cat-casio-w-800h",
+      "asin": "",
+      "platform": "reels",
+      "platform_name": "Instagram Reels",
+      "target_seconds": 30,
+      "aspect": "9:16",
+      "direction": "First frame must carry the hook as on-screen text; most viewers watch muted.",
+      "hook": {
+        "at": "0s",
+        "line": "Three things to check on a digital watch before you spend anything.",
+        "onScreen": "Three things to check on a"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Digital display, so the functions are readable without interpretation.",
+          "onScreen": "Digital display"
+        },
+        {
+          "at": "10s",
+          "line": "100 m water resistance — fine for swimming and showering.",
+          "onScreen": "100 m water resistance"
+        },
+        {
+          "at": "17s",
+          "line": "The catch: crystal material is not confirmed in the listing — assume mineral glass unless stated.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "25s",
+        "line": "Specs, caveats and the link are in the bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 47,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 4
+    },
+    {
+      "watch_id": "watch-cat-casio-w-800h",
+      "asin": "",
+      "platform": "shorts",
+      "platform_name": "YouTube Shorts",
+      "target_seconds": 45,
+      "aspect": "9:16",
+      "direction": "Slightly longer runway. Say the brand and model out loud in the first 3 seconds for search.",
+      "hook": {
+        "at": "0s",
+        "line": "Everyone asks what to buy in digital watches. Here is the boring, correct answer.",
+        "onScreen": "Everyone asks what to buy in"
+      },
+      "beats": [
+        {
+          "at": "3s",
+          "line": "Digital display, so the functions are readable without interpretation.",
+          "onScreen": "Digital display"
+        },
+        {
+          "at": "15s",
+          "line": "100 m water resistance — fine for swimming and showering.",
+          "onScreen": "100 m water resistance"
+        },
+        {
+          "at": "27s",
+          "line": "The catch: crystal material is not confirmed in the listing — assume mineral glass unless stated.",
+          "onScreen": "The catch"
+        }
+      ],
+      "cta": {
+        "at": "40s",
+        "line": "The whole shortlist, with the caveats, is linked in bio.",
+        "onScreen": "Link in bio"
+      },
+      "spoken_word_count": 49,
+      "shot_notes": [
+        "Product footage must be your own. Do not reuse Amazon listing photography.",
+        "If you do not have the watch in hand, use a text-card cut with the spec on screen instead of any product image.",
+        "On-screen disclosure required: the word \"affiliate\" or \"#ad\" visible in the first 3 seconds."
+      ],
+      "order": 4
+    }
+  ],
+  "roundup_script": {
+    "platform": "all",
+    "target_seconds": 45,
+    "aspect": "9:16",
+    "hook": {
+      "at": "0s",
+      "line": "Five watches, ranked. Number one is not the most expensive.",
+      "onScreen": "Five, ranked"
+    },
+    "beats": [
+      {
+        "at": "3s",
+        "line": "5. Seiko. Automatic movement, so there is no battery to replace.",
+        "onScreen": "5. Seiko"
+      },
+      {
+        "at": "10s",
+        "line": "4. Orient. Automatic movement, so there is no battery to replace.",
+        "onScreen": "4. Orient"
+      },
+      {
+        "at": "17s",
+        "line": "3. Citizen. Solar charged, so there is no battery service interval.",
+        "onScreen": "3. Citizen"
+      },
+      {
+        "at": "24s",
+        "line": "2. Certina. Automatic movement, so there is no battery to replace.",
+        "onScreen": "2. Certina"
+      },
+      {
+        "at": "31s",
+        "line": "1. Casio. Digital display, so the functions are readable without interpretation.",
+        "onScreen": "1. Casio"
+      }
+    ],
+    "cta": {
+      "at": "40s",
+      "line": "All five, with the caveats, linked in bio.",
+      "onScreen": "Link in bio"
+    },
+    "shot_notes": [
+      "Count down, do not count up — the reveal has to land last.",
+      "Own footage or text cards only.",
+      "Disclosure on screen in the first 3 seconds."
+    ]
+  },
+  "image_prompts": [
+    {
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "prompts": [
+        {
+          "purpose": "title card background",
+          "prompt": "low-key studio backdrop, charcoal seamless paper, single soft key light from upper left, deep shadow falloff, no products in frame. 9:16 vertical. Photographic, neutral colour grade, no text, no watches, no logos, no people.",
+          "negative": "watch, wristwatch, product, logo, brand mark, text, hands, person, Amazon",
+          "note": "Overlay the watch name and spec as type. The product itself must be your own photograph or absent."
+        },
+        {
+          "purpose": "spec card background",
+          "prompt": "flat overhead surface of brushed dark steel, cool grey tone, subtle directional grain, empty composition with copy space centre. 9:16 vertical, darker overall exposure so white type reads cleanly. No text, no watches, no logos.",
+          "negative": "watch, product, logo, text, clutter",
+          "note": "Used behind the three spec beats."
+        },
+        {
+          "purpose": "end card background",
+          "prompt": "dark walnut desk surface, shallow depth of field, muted warm highlights in the far corner, entirely empty frame. 9:16 vertical, slightly brighter centre to hold a call to action. No text, no watches, no logos.",
+          "negative": "watch, product, logo, text",
+          "note": "Used behind the CTA and the affiliate disclosure."
+        }
+      ]
+    },
+    {
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "prompts": [
+        {
+          "purpose": "title card background",
+          "prompt": "low-key studio backdrop, charcoal seamless paper, single soft key light from upper left, deep shadow falloff, no products in frame. 9:16 vertical. Photographic, neutral colour grade, no text, no watches, no logos, no people.",
+          "negative": "watch, wristwatch, product, logo, brand mark, text, hands, person, Amazon",
+          "note": "Overlay the watch name and spec as type. The product itself must be your own photograph or absent."
+        },
+        {
+          "purpose": "spec card background",
+          "prompt": "flat overhead surface of brushed dark steel, cool grey tone, subtle directional grain, empty composition with copy space centre. 9:16 vertical, darker overall exposure so white type reads cleanly. No text, no watches, no logos.",
+          "negative": "watch, product, logo, text, clutter",
+          "note": "Used behind the three spec beats."
+        },
+        {
+          "purpose": "end card background",
+          "prompt": "dark walnut desk surface, shallow depth of field, muted warm highlights in the far corner, entirely empty frame. 9:16 vertical, slightly brighter centre to hold a call to action. No text, no watches, no logos.",
+          "negative": "watch, product, logo, text",
+          "note": "Used behind the CTA and the affiliate disclosure."
+        }
+      ]
+    },
+    {
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "prompts": [
+        {
+          "purpose": "title card background",
+          "prompt": "low-key studio backdrop, charcoal seamless paper, single soft key light from upper left, deep shadow falloff, no products in frame. 9:16 vertical. Photographic, neutral colour grade, no text, no watches, no logos, no people.",
+          "negative": "watch, wristwatch, product, logo, brand mark, text, hands, person, Amazon",
+          "note": "Overlay the watch name and spec as type. The product itself must be your own photograph or absent."
+        },
+        {
+          "purpose": "spec card background",
+          "prompt": "flat overhead surface of brushed dark steel, cool grey tone, subtle directional grain, empty composition with copy space centre. 9:16 vertical, darker overall exposure so white type reads cleanly. No text, no watches, no logos.",
+          "negative": "watch, product, logo, text, clutter",
+          "note": "Used behind the three spec beats."
+        },
+        {
+          "purpose": "end card background",
+          "prompt": "dark walnut desk surface, shallow depth of field, muted warm highlights in the far corner, entirely empty frame. 9:16 vertical, slightly brighter centre to hold a call to action. No text, no watches, no logos.",
+          "negative": "watch, product, logo, text",
+          "note": "Used behind the CTA and the affiliate disclosure."
+        }
+      ]
+    },
+    {
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "prompts": [
+        {
+          "purpose": "title card background",
+          "prompt": "low-key studio backdrop, charcoal seamless paper, single soft key light from upper left, deep shadow falloff, no products in frame. 9:16 vertical. Photographic, neutral colour grade, no text, no watches, no logos, no people.",
+          "negative": "watch, wristwatch, product, logo, brand mark, text, hands, person, Amazon",
+          "note": "Overlay the watch name and spec as type. The product itself must be your own photograph or absent."
+        },
+        {
+          "purpose": "spec card background",
+          "prompt": "flat overhead surface of brushed dark steel, cool grey tone, subtle directional grain, empty composition with copy space centre. 9:16 vertical, darker overall exposure so white type reads cleanly. No text, no watches, no logos.",
+          "negative": "watch, product, logo, text, clutter",
+          "note": "Used behind the three spec beats."
+        },
+        {
+          "purpose": "end card background",
+          "prompt": "dark walnut desk surface, shallow depth of field, muted warm highlights in the far corner, entirely empty frame. 9:16 vertical, slightly brighter centre to hold a call to action. No text, no watches, no logos.",
+          "negative": "watch, product, logo, text",
+          "note": "Used behind the CTA and the affiliate disclosure."
+        }
+      ]
+    },
+    {
+      "watch_id": "watch-cat-casio-w-800h",
+      "asin": "",
+      "prompts": [
+        {
+          "purpose": "title card background",
+          "prompt": "low-key studio backdrop, charcoal seamless paper, single soft key light from upper left, deep shadow falloff, no products in frame. 9:16 vertical. Photographic, neutral colour grade, no text, no watches, no logos, no people.",
+          "negative": "watch, wristwatch, product, logo, brand mark, text, hands, person, Amazon",
+          "note": "Overlay the watch name and spec as type. The product itself must be your own photograph or absent."
+        },
+        {
+          "purpose": "spec card background",
+          "prompt": "flat overhead surface of brushed dark steel, cool grey tone, subtle directional grain, empty composition with copy space centre. 9:16 vertical, darker overall exposure so white type reads cleanly. No text, no watches, no logos.",
+          "negative": "watch, product, logo, text, clutter",
+          "note": "Used behind the three spec beats."
+        },
+        {
+          "purpose": "end card background",
+          "prompt": "dark walnut desk surface, shallow depth of field, muted warm highlights in the far corner, entirely empty frame. 9:16 vertical, slightly brighter centre to hold a call to action. No text, no watches, no logos.",
+          "negative": "watch, product, logo, text",
+          "note": "Used behind the CTA and the affiliate disclosure."
+        }
+      ]
+    }
+  ],
+  "captions": [
+    {
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "platform": "tiktok",
+      "text": "Three things to check on a diver before you spend anything.\n\n- Automatic movement, so there is no battery to replace.\n- 200 m water resistance — swimmable, and rated for more than most owners will ask of it.\n- Caveat: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nSpecs, caveats and the link are in the bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 525,
+      "limit": 2200,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "platform": "reels",
+      "text": "Three things to check on a diver before you spend anything.\n\n- Automatic movement, so there is no battery to replace.\n- 200 m water resistance — swimmable, and rated for more than most owners will ask of it.\n- Caveat: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nFull write-up and the link are on the site — link in bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 539,
+      "limit": 2200,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "platform": "shorts",
+      "text": "Not the flashiest diver on the shelf. Still the one we would pick.\n\n- Automatic movement, so there is no battery to replace.\n- 200 m water resistance — swimmable, and rated for more than most owners will ask of it.\n- Caveat: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nThe whole shortlist, with the caveats, is linked in bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 545,
+      "limit": 1000,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "platform": "tiktok",
+      "text": "Three things to check on a dress watch before you spend anything.\n\n- Automatic movement, so there is no battery to replace.\n- Caveat: only 30 m water resistance — treat it as rain and handwashing, not swimming.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nSpecs, caveats and the link are in the bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 404,
+      "limit": 2200,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "platform": "reels",
+      "text": "Three things to check on a dress watch before you spend anything.\n\n- Automatic movement, so there is no battery to replace.\n- Caveat: only 30 m water resistance — treat it as rain and handwashing, not swimming.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nFull write-up and the link are on the site — link in bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 418,
+      "limit": 2200,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "platform": "shorts",
+      "text": "Not the flashiest dress watch on the shelf. Still the one we would pick.\n\n- Automatic movement, so there is no battery to replace.\n- Caveat: only 30 m water resistance — treat it as rain and handwashing, not swimming.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nThe whole shortlist, with the caveats, is linked in bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 424,
+      "limit": 1000,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "platform": "tiktok",
+      "text": "Three things to check on a field watch before you spend anything.\n\n- Solar charged, so there is no battery service interval.\n- 100 m water resistance — fine for swimming and showering.\n- Caveat: crystal material is not confirmed in the listing — assume mineral glass unless stated.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nSpecs, caveats and the link are in the bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 475,
+      "limit": 2200,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "platform": "reels",
+      "text": "Three things to check on a field watch before you spend anything.\n\n- Solar charged, so there is no battery service interval.\n- 100 m water resistance — fine for swimming and showering.\n- Caveat: crystal material is not confirmed in the listing — assume mineral glass unless stated.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nFull write-up and the link are on the site — link in bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 489,
+      "limit": 2200,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "platform": "shorts",
+      "text": "Not the flashiest field watch on the shelf. Still the one we would pick.\n\n- Solar charged, so there is no battery service interval.\n- 100 m water resistance — fine for swimming and showering.\n- Caveat: crystal material is not confirmed in the listing — assume mineral glass unless stated.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nThe whole shortlist, with the caveats, is linked in bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 495,
+      "limit": 1000,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "platform": "tiktok",
+      "text": "Three things to check on a diver before you spend anything.\n\n- Automatic movement, so there is no battery to replace.\n- 300 m water resistance — swimmable, and rated for more than most owners will ask of it.\n- Caveat: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nSpecs, caveats and the link are in the bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 525,
+      "limit": 2200,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "platform": "reels",
+      "text": "Three things to check on a diver before you spend anything.\n\n- Automatic movement, so there is no battery to replace.\n- 300 m water resistance — swimmable, and rated for more than most owners will ask of it.\n- Caveat: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nFull write-up and the link are on the site — link in bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 539,
+      "limit": 2200,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "platform": "shorts",
+      "text": "Not the flashiest diver on the shelf. Still the one we would pick.\n\n- Automatic movement, so there is no battery to replace.\n- 300 m water resistance — swimmable, and rated for more than most owners will ask of it.\n- Caveat: we have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nThe whole shortlist, with the caveats, is linked in bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 545,
+      "limit": 1000,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-casio-w-800h",
+      "asin": "",
+      "platform": "tiktok",
+      "text": "Three things to check on a digital watch before you spend anything.\n\n- Digital display, so the functions are readable without interpretation.\n- 100 m water resistance — fine for swimming and showering.\n- Caveat: crystal material is not confirmed in the listing — assume mineral glass unless stated.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nSpecs, caveats and the link are in the bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 492,
+      "limit": 2200,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-casio-w-800h",
+      "asin": "",
+      "platform": "reels",
+      "text": "Three things to check on a digital watch before you spend anything.\n\n- Digital display, so the functions are readable without interpretation.\n- 100 m water resistance — fine for swimming and showering.\n- Caveat: crystal material is not confirmed in the listing — assume mineral glass unless stated.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nFull write-up and the link are on the site — link in bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 506,
+      "limit": 2200,
+      "withinLimit": true
+    },
+    {
+      "watch_id": "watch-cat-casio-w-800h",
+      "asin": "",
+      "platform": "shorts",
+      "text": "Not the flashiest digital watch on the shelf. Still the one we would pick.\n\n- Digital display, so the functions are readable without interpretation.\n- 100 m water resistance — fine for swimming and showering.\n- Caveat: crystal material is not confirmed in the listing — assume mineral glass unless stated.\n\nNo price quoted on purpose — it moves. Check the current one on the listing.\nThe whole shortlist, with the caveats, is linked in bio.\n\n#ad Affiliate link — we may earn a commission at no extra cost to you.",
+      "length": 512,
+      "limit": 1000,
+      "withinLimit": true
+    }
+  ],
+  "hashtags": [
+    {
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "tags": [
+        "#watches",
+        "#watchtok",
+        "#divewatch",
+        "#diverwatch",
+        "#toolwatch",
+        "#skxmods",
+        "#seiko",
+        "#watchcollection"
+      ]
+    },
+    {
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "tags": [
+        "#watches",
+        "#watchtok",
+        "#dresswatch",
+        "#classicwatch",
+        "#watchstyle",
+        "#minimalwatch",
+        "#orient",
+        "#affordablewatches"
+      ]
+    },
+    {
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "tags": [
+        "#watches",
+        "#watchtok",
+        "#fieldwatch",
+        "#toolwatch",
+        "#militarywatch",
+        "#everydaycarry",
+        "#citizen",
+        "#affordablewatches"
+      ]
+    },
+    {
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "tags": [
+        "#watches",
+        "#watchtok",
+        "#divewatch",
+        "#diverwatch",
+        "#toolwatch",
+        "#skxmods",
+        "#certina",
+        "#watchcollection"
+      ]
+    },
+    {
+      "watch_id": "watch-cat-casio-w-800h",
+      "asin": "",
+      "tags": [
+        "#watches",
+        "#watchtok",
+        "#gshock",
+        "#digitalwatch",
+        "#casio",
+        "#everydaycarry",
+        "#affordablewatches"
+      ]
+    }
+  ],
+  "posting_schedule": [
+    {
+      "date": "2026-09-04",
+      "time_local": "18:30",
+      "slot": 1,
+      "type": "single",
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "label": "Seiko Prospex SPB143",
+      "platforms": [
+        "tiktok",
+        "reels",
+        "shorts"
+      ]
+    },
+    {
+      "date": "2026-09-05",
+      "time_local": "12:15",
+      "slot": 2,
+      "type": "single",
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "label": "Orient Bambino Version 4",
+      "platforms": [
+        "tiktok",
+        "reels",
+        "shorts"
+      ]
+    },
+    {
+      "date": "2026-09-07",
+      "time_local": "18:30",
+      "slot": 3,
+      "type": "single",
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "label": "Citizen Eco-Drive BM8180",
+      "platforms": [
+        "tiktok",
+        "reels",
+        "shorts"
+      ]
+    },
+    {
+      "date": "2026-09-08",
+      "time_local": "12:15",
+      "slot": 4,
+      "type": "single",
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "label": "Certina DS Action Diver",
+      "platforms": [
+        "tiktok",
+        "reels",
+        "shorts"
+      ]
+    },
+    {
+      "date": "2026-09-09",
+      "time_local": "18:30",
+      "slot": 5,
+      "type": "single",
+      "watch_id": "watch-cat-casio-w-800h",
+      "asin": "",
+      "label": "Casio W-800H-1A",
+      "platforms": [
+        "tiktok",
+        "reels",
+        "shorts"
+      ]
+    },
+    {
+      "date": "2026-09-10",
+      "time_local": "12:15",
+      "slot": 6,
+      "type": "roundup",
+      "watch_id": null,
+      "asin": null,
+      "label": "All five, ranked, 45s",
+      "platforms": [
+        "tiktok",
+        "reels",
+        "shorts"
+      ]
+    },
+    {
+      "date": "2026-09-11",
+      "time_local": "18:30",
+      "slot": 7,
+      "type": "re-cut",
+      "watch_id": "watch-cat-seiko-spb143j1",
+      "asin": "",
+      "label": "Re-cut of Seiko with a different hook — swap for a better performer if one emerged",
+      "platforms": [
+        "tiktok",
+        "reels",
+        "shorts"
+      ]
+    },
+    {
+      "date": "2026-09-12",
+      "time_local": "12:15",
+      "slot": 8,
+      "type": "re-cut",
+      "watch_id": "watch-cat-orient-ra-ac0m03b",
+      "asin": "",
+      "label": "Re-cut of Orient with a different hook — swap for a better performer if one emerged",
+      "platforms": [
+        "tiktok",
+        "reels",
+        "shorts"
+      ]
+    },
+    {
+      "date": "2026-09-14",
+      "time_local": "18:30",
+      "slot": 9,
+      "type": "re-cut",
+      "watch_id": "watch-cat-citizen-bm8180-03e",
+      "asin": "",
+      "label": "Re-cut of Citizen with a different hook — swap for a better performer if one emerged",
+      "platforms": [
+        "tiktok",
+        "reels",
+        "shorts"
+      ]
+    },
+    {
+      "date": "2026-09-15",
+      "time_local": "12:15",
+      "slot": 10,
+      "type": "re-cut",
+      "watch_id": "watch-cat-certina-c032-407-11-050-00",
+      "asin": "",
+      "label": "Re-cut of Certina with a different hook — swap for a better performer if one emerged",
+      "platforms": [
+        "tiktok",
+        "reels",
+        "shorts"
+      ]
+    }
+  ],
+  "compliance": {
+    "checked_at": "2026-09-04T19:45:27.257Z",
+    "rules_applied": [
+      "Never imply Amazon endorses, sponsors or reviews this site.",
+      "Do not use the Amazon logo, the smile mark, or 'Amazon' in the site name, logo, domain or social handles.",
+      "Refer to the retailer as 'Amazon' in body copy only, never as a badge or endorsement.",
+      "Do not state or imply a price in social copy — prices change and stale prices are a terms violation.",
+      "Every social post and every page carries an affiliate disclosure."
+    ],
+    "issues": [],
+    "clean": true
+  },
+  "manual_step": "A human uploads these to TikTok, Instagram and YouTube. Nothing in this repository posts to any platform."
+}

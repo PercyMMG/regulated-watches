@@ -513,7 +513,8 @@ function viewCollections(main){
     row.querySelector('button').onclick = async (e) => {
       e.target.disabled = true; e.target.textContent = 'Creating…';
       try{
-        await api('POST','/api/collection',{ title:c.title, slug:c.slug, intro_text:c.intro_text, watch_ids:c.watch_ids });
+        const made = await api('POST','/api/collection',{ title:c.title, slug:c.slug, intro_text:c.intro_text, watch_ids:c.watch_ids });
+        if(made.dev_restart_needed) toast('First collection created. Restart "npm run dev" to see it on the site — Astro does not watch a content type that was empty at startup. Later ones appear straight away.','err');
         await load(); toast('Created with a draft intro. Rewrite it in your own words.');
       }catch(err){ toast(err.message,'err'); e.target.disabled=false; e.target.textContent='Create'; }
     };
@@ -581,8 +582,9 @@ function viewComparisons(main){
     row.querySelector('button').onclick = async (e) => {
       e.target.disabled = true; e.target.textContent = 'Creating…';
       try{
-        await api('POST','/api/comparison',{ watch_a:c.a.id, watch_b:c.b.id, summary_winner:'' });
-        await load(); toast('Created. Open it and write the verdict — an empty one publishes a bare table.');
+        const made = await api('POST','/api/comparison',{ watch_a:c.a.id, watch_b:c.b.id, summary_winner:'' });
+        if(made.dev_restart_needed) toast('First comparison created. Restart "npm run dev" to see it on the site — Astro does not watch a content type that was empty at startup. Later ones appear straight away.','err');
+        const r2 = await load(); toast('Created. Open it and write the verdict — an empty one publishes a bare table.');
       }catch(err){ toast(err.message,'err'); e.target.disabled=false; e.target.textContent='Create'; }
     };
     return row;

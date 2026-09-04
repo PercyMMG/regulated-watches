@@ -307,7 +307,21 @@ export const catalogueRemaining = () => catalogueStats();
  * Collections
  * ------------------------------------------------------------------ */
 
+/**
+ * Astro's glob loader does not watch a pattern that matched nothing when the
+ * dev server started, so the FIRST collection or comparison you create is
+ * written to disk and stays invisible until a restart - which reads as the
+ * feature being broken.
+ *
+ * Touching and then rewriting the content config were both tried; neither
+ * reliably forced a re-sync. Rather than ship a workaround that works
+ * sometimes, the dashboard says when a restart is needed. Every later item of
+ * that type appears straight away.
+ */
+const isFirstOfType = (dir) => listJson(dir).length === 0;
+
 export function saveCollection(input) {
+  const firstOfType = isFirstOfType(paths.collections);
   const slug = slugify(input.slug || input.title);
   if (!slug) throw new Error('A collection needs a title.');
   const col = {
@@ -319,7 +333,7 @@ export function saveCollection(input) {
     updated_at: new Date().toISOString(),
   };
   writeJson(paths.collections, `${slug}.json`, col);
-  return col;
+  return { ...col, dev_restart_needed: firstOfType };
 }
 
 export function deleteCollection(slug) {
@@ -332,6 +346,7 @@ export function deleteCollection(slug) {
  * ------------------------------------------------------------------ */
 
 export function saveComparison(input) {
+  const firstOfType = isFirstOfType(paths.comparisons);
   const approved = listMarkdown(paths.watches);
   const a = approved.find((w) => w.id === input.watch_a || w.asin === input.watch_a);
   const b = approved.find((w) => w.id === input.watch_b || w.asin === input.watch_b);
@@ -353,7 +368,7 @@ export function saveComparison(input) {
     updated_at: new Date().toISOString(),
   };
   writeJson(paths.comparisons, `${slug}.json`, cmp);
-  return cmp;
+  return { ...cmp, dev_restart_needed: firstOfType };
 }
 
 /** Differences we can state from stored facts alone. */

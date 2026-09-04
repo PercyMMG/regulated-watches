@@ -1,0 +1,28 @@
+{
+  "id": "comparison-seiko-vs-timex",
+  "title": "Seiko 5 SNK809 vs Timex Expedition Scout 40mm",
+  "slug": "seiko-vs-timex",
+  "watch_a": "watch-cat-seiko-snk809",
+  "watch_b": "watch-cat-timex-t49962",
+  "asin_a": "",
+  "asin_b": "",
+  "summary_winner": "",
+  "key_differences": [
+    {
+      "field": "Movement",
+      "a": "automatic",
+      "b": "quartz"
+    },
+    {
+      "field": "Case size",
+      "a": "37 mm",
+      "b": "40 mm"
+    },
+    {
+      "field": "Water resistance",
+      "a": "30 m",
+      "b": "50 m"
+    }
+  ],
+  "updated_at": "2026-09-04T19:48:35.106Z"
+}

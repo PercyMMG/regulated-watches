@@ -6,6 +6,7 @@ import { site, link } from '../lib/site';
 
 const all = await getCollection('watches');
 const cols = await getCollection('collections');
+const cmps = await getCollection('comparisons');
 
 const featured = all.filter((w) => w.data.featured);
 const recent = [...all].sort((a, b) =>
@@ -33,6 +34,7 @@ const stylesInUse = site.taxonomy.styles.filter((s) => byStyle[s.id].length > 0)
         <span><b>{site.taxonomy.tiers.length}</b> price bands</span>
         <span><b>{stylesInUse.length}</b> styles</span>
         <span><b>{cols.length}</b> collections</span>
+        <span><b>{cmps.length}</b> comparisons</span>
       </div>
     </div>
   </section>
@@ -91,6 +93,27 @@ const stylesInUse = site.taxonomy.styles.filter((s) => byStyle[s.id].length > 0)
             <div class="tags">
               {stylesInUse.map((s) => (
                 <a class="tag" href={link(`/style/${s.id}`)}>{s.title} · {byStyle[s.id].length}</a>
+              ))}
+            </div>
+          </>
+        )}
+
+        {cmps.length > 0 && (
+          <>
+            <div class="sec-head">
+              <div>
+                <h2>Head to head</h2>
+                <p>Two watches people actually choose between, on the specification rather than the marketing.</p>
+              </div>
+              <a href={link('/compare')}>All →</a>
+            </div>
+            <div class="grid-2">
+              {cmps.slice(0, 4).map((c) => (
+                <a class="card" href={link(`/compare/${c.data.slug}`)} style="padding:18px;text-decoration:none;color:inherit">
+                  <div class="card-title" style="margin-bottom:6px">{c.data.title}</div>
+                  {c.data.summary_winner && <p class="card-blurb" style="margin:0 0 10px">{c.data.summary_winner}</p>}
+                  <span class="tag">{c.data.key_differences.length} differences</span>
+                </a>
               ))}
             </div>
           </>

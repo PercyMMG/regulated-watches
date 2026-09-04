@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { link, styleById } from '../../lib/site';
+
+/**
+ * Comparisons had no index. They were reachable only from the two watch pages
+ * involved, which is close to invisible — and these are the pages most likely
+ * to be found in a search, so they need the most internal linking, not the
+ * least.
+ */
+const cmps = (await getCollection('comparisons')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title)
+);
+const watches = await getCollection('watches');
+
+const rows = cmps.map((c) => {
+  const a = watches.find((w) => w.data.id === c.data.watch_a);
+  const b = watches.find((w) => w.data.id === c.data.watch_b);
+  return { c, a, b, style: a?.data.style ?? '' };
+});
+---
+
+<Base
+  title="Comparisons"
+  description="Head-to-head on the stated specification: what actually differs between two watches people cross-shop."
+>
+  <div class="wrap" style="padding-top:44px">
+    <h1>Comparisons</h1>
+    <p class="lede">
+      Two watches people genuinely choose between, side by side. The table shows only where the
+      specifications actually differ — anything neither listing states is left out rather than
+      filled in with an assumption.
+    </p>
+
+    {rows.length === 0 ? (
+      <div class="empty">
+        <p>No comparisons yet. The curation dashboard suggests pairs worth making.</p>
+      </div>
+    ) : (
+      <div class="grid-2" style="margin-top:28px">
+        {rows.map(({ c, style }) => (
+          <a class="card" href={link(`/compare/${c.data.slug}`)} style="padding:18px;text-decoration:none;color:inherit">
+            <div class="card-title" style="margin-bottom:6px">{c.data.title}</div>
+            {c.data.summary_winner && <p class="card-blurb" style="margin:0 0 10px">{c.data.summary_winner}</p>}
+            <div class="tags">
+              {style && <span class="tag">{styleById(style)?.title ?? style}</span>}
+              <span class="tag">{c.data.key_differences.length} differences</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Base>

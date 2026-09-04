@@ -1,0 +1,53 @@
+---
+id: "watch-cat-hamilton-h69439931"
+catalogue_key: "cat-hamilton-h69439931"
+asin: ""
+model_ref: "H69439931"
+title: "Hamilton Khaki Field Mechanical 38mm"
+full_title: "Hamilton Khaki Field Mechanical 38mm"
+brand: "Hamilton"
+style: "field"
+movement: "hand-wound"
+tier: "upper"
+case_mm: 38
+water_resistance_m: 50
+source_image_url: ""
+image: ""
+price_display: ""
+price_value: null
+price_checked_at: null
+rating: null
+rating_count: null
+scraped_url: "https://www.amazon.co.uk/s?k=Hamilton%20Khaki%20Field%20Mechanical%2038mm"
+source_page: "catalogue"
+scraped_at: "2026-09-04T11:24:26.596Z"
+short_blurb: "Hamilton field watch in a 38 mm case, hand-wound. Hand-wound movement — no rotor, usually a thinner case."
+pros:
+  - "Hand-wound movement — no rotor, usually a thinner case."
+  - "38 mm case, which suits a smaller wrist without looking undersized."
+  - "Sapphire crystal, which resists scratches far better than mineral glass."
+cons:
+  - "Only 50 m water resistance — treat it as rain and handwashing, not swimming."
+  - "We have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying."
+tags: []
+suggested_tags:
+  - "field"
+  - "hand-wound"
+  - "upper"
+  - "hamilton"
+  - "sapphire"
+  - "small-case"
+featured: false
+catalogue_confidence: "high"
+catalogue_note: "Hand-wound H-50 with a long power reserve. No rotor, so it is thin. A genuine military-pattern field watch rather than a styling exercise."
+drafts: []
+status: "approved"
+approved_at: "2026-09-04T19:41:34.206Z"
+---
+Hand-wound H-50 with a long power reserve. No rotor, so it is thin. A genuine military-pattern field watch rather than a styling exercise.
+
+**Where it sits.** Plain dial, high contrast, built to be read in bad light. This one falls in our £250–£500 band.
+
+**Stated specification.** movement: hand-wound, case: 38 mm, water resistance: 50 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.
+
+**What we have not done.** We have not handled this watch, and we have not tied it to one specific listing yet. Everything above comes from the model's published specification, and we say so rather than implying a review we did not carry out.
