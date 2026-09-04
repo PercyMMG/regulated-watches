@@ -56,6 +56,10 @@ function state() {
       priceMaxAgeHours: config.price.maxAgeHours,
       hasAssociateTag: hasAssociateTag(),
       associateTagPlaceholder: TAG_PLACEHOLDER,
+      // Two places a watch can be looked at. The dev server shows an approved
+      // watch immediately; the live site only after a push and a rebuild.
+      siteUrl: config.url.replace(/\/$/, ''),
+      devUrl: `http://localhost:${process.env.ASTRO_PORT || 4321}`,
     },
   };
 }

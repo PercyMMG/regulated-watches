@@ -1,0 +1,55 @@
+{
+  "id": "watch-cat-casio-ga-2100-1a1",
+  "catalogue_key": "cat-casio-ga-2100-1a1",
+  "asin": "",
+  "model_ref": "GA-2100-1A1",
+  "title": "Casio G-Shock GA-2100-1A1",
+  "full_title": "Casio G-Shock GA-2100-1A1",
+  "brand": "Casio",
+  "style": "digital",
+  "movement": "quartz",
+  "tier": "core",
+  "case_mm": 45.4,
+  "water_resistance_m": 200,
+  "source_image_url": "",
+  "image": "",
+  "price_display": "",
+  "price_value": null,
+  "price_checked_at": null,
+  "rating": null,
+  "rating_count": null,
+  "scraped_url": "https://www.amazon.co.uk/s?k=Casio%20G-Shock%20GA-2100-1A1",
+  "source_page": "catalogue",
+  "scraped_at": "2026-09-04T11:24:26.596Z",
+  "short_blurb": "A 45.4 mm quartz digital watch from Casio. Quartz movement: more accurate day to day than any mechanical at this level.",
+  "long_description": "Analogue-digital, carbon core guard, octagonal bezel. Thin for a G-Shock. Case width is quoted several ways; 45.4 mm includes the guards.\n\n**Where it sits.** Function over romance. Usually the most watch per pound on the page. This one falls in our £100–£250 band.\n\n**Stated specification.** movement: quartz, case: 45.4 mm, water resistance: 200 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.\n\n**What we have not done.** We have not handled this watch, and we have not tied it to one specific listing yet. Everything above comes from the model's published specification, and we say so rather than implying a review we did not carry out.",
+  "pros": [
+    "Quartz movement: more accurate day to day than any mechanical at this level.",
+    "200 m water resistance — swimmable, and rated for more than most owners will ask of it."
+  ],
+  "cons": [
+    "45.4 mm case is large. Measure your wrist before committing.",
+    "Crystal material is not confirmed in the listing — assume mineral glass unless stated.",
+    "We have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying."
+  ],
+  "tags": [],
+  "suggested_tags": [
+    "digital",
+    "quartz",
+    "core",
+    "casio",
+    "mineral-crystal",
+    "water-resistant"
+  ],
+  "featured": false,
+  "catalogue_confidence": "high",
+  "catalogue_note": "Analogue-digital, carbon core guard, octagonal bezel. Thin for a G-Shock. Case width is quoted several ways; 45.4 mm includes the guards.",
+  "drafts": [
+    "tags",
+    "pros",
+    "cons",
+    "short_blurb",
+    "long_description"
+  ],
+  "status": "pending"
+}

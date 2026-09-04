@@ -1,0 +1,57 @@
+{
+  "id": "watch-cat-hamilton-h70455133",
+  "catalogue_key": "cat-hamilton-h70455133",
+  "asin": "",
+  "model_ref": "H70455133",
+  "title": "Hamilton Khaki Field Auto 38mm",
+  "full_title": "Hamilton Khaki Field Auto 38mm",
+  "brand": "Hamilton",
+  "style": "field",
+  "movement": "automatic",
+  "tier": "top",
+  "case_mm": 38,
+  "water_resistance_m": 100,
+  "source_image_url": "",
+  "image": "",
+  "price_display": "",
+  "price_value": null,
+  "price_checked_at": null,
+  "rating": null,
+  "rating_count": null,
+  "scraped_url": "https://www.amazon.co.uk/s?k=Hamilton%20Khaki%20Field%20Auto%2038mm",
+  "source_page": "catalogue",
+  "scraped_at": "2026-09-04T11:24:26.596Z",
+  "short_blurb": "Hamilton's field watch: 38 mm case, automatic. Automatic movement, so there is no battery to replace.",
+  "long_description": "Automatic H-10 with a long reserve. Sold in 38 mm and 42 mm; confirm which reference the listing is for.\n\n**Where it sits.** Plain dial, high contrast, built to be read in bad light. This one falls in our Over £500 band.\n\n**Stated specification.** movement: automatic, case: 38 mm, water resistance: 100 m. Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.\n\n**What we have not done.** We have not handled this watch, and we have not tied it to one specific listing yet. Everything above comes from the model's published specification, and we say so rather than implying a review we did not carry out.",
+  "pros": [
+    "Automatic movement, so there is no battery to replace.",
+    "100 m water resistance — fine for swimming and showering.",
+    "38 mm case, which suits a smaller wrist without looking undersized.",
+    "Sapphire crystal, which resists scratches far better than mineral glass."
+  ],
+  "cons": [
+    "We have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying."
+  ],
+  "tags": [],
+  "suggested_tags": [
+    "field",
+    "automatic",
+    "top",
+    "hamilton",
+    "sapphire",
+    "small-case",
+    "water-resistant"
+  ],
+  "featured": false,
+  "catalogue_confidence": "medium",
+  "catalogue_note": "Automatic H-10 with a long reserve. Sold in 38 mm and 42 mm; confirm which reference the listing is for.",
+  "drafts": [
+    "tags",
+    "pros",
+    "cons",
+    "short_blurb",
+    "long_description",
+    "specs"
+  ],
+  "status": "pending"
+}

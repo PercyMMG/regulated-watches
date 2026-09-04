@@ -19,6 +19,11 @@
   nav button:hover{color:var(--ink)}
   nav button[aria-current="true"]{color:var(--ink);border-color:var(--line);background:var(--panel)}
   nav .count{color:var(--mute);font-family:var(--mono);font-size:11px;margin-left:5px}
+  #sitelinks{margin-left:auto;display:flex;gap:14px;align-items:center}
+  #sitelinks a{color:var(--mute);font-size:12px;text-decoration:none;border:1px solid var(--line);padding:4px 10px;border-radius:3px;white-space:nowrap}
+  #sitelinks a:hover{color:var(--ink);border-color:var(--mute)}
+  .pagelink{color:var(--accent);font-size:12px;text-decoration:none}
+  .pagelink:hover{text-decoration:underline}
   main{padding:20px;max-width:1180px}
   .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
   button.act{background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:6px 12px;border-radius:3px;cursor:pointer;font:inherit;font-size:13px}
@@ -69,6 +74,7 @@
 <header>
   <h1 id="brand">Curation</h1>
   <nav id="nav"></nav>
+  <span id="sitelinks"></span>
 </header>
 <main id="main"><div class="empty">Loading…</div></main>
 <script>
@@ -114,10 +120,17 @@ function render(){
   }).join('');
   document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{ S.view=b.dataset.view; S.sel.clear(); render(); });
 
+  // Links out to the site itself. The dev server reflects an approval straight
+  // away; the live site only after a push and a Cloudflare rebuild.
+  const links = document.getElementById('sitelinks');
+  links.innerHTML = `
+    <a href="${esc(d.config.devUrl)}" target="_blank" rel="noopener" title="Local dev server - shows approved watches immediately">Preview&nbsp;↗</a>
+    <a href="${esc(d.config.siteUrl)}" target="_blank" rel="noopener" title="The published site - updates after you push">Live&nbsp;site&nbsp;↗</a>`;
+
   const main = document.getElementById('main');
   main.innerHTML = '';
   if(!d.config.hasAssociateTag){
-    main.appendChild($(`<div class="warnbar">No Associates tag set. <code>affiliate.associateTag</code> in <code>site.config.json</code> is still <code>${esc(d.config.associateTagPlaceholder)}</code>, so the site will render buy buttons as disabled. Set it before you publish.</div>`));
+    main.appendChild($(`<div class="warnbar">No Associates tag set. <code>affiliate.associateTag</code> in <code>site.config.json</code> is still <code>${esc(d.config.associateTagPlaceholder)}</code>, so links render as ordinary untagged Amazon links. The site is publishable as it stands; it just earns nothing until you set this.</div>`));
   }
   ({ pending:viewWatches, approved:viewWatches, rejected:viewWatches, collections:viewCollections, comparisons:viewComparisons, social:viewSocial })[S.view](main);
 }
@@ -187,6 +200,13 @@ function watchCard(w){
     : '';
   const price = w.price_display ? `${esc(w.price_display)}${w._priceFresh?'':' (stale)'}` : 'no price';
 
+  // Only approved watches have a page. The link goes to the dev server, which
+  // reflects an approval immediately; the live site needs a push first.
+  const slug = String(w._file||'').replace(/\.(md|json)$/,'');
+  const pageLink = S.view==='approved' && slug
+    ? `<a class="pagelink" href="${esc(S.data.config.devUrl)}/watches/${esc(slug)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">View page ↗</a>`
+    : '';
+
   const card = $(`<div class="card${open?' open':''}">
     <div class="row">
       <input type="checkbox" ${S.sel.has(keyOf(w))?'checked':''}>
@@ -198,7 +218,7 @@ function watchCard(w){
           <span>${w.rating??'—'}/5${w.rating_count?` (${w.rating_count})`:''}</span>
         </div>
       </div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;max-width:340px">${status}${drafts}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;align-items:flex-start;max-width:340px">${status}${drafts}${pageLink}</div>
     </div>
     <div class="edit"></div>
   </div>`);
@@ -269,7 +289,12 @@ function editor(w){
 
   const actions = $('<div class="bar" style="border:0;padding:0;margin:0"></div>');
   actions.appendChild($(`<button class="act" data-a="save">Save</button>`));
-  if(w.source_image_url) actions.appendChild($(`<a class="act" style="text-decoration:none" href="${esc(w.scraped_url)}" target="_blank" rel="noopener nofollow">Open listing</a>`));
+  if(w.scraped_url) actions.appendChild($(`<a class="act" style="text-decoration:none" href="${esc(w.scraped_url)}" target="_blank" rel="noopener nofollow">${w.asin?'Open listing':'Search Amazon'} ↗</a>`));
+  if(S.view==='approved'){
+    const slug = String(w._file||'').replace(/\.md$/,'');
+    actions.appendChild($(`<a class="act" style="text-decoration:none" href="${esc(S.data.config.devUrl)}/watches/${esc(slug)}" target="_blank" rel="noopener">View page ↗</a>`));
+    actions.appendChild($(`<a class="act" style="text-decoration:none" href="${esc(S.data.config.siteUrl)}/watches/${esc(slug)}" target="_blank" rel="noopener">View live ↗</a>`));
+  }
   for(const f of ['short_blurb','pros','cons','long_description']){
     actions.appendChild($(`<button class="act" data-regen="${f}">Regenerate ${f.replace('_',' ')}</button>`));
   }
