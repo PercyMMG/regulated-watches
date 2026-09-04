@@ -141,8 +141,13 @@ export function draftCons(w) {
   if (typeof w.rating_count === 'number' && w.rating_count > 0 && w.rating_count < 50) {
     out.push(`Only ${w.rating_count} ratings so far, so the average is not yet reliable.`);
   }
-  if (w.rating_count === null || w.rating_count === undefined) {
+  // Only meaningful for a record that came from a listing. A catalogue entry
+  // never had review data to lose, so saying we failed to capture it is noise.
+  if ((w.rating_count === null || w.rating_count === undefined) && w.source_page !== 'catalogue') {
     out.push('No rating count captured, so we cannot judge how settled the reviews are.');
+  }
+  if (w.source_page === 'catalogue' && !w.asin) {
+    out.push('We have not matched this to a specific Amazon listing yet, so check the exact reference and seller before buying.');
   }
   return out;
 }
@@ -178,9 +183,12 @@ export function draftBlurb(w) {
 export function draftLongDescription(w) {
   const tier = tierById(w.tier);
   const style = styleById(w.style);
+  const fromCatalogue = w.source_page === 'catalogue';
   const paras = [];
 
-  paras.push(draftBlurb(w));
+  // Deliberately does NOT open with draftBlurb. The blurb is already rendered
+  // as the lede directly above the body, and repeating it verbatim two
+  // paragraphs apart is the tell of a generated page.
 
   if (style) paras.push(`**Where it sits.** ${style.blurb}${tier ? ` This one falls in our ${tier.title} band.` : ''}`);
 
@@ -188,10 +196,20 @@ export function draftLongDescription(w) {
   if (w.movement) specs.push(`movement: ${w.movement}`);
   if (w.case_mm) specs.push(`case: ${w.case_mm} mm`);
   if (w.water_resistance_m) specs.push(`water resistance: ${w.water_resistance_m} m`);
-  if (specs.length) paras.push(`**Stated specification.** ${specs.join(', ')}. Taken from the Amazon listing at the time of checking, not from hands-on measurement.`);
+
+  if (specs.length) {
+    // Where the specification came from is not decoration. A catalogue entry
+    // was never read off a listing, and saying it was would be untrue.
+    const provenance = fromCatalogue
+      ? 'Taken from the published specification for this model, not from a particular listing and not from hands-on measurement. Confirm it against the listing you buy from: regional variants differ.'
+      : 'Taken from the Amazon listing at the time of checking, not from hands-on measurement.';
+    paras.push(`**Stated specification.** ${specs.join(', ')}. ${provenance}`);
+  }
 
   paras.push(
-    '**What we have not done.** We have not handled this watch. Everything above is read off the listing and the spec sheet, and we say so rather than implying a review we did not carry out.'
+    fromCatalogue
+      ? '**What we have not done.** We have not handled this watch, and we have not tied it to one specific listing yet. Everything above comes from the model\'s published specification, and we say so rather than implying a review we did not carry out.'
+      : '**What we have not done.** We have not handled this watch. Everything above is read off the listing and the spec sheet, and we say so rather than implying a review we did not carry out.'
   );
   return paras.join('\n\n');
 }

@@ -41,7 +41,7 @@ const B = b.data;
             </div>
             <p class="card-blurb">{entry.data.short_blurb}</p>
             <div style="margin:12px 0"><Price watch={entry.data} /></div>
-            <BuyButton asin={entry.data.asin} label="Check price" />
+            <BuyButton watch={entry.data} label="Check price" />
           </div>
         </div>
       ))}

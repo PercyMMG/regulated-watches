@@ -47,6 +47,7 @@
   .line{display:flex;gap:6px;margin-bottom:5px}
   .line input{flex:1}
   .line button{flex:none;background:none;border:1px solid var(--line);color:var(--mute);border-radius:3px;cursor:pointer;padding:0 9px;font:inherit}
+  .notice-cat{border-left:2px solid var(--accent);padding:9px 13px;margin-bottom:14px;background:#1a1710;font-size:12px;color:#d9c07a;line-height:1.5}
   .blocking{border-left:2px solid var(--bad);padding:8px 12px;margin-bottom:14px;background:#1a1413;font-size:12px}
   .blocking div{color:#e0a49e;margin-bottom:3px}
   .note{color:var(--mute);font-size:12px;margin:10px 0}
@@ -75,6 +76,8 @@ const S = { data:null, view:'pending', open:new Set(), sel:new Set(), packSel:[]
 const $ = (h) => { const d=document.createElement('div'); d.innerHTML=h.trim(); return d.firstElementChild; };
 const esc = (s) => String(s??'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // Amazon titles lead with the brand, so prefixing it again gives "Seiko Seiko 5".
+// ASIN where there is one; catalogue-seeded watches have none.
+const keyOf = (w) => w.asin || w.catalogue_key || w.id;
 const fullName = (w) => {
   const b=(w.brand||'').trim(), t=(w.title||'Untitled').trim();
   if(!b) return t;
@@ -128,6 +131,18 @@ function viewWatches(main){
   bar.appendChild($(`<span class="note" id="selcount" style="margin:0"></span>`));
 
   if(S.view==='pending'){
+    const cat = S.data.catalogue || {remaining:0};
+    const seed = $(`<button class="act" id="seed" ${cat.remaining?'':'disabled'}>Generate 10 from catalogue</button>`);
+    seed.onclick = async()=>{
+      seed.disabled = true; seed.textContent = 'Generating…';
+      try{
+        const r = await api('POST','/api/catalogue/batch',{size:10});
+        await load();
+        toast(`${r.written.length} added to Pending. ${r.remaining} left in the catalogue.`);
+      }catch(e){ toast(e.message,'err'); seed.disabled=false; seed.textContent='Generate 10 from catalogue'; }
+    };
+    bar.appendChild(seed);
+    bar.appendChild($(`<span class="note" style="margin:0">${cat.remaining} in catalogue</span>`));
     if(S.data.config.curation.allowBulkApprove) bar.appendChild($(`<button class="act go" data-bulk="approve">Approve selected</button>`));
     if(S.data.config.curation.allowBulkReject) bar.appendChild($(`<button class="act no" data-bulk="reject">Reject selected</button>`));
   }
@@ -139,7 +154,7 @@ function viewWatches(main){
   main.appendChild(bar);
 
   bar.querySelector('#selall').onclick = ()=>{
-    if(S.sel.size===list.length) S.sel.clear(); else list.forEach(w=>S.sel.add(w.asin));
+    if(S.sel.size===list.length) S.sel.clear(); else list.forEach(w=>S.sel.add(keyOf(w)));
     render();
   };
   bar.querySelectorAll('[data-bulk]').forEach(b=>b.onclick=async()=>{
@@ -165,7 +180,7 @@ function viewWatches(main){
 }
 
 function watchCard(w){
-  const open = S.open.has(w.asin);
+  const open = S.open.has(keyOf(w));
   const drafts = (w.drafts||[]).map(d=>`<span class="pill draft">draft: ${esc(d)}</span>`).join('');
   const status = S.view==='pending'
     ? (w._canApprove ? '<span class="pill ok">ready</span>' : `<span class="pill block">${w._blocking.length} blocking</span>`)
@@ -174,11 +189,11 @@ function watchCard(w){
 
   const card = $(`<div class="card${open?' open':''}">
     <div class="row">
-      <input type="checkbox" ${S.sel.has(w.asin)?'checked':''}>
+      <input type="checkbox" ${S.sel.has(keyOf(w))?'checked':''}>
       <div class="meta">
         <div class="t">${esc(fullName(w))}</div>
         <div class="sub">
-          <span>${esc(w.asin)}</span><span>${esc(w.style||'no style')}</span><span>${esc(w.movement||'no movement')}</span>
+          <span>${esc(w.asin || w.model_ref || 'no ASIN')}</span><span>${esc(w.style||'no style')}</span><span>${esc(w.movement||'no movement')}</span>
           <span>${esc(w.tier||'no tier')}</span><span>${price}</span>
           <span>${w.rating??'—'}/5${w.rating_count?` (${w.rating_count})`:''}</span>
         </div>
@@ -190,11 +205,11 @@ function watchCard(w){
 
   card.querySelector('input[type=checkbox]').onclick = (e)=>{
     e.stopPropagation();
-    e.target.checked ? S.sel.add(w.asin) : S.sel.delete(w.asin);
+    e.target.checked ? S.sel.add(keyOf(w)) : S.sel.delete(keyOf(w));
     document.getElementById('selcount').textContent = S.sel.size?`${S.sel.size} selected`:'';
   };
   card.querySelector('.row').onclick = ()=>{
-    S.open.has(w.asin) ? S.open.delete(w.asin) : S.open.add(w.asin);
+    S.open.has(keyOf(w)) ? S.open.delete(keyOf(w)) : S.open.add(keyOf(w));
     render();
   };
   if(open) card.querySelector('.edit').appendChild(editor(w));
@@ -205,6 +220,9 @@ function editor(w){
   const box = $('<div></div>');
   const cfg = S.data.config;
 
+  if(w.catalogue_note){
+    box.appendChild($(`<div class="notice-cat">From the catalogue (unverified): ${esc(w.catalogue_note)} <b>Confidence: ${esc(w.catalogue_confidence||'low')}.</b> Check the specs against the real listing before approving.</div>`));
+  }
   if(w._blocking?.length){
     box.appendChild($(`<div class="blocking">${w._blocking.map(b=>`<div>${esc(b.detail)}</div>`).join('')}</div>`));
   }
@@ -212,6 +230,8 @@ function editor(w){
   const sel = (name,val,opts) => `<select data-f="${name}"><option value="">—</option>${opts.map(o=>`<option value="${esc(o.id)}" ${val===o.id?'selected':''}>${esc(o.title||o.id)}</option>`).join('')}</select>`;
 
   box.appendChild($(`<div class="grid">
+    <div><label>ASIN ${w.asin?'':'<span style="color:var(--warn)">— links to a search until set</span>'}</label><input data-f="asin" value="${esc(w.asin||'')}" placeholder="B01ABCDEFG" pattern="[A-Z0-9]{10}"></div>
+    <div><label>Model ref</label><input data-f="model_ref" value="${esc(w.model_ref||'')}"></div>
     <div><label>Title</label><input data-f="title" value="${esc(w.title)}"></div>
     <div><label>Brand</label><input data-f="brand" value="${esc(w.brand)}"></div>
     <div><label>Style</label>${sel('style',w.style,cfg.taxonomy.styles)}</div>
@@ -220,7 +240,7 @@ function editor(w){
     <div><label>Case mm</label><input data-f="case_mm" type="number" step="0.5" value="${w.case_mm??''}"></div>
     <div><label>Water resist. m</label><input data-f="water_resistance_m" type="number" value="${w.water_resistance_m??''}"></div>
     <div><label>Price shown</label><input data-f="price_display" value="${esc(w.price_display)}"></div>
-    <div><label>Image file in public/images/watches/</label><input data-f="image" value="${esc(w.image)}" placeholder="${esc(w.asin.toLowerCase())}.jpg"></div>
+    <div><label>Image file in public/images/watches/</label><input data-f="image" value="${esc(w.image)}" placeholder="${esc(String(keyOf(w)).toLowerCase())}.jpg"></div>
   </div>`));
 
   box.appendChild($(`<div style="margin-bottom:14px"><label>Short blurb ${draftBadge(w,'short_blurb')}</label><textarea data-f="short_blurb" style="min-height:56px">${esc(w.short_blurb)}</textarea></div>`));
@@ -289,21 +309,21 @@ function editor(w){
   };
 
   actions.querySelectorAll('[data-regen]').forEach(b=>b.onclick=async()=>{
-    try{ await api('POST',`/api/watch/${w.asin}/regenerate`,{field:b.dataset.regen}); await load(); toast('Regenerated. Review it, then Save.'); }
+    try{ await api('POST',`/api/watch/${keyOf(w)}/regenerate`,{field:b.dataset.regen}); await load(); toast('Regenerated. Review it, then Save.'); }
     catch(e){ toast(e.message,'err'); }
   });
 
   actions.querySelectorAll('[data-a]').forEach(b=>b.onclick=async()=>{
     try{
       const a = b.dataset.a;
-      if(a==='destroy' && !confirm(`Permanently delete ${w.asin}?`)) return;
-      await api('POST',`/api/watch/${w.asin}/save`, collect());
+      if(a==='destroy' && !confirm(`Permanently delete ${fullName(w)}?`)) return;
+      await api('POST',`/api/watch/${keyOf(w)}/save`, collect());
       await saveCollections();
-      if(a==='approve') await api('POST',`/api/watch/${w.asin}/approve`);
-      if(a==='reject') await api('POST',`/api/watch/${w.asin}/reject`,{reason:prompt('Reason (optional):')||''});
-      if(a==='restore') await api('POST',`/api/watch/${w.asin}/restore`);
-      if(a==='destroy') await api('DELETE',`/api/watch/${w.asin}`);
-      if(a!=='save') S.open.delete(w.asin);
+      if(a==='approve') await api('POST',`/api/watch/${keyOf(w)}/approve`);
+      if(a==='reject') await api('POST',`/api/watch/${keyOf(w)}/reject`,{reason:prompt('Reason (optional):')||''});
+      if(a==='restore') await api('POST',`/api/watch/${keyOf(w)}/restore`);
+      if(a==='destroy') await api('DELETE',`/api/watch/${keyOf(w)}`);
+      if(a!=='save') S.open.delete(keyOf(w));
       await load();
       toast(a==='save'?'Saved.':`${a} done.`);
     }catch(e){ toast(e.message,'err'); }
@@ -367,7 +387,7 @@ function viewCollections(main){
 
 function viewComparisons(main){
   const ap = S.data.approved;
-  const opts = ap.map(w=>`<option value="${esc(w.asin)}">${esc(fullName(w))}</option>`).join('');
+  const opts = ap.map(w=>`<option value="${esc(keyOf(w))}">${esc(fullName(w))}</option>`).join('');
   const form = $(`<fieldset><legend>New comparison</legend>
     <div class="grid">
       <div><label>Watch A</label><select id="wa"><option value="">—</option>${opts}</select></div>
@@ -420,12 +440,12 @@ function viewSocial(main){
   const paint = () => {
     picker.innerHTML = ap.length ? '' : '<div class="note">No approved watches yet.</div>';
     ap.forEach(w=>{
-      const i = S.packSel.indexOf(w.asin);
+      const i = S.packSel.indexOf(keyOf(w));
       const b = $(`<button class="act" style="margin:3px;${i>=0?'border-color:var(--accent);color:var(--accent)':''}">${i>=0?`${i+1}. `:''}${esc(fullName(w).slice(0,48))}</button>`);
       b.onclick = ()=>{
-        const at = S.packSel.indexOf(w.asin);
+        const at = S.packSel.indexOf(keyOf(w));
         if(at>=0) S.packSel.splice(at,1);
-        else if(S.packSel.length<size) S.packSel.push(w.asin);
+        else if(S.packSel.length<size) S.packSel.push(keyOf(w));
         else return toast(`A pack is exactly ${size}. Remove one first.`,'err');
         paint();
       };

@@ -144,8 +144,13 @@ export function slugify(s) {
     .replace(/-+$/g, '');
 }
 
-export const fileFor = (asin, slug, ext) =>
-  `${slug || slugify(asin)}-${String(asin).toLowerCase()}.${ext}`;
+/**
+ * Filename for a watch. `key` is the ASIN where there is one, and a catalogue
+ * key (`cat-brand-ref`) where there is not: watches seeded from the bundled
+ * catalogue have no ASIN until a human finds the listing.
+ */
+export const fileFor = (key, slug, ext) =>
+  `${slug || slugify(key)}-${slugify(String(key))}.${ext}`;
 
-export const asinFromFile = (f) =>
-  (/-([a-z0-9]{10})\.(?:json|md)$/.exec(basename(f))?.[1] ?? '').toUpperCase();
+/** ASIN, catalogue key, or id - whichever identifies this record. */
+export const watchKey = (w) => w?.asin || w?.catalogue_key || w?.id || '';

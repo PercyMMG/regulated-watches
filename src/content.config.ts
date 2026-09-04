@@ -13,7 +13,13 @@ const watches = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './content/watches' }),
   schema: z.object({
     id: z.string(),
-    asin: z.string().regex(/^[A-Z0-9]{10}$/, 'ASIN must be 10 uppercase alphanumerics'),
+    // Empty until a curator finds the listing. Catalogue-seeded watches link
+    // to an Amazon search for the model instead of a product page.
+    asin: z.union([z.string().regex(/^[A-Z0-9]{10}$/, 'ASIN must be 10 uppercase alphanumerics'), z.literal('')]).default(''),
+    catalogue_key: z.string().optional().default(''),
+    model_ref: z.string().optional().default(''),
+    catalogue_confidence: z.enum(['high', 'medium', 'low']).optional(),
+    catalogue_note: z.string().optional().default(''),
     title: z.string().min(3),
     full_title: z.string().optional(),
     brand: z.string(),

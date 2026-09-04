@@ -35,6 +35,7 @@ const specs = [
   ['Water resistance', d.water_resistance_m ? `${d.water_resistance_m} m` : ''],
   ['Price band', tier?.title],
   ['Amazon rating', d.rating ? `${d.rating}/5${d.rating_count ? ` (${d.rating_count.toLocaleString('en-GB')})` : ''}` : ''],
+  ['Model ref', d.model_ref],
   ['ASIN', d.asin],
 ].filter(([, v]) => v);
 ---
@@ -104,7 +105,7 @@ const specs = [
         <div style="margin-bottom:14px">
           <Price watch={d} showNote={true} />
         </div>
-        <BuyButton asin={d.asin} />
+        <BuyButton watch={d} />
         <table class="speclist">
           <tbody>
             {specs.map(([k, v]) => (

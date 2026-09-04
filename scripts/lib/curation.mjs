@@ -1,11 +1,12 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { config, paths } from './config.mjs';
-import { listJson, listMarkdown, writeJson, writeMarkdown, removeFile, slugify, fileFor } from './store.mjs';
+import { listJson, listMarkdown, writeJson, writeMarkdown, removeFile, slugify, fileFor, watchKey } from './store.mjs';
 import { readyToApprove, priceIsFresh } from './compliance.mjs';
 import { fullName } from './normalise.mjs';
 import { suggestTags } from './taxonomy.mjs';
 import { draftPros, draftCons, draftBlurb, draftLongDescription } from './copy.mjs';
+import { nextBatch as catalogueBatch, stats as catalogueStats } from './catalogue.mjs';
 
 /* ------------------------------------------------------------------ *
  * State machine
@@ -24,6 +25,9 @@ import { draftPros, draftCons, draftBlurb, draftLongDescription } from './copy.m
  * ------------------------------------------------------------------ */
 
 const FIELDS_EDITABLE = new Set([
+  // asin is editable so a curator can paste it in once they have found the
+  // listing for a catalogue-seeded watch.
+  'asin', 'model_ref',
   'title', 'brand', 'style', 'movement', 'tier', 'case_mm', 'water_resistance_m',
   'short_blurb', 'long_description', 'pros', 'cons', 'tags', 'featured', 'image',
   'price_display', 'price_value', 'price_checked_at', 'rating', 'rating_count',
@@ -50,12 +54,20 @@ function decorate(w) {
   };
 }
 
-const findIn = (list, asin) => list.find((w) => String(w.asin).toUpperCase() === String(asin).toUpperCase());
+/**
+ * Look a watch up by any of its identifiers. Ingested watches are keyed by
+ * ASIN; catalogue-seeded ones have no ASIN and are keyed by catalogue_key or
+ * id, so all three are accepted.
+ */
+const matches = (w, ref) => {
+  const r = String(ref).toLowerCase();
+  return [w.asin, w.catalogue_key, w.id].filter(Boolean).some((v) => String(v).toLowerCase() === r);
+};
 
-export function findWatch(asin) {
+export function findWatch(ref) {
   const all = loadAll();
   for (const [state, dir] of [['pending', paths.pending], ['approved', paths.watches], ['rejected', paths.rejected]]) {
-    const hit = findIn(all[state === 'approved' ? 'approved' : state], asin);
+    const hit = all[state].find((w) => matches(w, ref));
     if (hit) return { watch: hit, state, dir };
   }
   return null;
@@ -113,12 +125,12 @@ export function regenerate(asin, field) {
 function persist(watch, state, dir, oldFile) {
   const slug = slugify(watch.title);
   if (state === 'approved') {
-    const name = fileFor(watch.asin, slug, 'md');
+    const name = fileFor(watchKey(watch), slug, 'md');
     if (oldFile && oldFile !== name) removeFile(dir, oldFile);
     const { long_description, ...fm } = watch;
     writeMarkdown(dir, name, stripInternal(fm), long_description || '');
   } else {
-    const name = fileFor(watch.asin, slug, 'json');
+    const name = fileFor(watchKey(watch), slug, 'json');
     if (oldFile && oldFile !== name) removeFile(dir, oldFile);
     writeJson(dir, name, stripInternal(watch));
   }
@@ -148,7 +160,7 @@ export function approve(asin) {
   removeFile(found.dir, found.watch._file);
 
   const { long_description, ...fm } = w;
-  writeMarkdown(paths.watches, fileFor(w.asin, slugify(w.title), 'md'), stripInternal(fm), long_description || '');
+  writeMarkdown(paths.watches, fileFor(watchKey(w), slugify(w.title), 'md'), stripInternal(fm), long_description || '');
   return decorate(w);
 }
 
@@ -160,7 +172,7 @@ export function reject(asin, reason = '') {
   const w = { ...found.watch, status: 'rejected', rejected_at: new Date().toISOString(), reject_reason: reason };
   delete w.approved_at;
   removeFile(found.dir, found.watch._file);
-  writeJson(paths.rejected, fileFor(w.asin, slugify(w.title), 'json'), stripInternal(w));
+  writeJson(paths.rejected, fileFor(watchKey(w), slugify(w.title), 'json'), stripInternal(w));
   return decorate(w);
 }
 
@@ -172,7 +184,7 @@ export function restore(asin) {
   delete w.reject_reason;
   delete w.approved_at;
   removeFile(found.dir, found.watch._file);
-  writeJson(paths.pending, fileFor(w.asin, slugify(w.title), 'json'), stripInternal(w));
+  writeJson(paths.pending, fileFor(watchKey(w), slugify(w.title), 'json'), stripInternal(w));
   return decorate(w);
 }
 
@@ -209,6 +221,49 @@ export function bulk(action, asins, reason = '') {
   }
   return results;
 }
+
+/* ------------------------------------------------------------------ *
+ * Seeding from the bundled catalogue
+ * ------------------------------------------------------------------ */
+
+/**
+ * Put the next `size` catalogue watches into the pending queue.
+ *
+ * This is how the site gets real content before an Associates account exists,
+ * without contacting Amazon. Everything lands as a draft: catalogue specs come
+ * from general knowledge rather than a listing, so the approve gate has more
+ * work to do here, not less.
+ */
+export function seedFromCatalogue(size = 10) {
+  const batch = catalogueBatch(size);
+  const written = [];
+
+  for (const w of batch) {
+    // Suggestions first, so the copy engine can see the spec-derived tags.
+    w.pros = draftPros(w);
+    w.cons = draftCons(w);
+    w.short_blurb = draftBlurb(w);
+    w.long_description = draftLongDescription(w);
+
+    // The catalogue's own note is the most useful sentence we have about the
+    // model, so it leads the body rather than being discarded.
+    if (w.catalogue_note) {
+      w.long_description = `${w.catalogue_note}\n\n${w.long_description}`;
+    }
+
+    // Every field is unconfirmed. Low-confidence entries additionally flag the
+    // specification itself, so the curator cannot approve without looking.
+    w.drafts = ['tags', 'pros', 'cons', 'short_blurb', 'long_description'];
+    if (w.catalogue_confidence !== 'high') w.drafts.push('specs');
+
+    writeJson(paths.pending, fileFor(watchKey(w), slugify(w.title), 'json'), stripInternal(w));
+    written.push({ id: w.id, title: w.title, confidence: w.catalogue_confidence });
+  }
+
+  return { written, ...catalogueStats() };
+}
+
+export const catalogueRemaining = () => catalogueStats();
 
 /* ------------------------------------------------------------------ *
  * Collections

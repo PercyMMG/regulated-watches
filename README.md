@@ -24,15 +24,26 @@ untagged link that earns nothing and looks fine.
 
 ### 2. Get some watches in
 
-Open an Amazon watch category or search page in your browser. Save it with
-Ctrl+S as **Webpage, HTML Only**, into `inbox/`. Then:
+Two ways, and neither contacts Amazon.
+
+**From the catalogue (no downloading).** Run `npm run curate` and press
+**Generate 10 from catalogue**. That fills the pending queue with real,
+widely-available watches — brand, model reference and specification — drawn
+from `data/catalogue.json`. No ASIN and no price: the page links to an Amazon
+search for the model until you paste the ASIN in.
+
+This is how you get a reviewable site before you have an Associates account,
+which is the order Amazon's approval actually requires.
+
+**From a saved listing page.** Open an Amazon watch category or search page,
+save it with Ctrl+S as **Webpage, HTML Only** into `inbox/`, then:
 
 ```bash
 npm run ingest
 ```
 
-Nothing in this repo contacts Amazon. It reads the file you already saved.
-See [ingestion](#ingestion) for why it works that way.
+This gets you real ASINs, prices and ratings. See [ingestion](#ingestion) for
+why it reads a saved file rather than fetching.
 
 ### 3. Curate
 

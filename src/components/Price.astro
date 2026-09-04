@@ -1,8 +1,8 @@
 ---
-import { site, priceIsFresh, formatDate } from '../lib/site';
+import { site, priceIsFresh, formatDate, watchKey } from '../lib/site';
 
 interface Props {
-  watch: { asin: string; price_display?: string; price_checked_at?: string | null };
+  watch: { asin?: string; catalogue_key?: string; id?: string; price_display?: string; price_checked_at?: string | null };
   showNote?: boolean;
 }
 const { watch, showNote = false } = Astro.props;
@@ -23,7 +23,7 @@ const has = Boolean(watch.price_display);
  * component, and a note left behind still claims a price was "correct at the
  * time of checking" when no price is on the page any more.
  */
-const noteId = `price-${watch.asin}`;
+const noteId = `price-${watchKey(watch)}`;
 ---
 
 {has && fresh ? (

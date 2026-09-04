@@ -24,7 +24,15 @@ export function lintCopy(text, opts = {}) {
       issues.push({ level: 'error', rule: 'banned-phrase', detail: `Contains banned phrase: "${phrase}"`, context });
     }
   }
-  if (!allowPrice && PRICE_IN_COPY.test(s)) {
+  // Our own price-band names ("Under £100", "£100–£250") are site taxonomy, not
+  // a product price. They never go stale, so exclude them before testing rather
+  // than banning the site from naming its own sections.
+  const withoutBands = config.taxonomy.tiers.reduce(
+    (acc, t) => acc.split(t.title).join(' '),
+    s
+  );
+
+  if (!allowPrice && PRICE_IN_COPY.test(withoutBands)) {
     issues.push({
       level: 'error',
       rule: 'price-in-copy',
@@ -57,8 +65,18 @@ export function lintCaption(caption) {
  */
 export function readyToApprove(watch, curation = config.curation) {
   const issues = [];
-  if (!watch.asin || !/^[A-Z0-9]{10}$/.test(watch.asin)) {
-    issues.push({ level: 'error', rule: 'bad-asin', detail: 'ASIN missing or malformed.' });
+  // A watch may be published without an ASIN: catalogue-seeded entries link to
+  // an Amazon search for the model until a curator finds the exact listing.
+  // What is not allowed is a malformed ASIN, which produces a link that looks
+  // right and goes nowhere.
+  if (watch.asin && !/^[A-Z0-9]{10}$/.test(watch.asin)) {
+    issues.push({ level: 'error', rule: 'bad-asin', detail: `ASIN "${watch.asin}" is malformed. It must be 10 uppercase letters or digits, or empty.` });
+  }
+  if (!watch.asin && !watch.model_ref && !watch.catalogue_key) {
+    issues.push({ level: 'error', rule: 'no-identity', detail: 'No ASIN and no model reference, so there is nothing to link to.' });
+  }
+  if (!watch.asin) {
+    issues.push({ level: 'warn', rule: 'no-asin', detail: 'No ASIN yet: this page links to an Amazon search rather than a product. Paste the ASIN once you have found the listing.' });
   }
   if (!watch.title || watch.title.length < 8) {
     issues.push({ level: 'error', rule: 'no-title', detail: 'Title missing or too short.' });

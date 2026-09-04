@@ -22,6 +22,22 @@ export function affiliateLink(asin: string): string | null {
     .replace('{tag}', site.affiliate.associateTag);
 }
 
+/** ASIN where there is one, otherwise the catalogue key or id. */
+export const watchKey = (w: { asin?: string; catalogue_key?: string; id?: string }): string =>
+  w.asin || w.catalogue_key || w.id || '';
+
+/**
+ * Plain, untagged Amazon search for a model.
+ *
+ * Used when a watch has no ASIN yet. A search link is honest — it takes the
+ * reader to the right place without pretending to be a specific listing — and
+ * it costs nothing to replace with a product link later.
+ */
+export function searchUrl(w: { brand?: string; title?: string; model_ref?: string }): string {
+  const q = encodeURIComponent([w.brand, w.model_ref || w.title].filter(Boolean).join(' ').trim());
+  return `https://www.${site.affiliate.marketplace}/s?k=${q}`;
+}
+
 export const tierById = (id: string) => site.taxonomy.tiers.find((t) => t.id === id) ?? null;
 export const styleById = (id: string) => site.taxonomy.styles.find((s) => s.id === id) ?? null;
 
@@ -39,7 +55,7 @@ export function priceIsFresh(checkedAt: string | null | undefined, now = Date.no
   return now - t < site.price.maxAgeHours * 3600 * 1000;
 }
 
-export function imageFor(watch: { image?: string; asin: string }): string | null {
+export function imageFor(watch: { image?: string }): string | null {
   if (site.images.mode === 'placeholder') return null;
   if (!watch.image) return null;
   const name = String(watch.image).replace(/^.*[\\/]/, '');

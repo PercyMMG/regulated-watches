@@ -24,7 +24,7 @@ const warn = (where, msg) => warns.push(`${where}: ${msg}`);
 /* ---- configuration ---- */
 
 if (!hasAssociateTag()) {
-  warn('config', `affiliate.associateTag is still "${TAG_PLACEHOLDER}". Every buy button will render disabled.`);
+  warn('config', `affiliate.associateTag is still "${TAG_PLACEHOLDER}". Links render as ordinary untagged Amazon links, so the site is publishable but earns nothing.`);
 }
 if (!/^https:\/\//.test(config.url)) err('config', 'site.url must be an https URL; it is used for canonical tags.');
 if (config.price.maxAgeHours > 24) {
@@ -41,9 +41,11 @@ const seen = new Map();
 for (const [state, list] of [['approved', approved], ['pending', pending], ['rejected', rejected]]) {
   for (const w of list) {
     if (w._error) err(w._file, w._error);
-    if (!w.asin) { err(w._file, 'no ASIN'); continue; }
-    if (seen.has(w.asin)) err(w.asin, `appears twice: ${seen.get(w.asin)} and ${state}`);
-    else seen.set(w.asin, state);
+    // Catalogue-seeded watches have no ASIN; they are keyed by catalogue_key.
+    const key = w.asin || w.catalogue_key || w.id;
+    if (!key) { err(w._file, 'no ASIN, catalogue key or id - nothing identifies this record'); continue; }
+    if (seen.has(key)) err(key, `appears twice: ${seen.get(key)} and ${state}`);
+    else seen.set(key, state);
   }
 }
 

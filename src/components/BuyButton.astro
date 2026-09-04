@@ -1,22 +1,49 @@
 ---
-import { affiliateLink, site } from '../lib/site';
+import { affiliateLink, hasAssociateTag, searchUrl, site } from '../lib/site';
 
 interface Props {
-  asin: string;
+  watch: { asin?: string; brand?: string; title?: string; model_ref?: string };
   label?: string;
 }
-const { asin, label = 'Check current price on Amazon' } = Astro.props;
-const href = affiliateLink(asin);
+const { watch, label } = Astro.props;
+
+/**
+ * Three states, in decreasing order of precision.
+ *
+ *   1. Tag + ASIN  -> tagged link to the exact product. Earns.
+ *   2. ASIN only   -> plain, untagged link to the exact product. Earns nothing,
+ *                     but it is an ordinary hyperlink and perfectly fine to
+ *                     publish. When the tag is set it becomes state 1 with no
+ *                     edit to any content file.
+ *   3. Neither     -> plain, untagged Amazon search for the model.
+ *
+ * The point of states 2 and 3 is that the site can be genuinely useful, and
+ * reviewable by Amazon, before an Associates account exists. What it must never
+ * do is render a dead control or a link built from a guessed ASIN.
+ */
+const affiliate = watch.asin ? affiliateLink(watch.asin) : null;
+const plainProduct = watch.asin ? `https://www.${site.affiliate.marketplace}/dp/${watch.asin}` : null;
+
+const href = affiliate ?? plainProduct ?? searchUrl(watch);
+const isAffiliate = Boolean(affiliate);
+const isSearch = !watch.asin;
+
+const text = label ?? (isSearch ? 'Find this model on Amazon' : 'Check current price on Amazon');
+
+// rel: sponsored only when it actually is. Marking an unpaid link as sponsored
+// is inaccurate, and marking a paid one as ordinary is a disclosure failure.
+const rel = isAffiliate ? 'nofollow sponsored noopener' : 'nofollow noopener';
 ---
 
-{href ? (
-  <a class="buy" href={href} rel="nofollow sponsored noopener" target="_blank">{label}</a>
-) : (
-  <span class="buy" aria-disabled="true" title="No Amazon Associates tag configured">Link not configured</span>
-)}
+<a class="buy" href={href} rel={rel} target="_blank">{text}</a>
 
 <p class="buy-note">
-  {href
+  {isAffiliate
     ? site.affiliate.disclosureShort
-    : 'Set affiliate.associateTag in site.config.json to enable this link.'}
+    : isSearch
+      ? 'Search link, not a specific listing. Check the model reference matches before buying.'
+      : 'Ordinary link — we earn nothing from it.'}
+  {!hasAssociateTag() && (
+    <span class="buy-note-admin"> No Associates tag is configured yet.</span>
+  )}
 </p>

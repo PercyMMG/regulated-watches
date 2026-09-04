@@ -46,6 +46,7 @@ function state() {
   const all = curation.loadAll();
   return {
     ...all,
+    catalogue: curation.catalogueRemaining(),
     config: {
       brand: config.brand,
       currencySymbol: config.currencySymbol,
@@ -62,15 +63,19 @@ function state() {
 const ROUTES = [
   ['GET', /^\/api\/state$/, () => state()],
 
-  ['POST', /^\/api\/watch\/([A-Z0-9]{10})\/save$/, (m, body) => curation.saveWatch(m[1], body)],
-  ['POST', /^\/api\/watch\/([A-Z0-9]{10})\/approve$/, (m) => curation.approve(m[1])],
-  ['POST', /^\/api\/watch\/([A-Z0-9]{10})\/reject$/, (m, body) => curation.reject(m[1], body.reason || '')],
-  ['POST', /^\/api\/watch\/([A-Z0-9]{10})\/restore$/, (m) => curation.restore(m[1])],
-  ['POST', /^\/api\/watch\/([A-Z0-9]{10})\/confirm$/, (m, body) => curation.confirmDraft(m[1], body.field)],
-  ['POST', /^\/api\/watch\/([A-Z0-9]{10})\/regenerate$/, (m, body) => curation.regenerate(m[1], body.field)],
-  ['DELETE', /^\/api\/watch\/([A-Z0-9]{10})$/, (m) => curation.destroy(m[1])],
+  ['POST', /^\/api\/watch\/([A-Za-z0-9_-]{3,90})\/save$/, (m, body) => curation.saveWatch(m[1], body)],
+  ['POST', /^\/api\/watch\/([A-Za-z0-9_-]{3,90})\/approve$/, (m) => curation.approve(m[1])],
+  ['POST', /^\/api\/watch\/([A-Za-z0-9_-]{3,90})\/reject$/, (m, body) => curation.reject(m[1], body.reason || '')],
+  ['POST', /^\/api\/watch\/([A-Za-z0-9_-]{3,90})\/restore$/, (m) => curation.restore(m[1])],
+  ['POST', /^\/api\/watch\/([A-Za-z0-9_-]{3,90})\/confirm$/, (m, body) => curation.confirmDraft(m[1], body.field)],
+  ['POST', /^\/api\/watch\/([A-Za-z0-9_-]{3,90})\/regenerate$/, (m, body) => curation.regenerate(m[1], body.field)],
+  ['DELETE', /^\/api\/watch\/([A-Za-z0-9_-]{3,90})$/, (m) => curation.destroy(m[1])],
 
   ['POST', /^\/api\/bulk$/, (m, body) => curation.bulk(body.action, body.asins, body.reason)],
+
+  // Seed the pending queue from the bundled catalogue. Contacts nothing.
+  ['GET', /^\/api\/catalogue$/, () => curation.catalogueRemaining()],
+  ['POST', /^\/api\/catalogue\/batch$/, (m, body) => curation.seedFromCatalogue(Number(body.size) || 10)],
 
   ['POST', /^\/api\/collection$/, (m, body) => curation.saveCollection(body)],
   ['DELETE', /^\/api\/collection\/([a-z0-9-]+)$/, (m) => curation.deleteCollection(m[1])],
@@ -80,9 +85,12 @@ const ROUTES = [
 
   ['POST', /^\/api\/social\/pack$/, (m, body) => {
     const approved = curation.loadAll().approved;
-    const chosen = (body.asins || []).map((a) => {
-      const w = approved.find((x) => x.asin === a);
-      if (!w) throw new Error(`${a} is not an approved watch. Only approved watches can go in a pack.`);
+    const chosen = (body.asins || []).map((ref) => {
+      const r = String(ref).toLowerCase();
+      const w = approved.find((x) =>
+        [x.asin, x.catalogue_key, x.id].filter(Boolean).some((v) => String(v).toLowerCase() === r)
+      );
+      if (!w) throw new Error(`${ref} is not an approved watch. Only approved watches can go in a pack.`);
       return w;
     });
     const pack = buildPack(chosen, { title: body.title, startDate: body.startDate });

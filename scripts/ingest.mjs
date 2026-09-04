@@ -2,7 +2,7 @@
 import { readdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join, extname, basename } from 'node:path';
 import { config, paths } from './lib/config.mjs';
-import { listJson, listMarkdown, writeJson, ensureDir, slugify, fileFor } from './lib/store.mjs';
+import { listJson, listMarkdown, writeJson, ensureDir, slugify, fileFor, watchKey } from './lib/store.mjs';
 import { toPendingWatch, isAsin } from './lib/normalise.mjs';
 import { suggestTags } from './lib/taxonomy.mjs';
 import { draftBlurb, draftPros, draftCons } from './lib/copy.mjs';
@@ -145,7 +145,7 @@ async function main() {
       w.drafts = config.curation.autoProsConsAreDraftsOnly ? drafts : [];
 
       known.set(w.asin, 'pending');
-      if (!args.dryRun) writeJson(paths.pending, fileFor(w.asin, slugify(w.title), 'json'), w);
+      if (!args.dryRun) writeJson(paths.pending, fileFor(watchKey(w), slugify(w.title), 'json'), w);
       written++;
       if (written >= args.max) break;
     }

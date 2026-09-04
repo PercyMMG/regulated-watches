@@ -167,6 +167,7 @@ h3 { font-size: 17px; }
   pointer-events: none;
 }
 .buy-note { color: var(--mute); font-size: 12px; margin-top: 8px; max-width: 44ch; }
+.buy-note-admin { color: var(--accent-dim); }
 
 /* ---------- tags / pills ---------- */
 
