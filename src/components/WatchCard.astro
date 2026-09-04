@@ -1,6 +1,7 @@
 ---
 import Thumb from './Thumb.astro';
 import Price from './Price.astro';
+import BuyButton from './BuyButton.astro';
 import { tierById, fullName, specChips } from '../lib/site';
 
 interface Props {
@@ -11,25 +12,42 @@ interface Props {
 const { watch, eager = false, rank } = Astro.props;
 const d = watch.data ?? watch;
 const tier = tierById(d.tier);
+const href = `/watches/${watch.id ?? d.id}`;
+
+/**
+ * Card format follows the MuseMargin independent-watchmakers layout: image on
+ * top, brand tag overlaid, title, spec line, price row, and a real call to
+ * action on every card rather than only on the detail page.
+ *
+ * The palette stays Regulated's own. Two sites in the same portfolio that look
+ * identical read as one site with two names, which helps neither.
+ */
 ---
 
-<article class="card">
-  <a class="card-link" href={`/watches/${watch.id ?? d.id}`}>
+<article class="card watch-card">
+  <a class="card-image" href={href} aria-label={fullName(d)}>
     <Thumb watch={d} eager={eager} />
+    {d.brand && <span class="brand-tag">{d.brand}</span>}
+    {rank && <span class="rank-tag">{rank}</span>}
+    {d.featured && <span class="pick-tag">★ Pick</span>}
   </a>
+
   <div class="card-body">
-    <a class="card-link" href={`/watches/${watch.id ?? d.id}`}>
-      <div class="card-title">{rank ? `${rank}. ` : ''}{fullName(d)}</div>
-    </a>
+    <h3><a href={href}>{fullName(d)}</a></h3>
+
     <div class="specline">
       {specChips(d).map((c) => <span>{c}</span>)}
       {d.case_mm && <span>{d.case_mm} mm</span>}
       {d.water_resistance_m && <span>{d.water_resistance_m} m</span>}
     </div>
+
     <p class="card-blurb">{d.short_blurb}</p>
-    <div class="card-foot">
+
+    <div class="prices">
       <Price watch={d} />
-      {tier && <span class="tag">{tier.title}</span>}
+      {tier && <a class="tag" href={`/tier/${d.tier}`}>{tier.title}</a>}
     </div>
+
+    <BuyButton watch={d} compact={true} />
   </div>
 </article>

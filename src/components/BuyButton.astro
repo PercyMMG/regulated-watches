@@ -4,8 +4,10 @@ import { affiliateLink, hasAssociateTag, searchUrl, site } from '../lib/site';
 interface Props {
   watch: { asin?: string; brand?: string; title?: string; model_ref?: string };
   label?: string;
+  /** Card variant: full-width button, one-line disclosure instead of a paragraph. */
+  compact?: boolean;
 }
-const { watch, label } = Astro.props;
+const { watch, label, compact = false } = Astro.props;
 
 /**
  * Three states, in decreasing order of precision.
@@ -28,22 +30,28 @@ const href = affiliate ?? plainProduct ?? searchUrl(watch);
 const isAffiliate = Boolean(affiliate);
 const isSearch = !watch.asin;
 
-const text = label ?? (isSearch ? 'Find this model on Amazon' : 'Check current price on Amazon');
+const text = label ?? (isSearch ? 'Find on Amazon' : 'Check price on Amazon');
 
 // rel: sponsored only when it actually is. Marking an unpaid link as sponsored
 // is inaccurate, and marking a paid one as ordinary is a disclosure failure.
 const rel = isAffiliate ? 'nofollow sponsored noopener' : 'nofollow noopener';
 ---
 
-<a class="buy" href={href} rel={rel} target="_blank">{text}</a>
+<a class={compact ? 'buy buy-block' : 'buy'} href={href} rel={rel} target="_blank">{text}</a>
 
-<p class="buy-note">
-  {isAffiliate
-    ? site.affiliate.disclosureShort
-    : isSearch
-      ? 'Search link, not a specific listing. Check the model reference matches before buying.'
-      : 'Ordinary link — we earn nothing from it.'}
-  {!hasAssociateTag() && (
-    <span class="buy-note-admin"> No Associates tag is configured yet.</span>
-  )}
-</p>
+{compact ? (
+  /* Disclosure has to sit with the link, not only in the footer. Short on a
+     card, but present on every one that earns. */
+  <span class="buy-micro">
+    {isAffiliate ? 'Affiliate link' : isSearch ? 'Search, not a specific listing' : 'Ordinary link — earns nothing'}
+  </span>
+) : (
+  <p class="buy-note">
+    {isAffiliate
+      ? site.affiliate.disclosureShort
+      : isSearch
+        ? 'Search link, not a specific listing. Check the model reference matches before buying.'
+        : 'Ordinary link — we earn nothing from it.'}
+    {!hasAssociateTag() && <span class="buy-note-admin"> No Associates tag is configured yet.</span>}
+  </p>
+)}
