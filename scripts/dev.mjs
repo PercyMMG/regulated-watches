@@ -2,6 +2,7 @@
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { readFileSync } from 'node:fs';
 
 /**
  * One command, one port, both halves of the site.
@@ -21,6 +22,10 @@ import { dirname, join } from 'node:path';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
+
+// GitHub Pages serves a project repo from a subdirectory, so `base` is set and
+// the dev server mirrors it. Bare localhost:4321 404s; print what actually works.
+const BASE = JSON.parse(readFileSync(join(ROOT, 'site.config.json'), 'utf8')).basePath || '';
 const isWin = process.platform === 'win32';
 
 const children = [];
@@ -80,8 +85,8 @@ process.on('SIGTERM', () => stopAll(0));
 console.log('');
 console.log('  Regulated — site and dashboard together');
 console.log(`  ${'-'.repeat(52)}`);
-console.log('  http://localhost:4321          the site');
-console.log('  http://localhost:4321/curate   the dashboard');
+console.log(`  http://localhost:4321${BASE}   the site`);
+console.log('  http://localhost:4321/curate' + ' '.repeat(Math.max(1, BASE.length)) + '  the dashboard');
 console.log('');
 console.log('  Ctrl+C stops both.');
 console.log('');

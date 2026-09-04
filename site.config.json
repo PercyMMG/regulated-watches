@@ -171,5 +171,6 @@
       "Every social post and every page carries an affiliate disclosure."
     ],
     "requireDisclosureOnEveryPage": true
-  }
+  },
+  "basePath": "/regulated-watches"
 }

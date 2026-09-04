@@ -69,7 +69,9 @@ function state() {
       // Two places a watch can be looked at. The dev server shows an approved
       // watch immediately; the live site only after a push and a rebuild.
       siteUrl: config.url.replace(/\/$/, ''),
-      devUrl: `http://localhost:${process.env.ASTRO_PORT || 4321}`,
+      // Includes the base path: the dev server serves the site from a
+      // subdirectory, so a bare origin 404s.
+      devUrl: `http://localhost:${process.env.ASTRO_PORT || 4321}${config.basePath || ''}`,
     },
   };
 }

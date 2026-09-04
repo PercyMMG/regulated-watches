@@ -8,7 +8,7 @@ const CURATE_PORT = Number(process.env.CURATE_PORT || 4331);
 // GitHub Pages serves a project repo from a subdirectory, so the deployed site
 // lives at percymmg.github.io/regulated-watches/ and every internal link needs
 // that prefix. `site` is the origin only; `base` is the subdirectory.
-const REPO_BASE = '/regulated-watches';
+const REPO_BASE = site.basePath;
 
 export default defineConfig({
   site: 'https://percymmg.github.io',
