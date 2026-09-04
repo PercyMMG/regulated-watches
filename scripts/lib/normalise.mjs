@@ -59,9 +59,29 @@ export function decodeEntities(s) {
     .replace(/&#(\d{2,5});/g, (_, d) => String.fromCodePoint(Number(d)));
 }
 
+/**
+ * Remove anything that could be read as markup.
+ *
+ * Ingested fields come from an Amazon page, which is untrusted input, and
+ * decodeEntities turns "&lt;script&gt;" back into a real tag. Those fields
+ * flow into the generated blurb and from there into a watch's Markdown body,
+ * which Astro renders as raw HTML. Astro escapes template expressions, so the
+ * title in an <h1> is safe, but the Markdown body is not.
+ *
+ * Stripping at the boundary means untrusted data can never carry markup,
+ * whatever it is later interpolated into.
+ */
+export function stripMarkup(s) {
+  return String(s || '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/[<>]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 /** Amazon titles are keyword soup. Trim to something a human can scan. */
 export function cleanTitle(raw) {
-  let t = decodeEntities(raw).replace(/\s+/g, ' ').trim();
+  let t = stripMarkup(decodeEntities(raw)).replace(/\s+/g, ' ').trim();
   // Amazon pads titles with comma-separated keyword lists; keep the first two clauses.
   const parts = t.split(/\s*[,|]\s*/);
   if (parts.length > 2 && parts.join(', ').length > 80) t = parts.slice(0, 2).join(', ');
@@ -99,10 +119,10 @@ export function toPendingWatch(raw, opts = {}) {
   // Detection runs on the FULL listing title. cleanTitle() drops the keyword
   // tail, and that tail is where Amazon puts the case size, water resistance
   // and movement. Clean for display, detect from the original.
-  const fullTitle = decodeEntities(raw.title).replace(/\s+/g, ' ').trim();
+  const fullTitle = stripMarkup(decodeEntities(raw.title)).replace(/\s+/g, ' ').trim();
   const title = cleanTitle(raw.title);
   const { price_display, price_value } = parsePrice(raw.price);
-  const brand = raw.brand ? cleanTitle(raw.brand) : detectBrand(fullTitle);
+  const brand = raw.brand ? cleanTitle(raw.brand) : stripMarkup(detectBrand(fullTitle));
 
   return {
     id: `watch-${asin.toLowerCase()}`,

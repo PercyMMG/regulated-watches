@@ -97,7 +97,22 @@ const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://${HOST}:${PORT}`);
   const path = url.pathname;
 
-  // Reject cross-origin browser calls: this process can write to disk.
+  // This process writes to your working tree, so both checks below matter.
+  //
+  // Host, first: binding to loopback stops other machines connecting, but not
+  // DNS rebinding. A page on evil.com whose DNS re-points to 127.0.0.1 reaches
+  // this server, and the browser treats it as same-origin — so it sends no
+  // Origin header on a GET and the Origin check below waves it through.
+  // Pinning Host to the addresses we actually listen on closes that.
+  const host = String(req.headers.host || '');
+  const allowedHosts = [`127.0.0.1:${PORT}`, `localhost:${PORT}`, `[::1]:${PORT}`];
+  if (!allowedHosts.includes(host)) {
+    return json(res, 403, {
+      error: `Unexpected Host header "${host}". Reach this dashboard at http://${HOST}:${PORT} only.`,
+    });
+  }
+
+  // Origin, second: blocks ordinary cross-origin calls from a page you visited.
   const origin = req.headers.origin;
   if (origin && !origin.startsWith(`http://${HOST}:${PORT}`) && !origin.startsWith(`http://localhost:${PORT}`)) {
     return json(res, 403, { error: 'Cross-origin requests are not accepted.' });

@@ -13,6 +13,9 @@ import { readyToApprove, lintCopy, priceIsFresh } from './lib/compliance.mjs';
  * terms, a half-curated record makes the site look automated.
  */
 
+/** Any real tag, plus bare angle brackets that could open one. */
+const DANGEROUS_MARKUP = /<\s*\/?\s*[a-zA-Z][^>]*>|<\s*script|javascript:\s*/i;
+
 const errors = [];
 const warns = [];
 const err = (where, msg) => errors.push(`${where}: ${msg}`);
@@ -69,6 +72,22 @@ for (const w of approved) {
   }
   if (w.source_image_url && w.image && w.image === w.source_image_url) {
     err(where, 'image points at the Amazon listing URL. Hotlinking listing images is not permitted outside PA-API.');
+  }
+
+  // Astro renders a watch's Markdown body as raw HTML. Ingested fields are
+  // stripped of markup at the boundary, but a curator can still paste a tag in
+  // by hand, so the deploy is gated here as well. No page on this site needs
+  // raw HTML in its body.
+  for (const [field, value] of [
+    ['long_description', w.long_description],
+    ['short_blurb', w.short_blurb],
+    ...(w.pros || []).map((p, i) => [`pros[${i}]`, p]),
+    ...(w.cons || []).map((c, i) => [`cons[${i}]`, c]),
+  ]) {
+    const s = String(value || '');
+    if (DANGEROUS_MARKUP.test(s)) {
+      err(where, `${field} contains HTML markup, which is rendered raw. Remove the tag.`);
+    }
   }
 }
 
