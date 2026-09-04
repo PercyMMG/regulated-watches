@@ -1,25 +1,30 @@
 # Decap CMS — free, git-based, no database, no server.
 #
-# You chose local-only curation, so this is configured for the local backend:
+# Two ways to run it:
+#
+# LOCAL (no login, fastest):
 #   terminal 1:  npm run cms     (decap-server, the local git proxy)
 #   terminal 2:  npm run dev
 #   browser:     http://localhost:4321/admin/
+#   local_backend below makes this work; it is ignored in production.
 #
-# No login, no OAuth app, no third-party service. Edits are written straight
-# into ./content in your working tree, exactly like the curation dashboard.
+# HOSTED (GitHub login, edit from any browser or phone):
+#   https://regulated.pages.dev/admin/
+#   Auth goes through our own OAuth proxy in functions/api/, so there is no
+#   third-party service and nothing to pay for. Setup: docs/OPERATIONS.md.
 #
-# The deployed copy of /admin is blocked by public/_redirects, because a public
-# admin page that cannot authenticate is only a source of confusion. To turn on
-# browser-based editing later: create a GitHub OAuth app, deploy an OAuth proxy,
-# set `base_url` below, remove the /admin rule from public/_redirects.
+# The pending queue, approve/reject and the Top-5 social packs are NOT here —
+# Decap cannot model that workflow. They stay in `npm run curate`.
 
 local_backend: true
 
 backend:
   name: github
-  repo: PercyMMG/regulated-watches # <- set this if you enable the hosted admin
+  repo: PercyMMG/regulated-watches
   branch: main
-  # base_url: https://your-oauth-proxy.example.com
+  # Our own OAuth proxy, running as Pages Functions in this repo.
+  base_url: https://regulated.pages.dev
+  auth_endpoint: api/auth
 
 media_folder: public/images/watches
 public_folder: /images/watches

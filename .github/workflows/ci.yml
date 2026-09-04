@@ -19,6 +19,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: OAuth proxy tests
+        run: npm run test:oauth
       - name: Content and compliance checks
         run: npm run verify
       - name: Build

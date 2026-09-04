@@ -15,7 +15,8 @@
     "social": "node scripts/social.mjs",
     "cms": "decap-server",
     "verify": "node scripts/verify.mjs",
-    "demo": "node scripts/demo.mjs"
+    "demo": "node scripts/demo.mjs",
+    "test:oauth": "node scripts/test-oauth.mjs"
   },
   "devDependencies": {
     "astro": "^5.14.1",

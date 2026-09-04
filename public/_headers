@@ -12,7 +12,13 @@
   Cache-Control: public, max-age=604800, immutable
 
 # Decap CMS loads its own bundle from a CDN and talks to the GitHub API, so it
-# needs a wider policy than the site. Scoped to /admin only.
+# needs a wider policy than the site. Scoped to /admin only, and deliberately
+# not extended to the rest of the site.
+#
+# noindex matters: /admin is publicly reachable now that it authenticates, and
+# an indexed CMS login page invites credential-stuffing traffic for no benefit.
 /admin/*
   X-Frame-Options: DENY
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: blob: https://*.githubusercontent.com; font-src 'self' data: https://cdn.jsdelivr.net; connect-src 'self' https://api.github.com https://cdn.jsdelivr.net; frame-ancestors 'none'
+  X-Robots-Tag: noindex, nofollow
+  Referrer-Policy: no-referrer
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: blob: https://*.githubusercontent.com; font-src 'self' data: https://cdn.jsdelivr.net; connect-src 'self' https://api.github.com https://cdn.jsdelivr.net; form-action 'none'; frame-ancestors 'none'; base-uri 'none'

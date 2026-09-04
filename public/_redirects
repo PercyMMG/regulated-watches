@@ -1,7 +1,7 @@
-# The hosted admin is disabled on purpose.
+# The hosted admin is live at /admin/ and authenticates with GitHub through
+# the OAuth proxy in functions/api/. Only accounts with write access to the
+# repository can commit anything, so the login page itself is not a risk.
 #
-# Curation runs locally (npm run curate, or npm run cms + npm run dev), so a
-# public /admin can only ever fail to authenticate. Delete this rule and set
-# `base_url` in public/admin/config.yml if you later add a GitHub OAuth proxy.
-/admin/*  /404.html  404
-/admin    /404.html  404
+# To take it offline again, restore:
+#   /admin/*  /404.html  404
+#   /admin    /404.html  404

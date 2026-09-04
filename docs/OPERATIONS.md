@@ -37,6 +37,71 @@ cleanly and costs nothing.
 
 ---
 
+## Hosted admin (Decap at /admin)
+
+Editing approved watches, collections and comparisons from any browser,
+including a phone. The pending queue, approve/reject and the Top-5 social packs
+stay in `npm run curate` — Decap cannot model that workflow.
+
+Auth runs through our own OAuth proxy (`functions/api/`) as Cloudflare Pages
+Functions. No third-party service, nothing to pay for.
+
+**1. Create a GitHub OAuth app**
+
+github.com → Settings → Developer settings → OAuth Apps → New OAuth App
+
+| Field | Value |
+|---|---|
+| Application name | Regulated CMS |
+| Homepage URL | `https://regulated.pages.dev` |
+| Authorization callback URL | `https://regulated.pages.dev/api/callback` |
+
+The callback URL must match exactly, including the scheme and no trailing slash.
+
+**2. Put the credentials in Cloudflare, not in git**
+
+Copy the Client ID, then **Generate a new client secret** and copy that too. The
+secret is shown once.
+
+Cloudflare Pages → your project → Settings → Environment variables →
+**Production**, add both:
+
+| Name | Value |
+|---|---|
+| `GITHUB_CLIENT_ID` | the Client ID |
+| `GITHUB_CLIENT_SECRET` | the secret (mark it **Encrypted**) |
+
+Never commit either. `.env` is gitignored, and the functions read them from the
+environment only.
+
+**3. Redeploy**
+
+Environment variables only take effect on a new build: Deployments → Retry
+deployment, or push any commit.
+
+**4. Sign in**
+
+`https://regulated.pages.dev/admin/` → Login with GitHub.
+
+### Who can edit
+
+Anyone who can sign in with a GitHub account that has **write access to the
+repository**. Everyone else can complete the login and then do nothing, because
+GitHub rejects their commits. To give someone access, add them as a repository
+collaborator; to remove it, remove the collaborator.
+
+### The token
+
+Decap holds a GitHub token in your browser. It is requested with the
+`public_repo` scope, not `repo`, so if it ever leaks it cannot touch your
+private repositories. **If you make this repository private, that scope has to
+become `repo`** (`functions/api/auth.js`), and the token becomes considerably
+more sensitive — worth reconsidering the hosted admin at that point.
+
+Sign out from the CMS when you are done on a shared machine.
+
+---
+
 ## The weekly loop
 
 Budget: about 90 minutes a week once you have the rhythm.
