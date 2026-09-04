@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 
-Sitemap: https://watch-shortlist.pages.dev/sitemap.xml
+Sitemap: https://regulated.pages.dev/sitemap.xml

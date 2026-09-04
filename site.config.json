@@ -1,11 +1,10 @@
 {
-  "brand": "Shortlist",
-  "tagline": "A short list of watches worth the money.",
-  "url": "https://watch-shortlist.pages.dev",
+  "brand": "Regulated",
+  "tagline": "Watches, held to their own spec sheet.",
+  "url": "https://regulated.pages.dev",
   "locale": "en-GB",
   "currency": "GBP",
   "currencySymbol": "£",
-
   "affiliate": {
     "marketplace": "amazon.co.uk",
     "associateTag": "REPLACE-ME-21",
@@ -13,18 +12,15 @@
     "disclosureShort": "Affiliate link — we may earn a commission at no extra cost to you.",
     "disclosureLong": "As an Amazon Associate we earn from qualifying purchases. Links to Amazon on this site are affiliate links. Using them costs you nothing extra and does not affect which watches we choose or how we rank them."
   },
-
   "price": {
     "maxAgeHours": 24,
     "staleLabel": "Check current price on Amazon",
     "note": "Price shown was correct at the time of checking. Amazon prices change frequently; the live price on Amazon is authoritative."
   },
-
   "images": {
     "mode": "placeholder",
     "note": "'placeholder' renders a typographic card and never hotlinks Amazon. Set to 'local' once you have dropped your own photos into public/images/watches/{asin}.jpg, or 'paapi' once you have Product Advertising API access."
   },
-
   "ingestion": {
     "maxItemsPerScrape": 50,
     "dedupeBy": "asin",
@@ -34,7 +30,6 @@
     "captureReviews": false,
     "captureDescriptions": false
   },
-
   "curation": {
     "allowBulkApprove": true,
     "requireCuratedTextBeforeApprove": true,
@@ -43,44 +38,126 @@
     "autoProsCons": true,
     "autoProsConsAreDraftsOnly": true
   },
-
   "social": {
     "packSize": 5,
     "tone": "dry-expert",
-    "platforms": ["tiktok", "reels", "shorts"],
-    "videoSeconds": { "tiktok": 30, "reels": 30, "shorts": 45 },
+    "platforms": [
+      "tiktok",
+      "reels",
+      "shorts"
+    ],
+    "videoSeconds": {
+      "tiktok": 30,
+      "reels": 30,
+      "shorts": 45
+    },
     "postsPerWeek": 5,
     "scheduleDays": 14,
-    "postTimesLocal": ["18:30", "12:15"],
+    "postTimesLocal": [
+      "18:30",
+      "12:15"
+    ],
     "captionStyle": "hook-then-spec-then-cta",
-    "hashtagStrategy": { "broad": 2, "niche": 4, "brand": 2, "max": 8 },
+    "hashtagStrategy": {
+      "broad": 2,
+      "niche": 4,
+      "brand": 2,
+      "max": 8
+    },
     "requiredDisclosureTag": "#ad"
   },
-
   "taxonomy": {
     "tiers": [
-      { "id": "entry",  "title": "Under £100",   "min": 0,   "max": 100,  "blurb": "The floor. At this money the job is to be honest about what it is." },
-      { "id": "core",   "title": "£100–£250", "min": 100, "max": 250,  "blurb": "Where the value density is highest. Most of the list lives here." },
-      { "id": "upper",  "title": "£250–£500", "min": 250, "max": 500,  "blurb": "You start paying for finishing, movement grade and a real warranty." },
-      { "id": "top",    "title": "Over £500",    "min": 500, "max": null, "blurb": "Fewer entries, higher bar. Only things that survive a spec argument." }
+      {
+        "id": "entry",
+        "title": "Under £100",
+        "min": 0,
+        "max": 100,
+        "blurb": "The floor. At this money the job is to be honest about what it is."
+      },
+      {
+        "id": "core",
+        "title": "£100–£250",
+        "min": 100,
+        "max": 250,
+        "blurb": "Where the value density is highest. Most of the list lives here."
+      },
+      {
+        "id": "upper",
+        "title": "£250–£500",
+        "min": 250,
+        "max": 500,
+        "blurb": "You start paying for finishing, movement grade and a real warranty."
+      },
+      {
+        "id": "top",
+        "title": "Over £500",
+        "min": 500,
+        "max": null,
+        "blurb": "Fewer entries, higher bar. Only things that survive a spec argument."
+      }
     ],
     "styles": [
-      { "id": "diver",       "title": "Divers",       "blurb": "Rotating bezel, real water resistance, legible at a glance." },
-      { "id": "field",       "title": "Field",        "blurb": "Plain dial, high contrast, built to be read in bad light." },
-      { "id": "pilot",       "title": "Pilot",        "blurb": "Large numerals, long strap, aviation lineage — genuine or borrowed." },
-      { "id": "dress",       "title": "Dress",        "blurb": "Thin case, restrained dial, fits under a cuff." },
-      { "id": "chronograph", "title": "Chronographs", "blurb": "Stopwatch complication. Check whether it is mechanical or quartz before you pay." },
-      { "id": "digital",     "title": "Digital",      "blurb": "Function over romance. Usually the most watch per pound on the page." },
-      { "id": "gmt",         "title": "GMT & dual-time", "blurb": "Second time zone. Check it is a true GMT and not a 24-hour indicator." }
+      {
+        "id": "diver",
+        "title": "Divers",
+        "blurb": "Rotating bezel, real water resistance, legible at a glance."
+      },
+      {
+        "id": "field",
+        "title": "Field",
+        "blurb": "Plain dial, high contrast, built to be read in bad light."
+      },
+      {
+        "id": "pilot",
+        "title": "Pilot",
+        "blurb": "Large numerals, long strap, aviation lineage — genuine or borrowed."
+      },
+      {
+        "id": "dress",
+        "title": "Dress",
+        "blurb": "Thin case, restrained dial, fits under a cuff."
+      },
+      {
+        "id": "chronograph",
+        "title": "Chronographs",
+        "blurb": "Stopwatch complication. Check whether it is mechanical or quartz before you pay."
+      },
+      {
+        "id": "digital",
+        "title": "Digital",
+        "blurb": "Function over romance. Usually the most watch per pound on the page."
+      },
+      {
+        "id": "gmt",
+        "title": "GMT & dual-time",
+        "blurb": "Second time zone. Check it is a true GMT and not a 24-hour indicator."
+      }
     ],
-    "movements": ["automatic", "hand-wound", "quartz", "solar", "kinetic", "digital"]
+    "movements": [
+      "automatic",
+      "hand-wound",
+      "quartz",
+      "solar",
+      "kinetic",
+      "digital"
+    ]
   },
-
   "compliance": {
     "bannedCopyPhrases": [
-      "best watch in the world", "guaranteed", "official amazon", "amazon official",
-      "cheapest ever", "lowest price ever", "endorsed by amazon", "amazon recommends",
-      "risk free", "100% accurate", "will never", "always the best price", "swiss made"
+      "best watch in the world",
+      "guaranteed",
+      "official amazon",
+      "amazon official",
+      "cheapest ever",
+      "lowest price ever",
+      "endorsed by amazon",
+      "amazon recommends",
+      "risk free",
+      "100% accurate",
+      "will never",
+      "always the best price",
+      "swiss made"
     ],
     "trademarkRules": [
       "Never imply Amazon endorses, sponsors or reviews this site.",

@@ -17,7 +17,7 @@ local_backend: true
 
 backend:
   name: github
-  repo: OWNER/watch-shortlist # <- set this if you enable the hosted admin
+  repo: PercyMMG/regulated-watches # <- set this if you enable the hosted admin
   branch: main
   # base_url: https://your-oauth-proxy.example.com
 
@@ -25,7 +25,7 @@ media_folder: public/images/watches
 public_folder: /images/watches
 
 publish_mode: simple
-site_url: https://watch-shortlist.pages.dev
+site_url: https://regulated.pages.dev
 
 collections:
   - name: watches

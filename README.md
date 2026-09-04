@@ -1,4 +1,4 @@
-# Shortlist
+# Regulated
 
 A zero-cost, human-curated Amazon affiliate watch site.
 

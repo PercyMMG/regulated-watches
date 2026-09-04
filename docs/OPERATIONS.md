@@ -7,7 +7,7 @@ You need a GitHub repository and a Cloudflare account. Both free.
 **1. Push the repository**
 
 ```bash
-gh repo create watch-shortlist --private --source=. --push
+gh repo create regulated-watches --private --source=. --push
 ```
 
 **2. Connect Cloudflare Pages**
