@@ -75,6 +75,32 @@ export function findWatch(ref) {
   return null;
 }
 
+/**
+  * Pull an ASIN out of whatever was pasted.
+  *
+  * Amazon product URLs are long and noisy, and asking someone to pick ten
+  * characters out of them by hand two dozen times is how wrong ASINs get
+  * saved. A wrong ASIN is worse than none: the link works, goes to the wrong
+  * watch, and nothing about the page looks broken.
+  *
+  * Accepts a bare ASIN, a /dp/ URL, a /gp/product/ URL, or a share link.
+  */
+export function normaliseAsin(input) {
+  const raw = String(input ?? '').trim();
+  if (!raw) return '';
+  if (/^[A-Z0-9]{10}$/i.test(raw)) return raw.toUpperCase();
+
+  const fromUrl = /\/(?:dp|gp\/product|gp\/aw\/d|product)\/([A-Z0-9]{10})/i.exec(raw);
+  if (fromUrl) return fromUrl[1].toUpperCase();
+
+  const fromQuery = /[?&]asin=([A-Z0-9]{10})/i.exec(raw);
+  if (fromQuery) return fromQuery[1].toUpperCase();
+
+  throw new Error(
+    `Could not find an ASIN in "${raw.slice(0, 60)}". Paste the whole Amazon product URL, or the 10-character ASIN from the product details section.`
+  );
+}
+
 /** Apply an edit from the dashboard. Only whitelisted fields move. */
 export function saveWatch(asin, patch) {
   const found = findWatch(asin);
@@ -84,7 +110,8 @@ export function saveWatch(asin, patch) {
   const next = { ...watch };
   for (const [k, v] of Object.entries(patch || {})) {
     if (!FIELDS_EDITABLE.has(k)) continue;
-    next[k] = v;
+    // Paste a URL, get an ASIN. Throws rather than silently storing rubbish.
+    next[k] = k === 'asin' ? normaliseAsin(v) : v;
   }
 
   // Any field the human has now touched stops being a draft.

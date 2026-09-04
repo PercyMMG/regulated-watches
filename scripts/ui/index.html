@@ -316,7 +316,7 @@ function editor(w){
   const sel = (name,val,opts) => `<select data-f="${name}"><option value="">—</option>${opts.map(o=>`<option value="${esc(o.id)}" ${val===o.id?'selected':''}>${esc(o.title||o.id)}</option>`).join('')}</select>`;
 
   box.appendChild($(`<div class="grid">
-    <div><label>ASIN ${w.asin?'':'<span style="color:var(--warn)">— links to a search until set</span>'}</label><input data-f="asin" value="${esc(w.asin||'')}" placeholder="B01ABCDEFG" pattern="[A-Z0-9]{10}"></div>
+    <div><label>ASIN ${w.asin?'':'<span style="color:var(--warn)">— paste the Amazon URL here; links go to a search until you do</span>'}</label><input data-f="asin" value="${esc(w.asin||'')}" placeholder="paste the Amazon product URL, or the ASIN"></div>
     <div><label>Model ref</label><input data-f="model_ref" value="${esc(w.model_ref||'')}"></div>
     <div><label>Title</label><input data-f="title" value="${esc(w.title)}"></div>
     <div><label>Brand</label><input data-f="brand" value="${esc(w.brand)}"></div>
