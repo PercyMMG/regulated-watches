@@ -1,12 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
+import { link } from '../lib/site';
 ---
 
 <Base title="Not found" noindex={true}>
   <div class="wrap">
     <div class="empty">
       <h2>That page is not here</h2>
-      <p>It may have been unpublished. Everything currently on the list is on <a href="/watches">the index</a>.</p>
+      <p>It may have been unpublished. Everything currently on the list is on <a href={link('/watches')}>the index</a>.</p>
     </div>
   </div>
 </Base>

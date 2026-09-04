@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { site } from '../lib/site';
+import { site, link } from '../lib/site';
 
 interface Props {
   title?: string;
@@ -14,9 +14,9 @@ const desc = description ?? site.tagline;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 const nav = [
-  { href: '/watches', label: 'All watches' },
-  ...site.taxonomy.tiers.map((t) => ({ href: `/tier/${t.id}`, label: t.title })),
-  { href: '/collections', label: 'Collections' },
+  { href: link('/watches'), label: 'All watches' },
+  ...site.taxonomy.tiers.map((t) => ({ href: link(`/tier/${t.id}`), label: t.title })),
+  { href: link('/collections'), label: 'Collections' },
 ];
 ---
 
@@ -24,6 +24,15 @@ const nav = [
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* GitHub Pages cannot send response headers, so the CSP from public/_headers
+        never reaches the browser there. This meta version covers most of it.
+        It cannot express frame-ancestors — that needs a real header — so
+        clickjacking protection waits on a host that supports one. */}
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'none'; base-uri 'none'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>{pageTitle}</title>
     <meta name="description" content={desc} />
     {noindex && <meta name="robots" content="noindex" />}
@@ -32,19 +41,19 @@ const nav = [
     <meta property="og:description" content={desc} />
     <meta property="og:type" content="website" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23c9a227' stroke-width='2'/%3E%3Cpath d='M16 8v8l5 3' fill='none' stroke='%23c9a227' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E" />
-    <script src="/price-guard.js" defer></script>
+    <script src={link('/price-guard.js')} defer></script>
   </head>
   <body>
     <header class="site-head">
       <div class="wrap">
-        <a class="brand" href="/">{site.brand}</a>
+        <a class="brand" href={link('/')}>{site.brand}</a>
         <nav class="site-nav">
           {nav.map((n) => (
             <a href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a>
           ))}
           {/* Dev only. The dashboard is proxied onto this origin by the dev
               server, so it is one click away and never exists in production. */}
-          {import.meta.env.DEV && <a class="nav-admin" href="/curate">Curate →</a>}
+          {import.meta.env.DEV && <a class="nav-admin" href={link('/curate')}>Curate →</a>}
         </nav>
       </div>
     </header>
@@ -66,7 +75,7 @@ const nav = [
           Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates.
           {site.brand} is not affiliated with, endorsed by, or sponsored by Amazon.
         </p>
-        <p><a href="/disclosure">Full affiliate and editorial disclosure</a></p>
+        <p><a href={link('/disclosure')}>Full affiliate and editorial disclosure</a></p>
       </div>
     </footer>
   </body>

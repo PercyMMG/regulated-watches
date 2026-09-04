@@ -1,3 +1,14 @@
+# NOT ACTIVE ON GITHUB PAGES.
+#
+# GitHub Pages cannot send custom HTTP headers, so nothing in this file has any
+# effect on the current deployment. It is kept because it is correct and takes
+# effect immediately on any host that reads it (Cloudflare Pages, Netlify).
+#
+# What is lost meanwhile: the response CSP, X-Frame-Options, and
+# Referrer-Policy. Base.astro carries a <meta> CSP as partial cover - meta
+# cannot express frame-ancestors, so clickjacking protection is unavailable
+# until the site moves to a host that supports headers.
+#
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY

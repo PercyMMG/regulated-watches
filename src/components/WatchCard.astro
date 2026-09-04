@@ -2,7 +2,7 @@
 import Thumb from './Thumb.astro';
 import Price from './Price.astro';
 import BuyButton from './BuyButton.astro';
-import { tierById, fullName, specChips } from '../lib/site';
+import { tierById, fullName, specChips, link } from '../lib/site';
 
 interface Props {
   watch: any;
@@ -45,7 +45,7 @@ const href = `/watches/${watch.id ?? d.id}`;
 
     <div class="prices">
       <Price watch={d} />
-      {tier && <a class="tag" href={`/tier/${d.tier}`}>{tier.title}</a>}
+      {tier && <a class="tag" href={link(`/tier/${d.tier}`)}>{tier.title}</a>}
     </div>
 
     <BuyButton watch={d} compact={true} />

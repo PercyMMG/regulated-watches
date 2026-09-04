@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { link } from '../../lib/site';
 
 const cols = await getCollection('collections');
 ---
@@ -15,7 +16,7 @@ const cols = await getCollection('collections');
     ) : (
       <div class="grid-2" style="margin-top:28px">
         {cols.map((c) => (
-          <a class="card" href={`/collections/${c.data.slug}`} style="padding:18px;text-decoration:none;color:inherit">
+          <a class="card" href={link(`/collections/${c.data.slug}`)} style="padding:18px;text-decoration:none;color:inherit">
             <div class="card-title" style="margin-bottom:6px">{c.data.title}</div>
             <p class="card-blurb" style="margin:0 0 10px">{c.data.intro_text}</p>
             <span class="tag">{c.data.watch_ids.length} watch{c.data.watch_ids.length === 1 ? '' : 'es'}</span>

@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import WatchCard from '../components/WatchCard.astro';
-import { site } from '../lib/site';
+import { site, link } from '../lib/site';
 
 const all = await getCollection('watches');
 const cols = await getCollection('collections');
@@ -58,7 +58,7 @@ const stylesInUse = site.taxonomy.styles.filter((s) => byStyle[s.id].length > 0)
                 : 'The latest additions to the list.'}
             </p>
           </div>
-          <a href="/watches">All {all.length} →</a>
+          <a href={link('/watches')}>All {all.length} →</a>
         </div>
         <div class="grid">
           {lead.slice(0, 6).map((w, i) => <WatchCard watch={w} eager={i < 3} />)}
@@ -72,7 +72,7 @@ const stylesInUse = site.taxonomy.styles.filter((s) => byStyle[s.id].length > 0)
         </div>
         <div class="grid-2">
           {site.taxonomy.tiers.map((t) => (
-            <a class="card" href={`/tier/${t.id}`} style="padding:18px;text-decoration:none;color:inherit">
+            <a class="card" href={link(`/tier/${t.id}`)} style="padding:18px;text-decoration:none;color:inherit">
               <div class="card-title" style="margin-bottom:6px">{t.title}</div>
               <p class="card-blurb" style="margin:0 0 10px">{t.blurb}</p>
               <span class="tag">{byTier[t.id].length} watch{byTier[t.id].length === 1 ? '' : 'es'}</span>
@@ -90,7 +90,7 @@ const stylesInUse = site.taxonomy.styles.filter((s) => byStyle[s.id].length > 0)
             </div>
             <div class="tags">
               {stylesInUse.map((s) => (
-                <a class="tag" href={`/style/${s.id}`}>{s.title} · {byStyle[s.id].length}</a>
+                <a class="tag" href={link(`/style/${s.id}`)}>{s.title} · {byStyle[s.id].length}</a>
               ))}
             </div>
           </>
@@ -103,11 +103,11 @@ const stylesInUse = site.taxonomy.styles.filter((s) => byStyle[s.id].length > 0)
                 <h2>Collections</h2>
                 <p>Groupings that answer one question each.</p>
               </div>
-              <a href="/collections">All →</a>
+              <a href={link('/collections')}>All →</a>
             </div>
             <div class="grid-2">
               {cols.slice(0, 4).map((c) => (
-                <a class="card" href={`/collections/${c.data.slug}`} style="padding:18px;text-decoration:none;color:inherit">
+                <a class="card" href={link(`/collections/${c.data.slug}`)} style="padding:18px;text-decoration:none;color:inherit">
                   <div class="card-title" style="margin-bottom:6px">{c.data.title}</div>
                   <p class="card-blurb" style="margin:0 0 10px">{c.data.intro_text}</p>
                   <span class="tag">{c.data.watch_ids.length} watch{c.data.watch_ids.length === 1 ? '' : 'es'}</span>

@@ -9,7 +9,7 @@
 #   local_backend below makes this work; it is ignored in production.
 #
 # HOSTED (GitHub login, edit from any browser or phone):
-#   https://regulated.pages.dev/admin/
+#   (not available on GitHub Pages - see below)
 #   Auth goes through our own OAuth proxy in functions/api/, so there is no
 #   third-party service and nothing to pay for. Setup: docs/OPERATIONS.md.
 #
@@ -22,15 +22,21 @@ backend:
   name: github
   repo: PercyMMG/regulated-watches
   branch: main
-  # Our own OAuth proxy, running as Pages Functions in this repo.
-  base_url: https://regulated.pages.dev
-  auth_endpoint: api/auth
+  # NO HOSTED LOGIN ON GITHUB PAGES.
+  #
+  # The OAuth proxy in functions/api/ needs a host that runs serverless
+  # functions; GitHub Pages does not. Curate locally instead:
+  #   npm run dev  ->  http://localhost:4321/curate
+  # base_url and auth_endpoint stay commented out until the site moves to a
+  # host that can run them.
+  # base_url: https://your-host
+  # auth_endpoint: api/auth
 
 media_folder: public/images/watches
 public_folder: /images/watches
 
 publish_mode: simple
-site_url: https://regulated.pages.dev
+site_url: https://percymmg.github.io/regulated-watches
 
 collections:
   - name: watches

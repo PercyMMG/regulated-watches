@@ -1,3 +1,9 @@
+/*
+ * NOT DEPLOYED. The site is on GitHub Pages, which does not run serverless
+ * functions, so this never executes. Kept for a future move to a host that
+ * does (Cloudflare Pages, Netlify). Do not register an OAuth callback
+ * against a domain you do not control.
+ */
 /**
  * Decap CMS OAuth — step 2 of 2: exchange the code for a token and hand it
  * back to the CMS window.

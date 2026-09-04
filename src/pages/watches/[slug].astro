@@ -5,7 +5,7 @@ import Thumb from '../../components/Thumb.astro';
 import Price from '../../components/Price.astro';
 import BuyButton from '../../components/BuyButton.astro';
 import WatchCard from '../../components/WatchCard.astro';
-import { site, tierById, styleById, formatDate, fullName } from '../../lib/site';
+import { site, tierById, styleById, formatDate, fullName, link } from '../../lib/site';
 
 export async function getStaticPaths() {
   const all = await getCollection('watches');
@@ -45,9 +45,9 @@ const specs = [
     <div class="detail">
       <div>
         <p class="eyebrow">
-          {tier && <a href={`/tier/${d.tier}`}>{tier.title}</a>}
+          {tier && <a href={link(`/tier/${d.tier}`)}>{tier.title}</a>}
           {tier && style && ' · '}
-          {style && <a href={`/style/${d.style}`}>{style.title}</a>}
+          {style && <a href={link(`/style/${d.style}`)}>{style.title}</a>}
         </p>
         <h1>{fullName(d)}</h1>
         <p class="lede">{d.short_blurb}</p>
@@ -87,7 +87,7 @@ const specs = [
           <>
             <h2>Compared with</h2>
             <ul>
-              {comparisons.map((c) => <li><a href={`/compare/${c.data.slug}`}>{c.data.title}</a></li>)}
+              {comparisons.map((c) => <li><a href={link(`/compare/${c.data.slug}`)}>{c.data.title}</a></li>)}
             </ul>
           </>
         )}

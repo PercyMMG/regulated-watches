@@ -4,7 +4,7 @@ import Base from '../../layouts/Base.astro';
 import Thumb from '../../components/Thumb.astro';
 import Price from '../../components/Price.astro';
 import BuyButton from '../../components/BuyButton.astro';
-import { fullName } from '../../lib/site';
+import { fullName, link } from '../../lib/site';
 
 export async function getStaticPaths() {
   const cmps = await getCollection('comparisons');
@@ -37,7 +37,7 @@ const B = b.data;
           <Thumb watch={entry.data} eager={true} />
           <div style="padding-top:14px">
             <div class="card-title" style="margin-bottom:8px">
-              <a href={`/watches/${entry.id}`}>{fullName(entry.data)}</a>
+              <a href={link(`/watches/${entry.id}`)}>{fullName(entry.data)}</a>
             </div>
             <p class="card-blurb">{entry.data.short_blurb}</p>
             <div style="margin:12px 0"><Price watch={entry.data} /></div>

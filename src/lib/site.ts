@@ -4,6 +4,20 @@ export const site = raw;
 
 export const TAG_PLACEHOLDER = 'REPLACE-ME-21';
 
+/**
+ * Internal link, prefixed with the deploy base path.
+ *
+ * GitHub Pages serves a project repo from a subdirectory
+ * (/regulated-watches/), so a bare href="/watches" would resolve to the root
+ * of github.io and 404. Every internal link goes through this; external ones
+ * (Amazon, Commons) must not.
+ */
+export function link(path: string): string {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  if (!path.startsWith('/')) return path;
+  return `${base}${path}` || '/';
+}
+
 export const hasAssociateTag = () =>
   Boolean(site.affiliate.associateTag) && site.affiliate.associateTag !== TAG_PLACEHOLDER;
 
@@ -65,7 +79,7 @@ export function imageFor(watch: { image?: string }): string | null {
   if (site.images.mode === 'placeholder') return null;
   if (!watch.image) return null;
   const name = String(watch.image).replace(/^.*[\\/]/, '');
-  return `/images/watches/${name}`;
+  return link(`/images/watches/${name}`);
 }
 
 /** Deterministic hue per ASIN, so a watch's placeholder card is always the same. */
